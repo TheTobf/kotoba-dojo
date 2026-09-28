@@ -87,3 +87,20 @@ export function unlockSound({ volume, muted }: SfxOpts) {
 export function vibrate(on: boolean, pattern: number | number[] = 12) {
   if (on && 'vibrate' in navigator) navigator.vibrate(pattern)
 }
+
+/** Richtig: zwei helle Töne, pro Combo-Stufe einen Halbton höher (max. 1 Oktave). */
+export function correctSound(combo: number, { volume, muted }: SfxOpts) {
+  if (muted || volume <= 0) return
+  const t = ac().currentTime
+  const base = 880 * 2 ** (Math.min(combo, 12) / 12)
+  tone(base, t, 0.18, 0.13 * volume)
+  tone(base * 1.5, t + 0.07, 0.3, 0.12 * volume)
+}
+
+/** Falsch: kurzes, tiefes „Bonk“. */
+export function wrongSound({ volume, muted }: SfxOpts) {
+  if (muted || volume <= 0) return
+  const t = ac().currentTime
+  tone(196, t, 0.22, 0.14 * volume, 'triangle')
+  tone(147, t + 0.09, 0.3, 0.12 * volume, 'triangle')
+}

@@ -1,6 +1,6 @@
-import { createEmptyCard, fsrs, generatorParameters, Rating, State, type Card, type Grade } from 'ts-fsrs'
+﻿import { createEmptyCard, fsrs, generatorParameters, Rating, State, type Card, type Grade } from 'ts-fsrs'
 import { db, type KotobaDB } from './db'
-import type { CardState, Word } from './types'
+import type { CardKind, CardState, Word } from './types'
 
 export { Rating, State }
 
@@ -17,9 +17,9 @@ export function toFsrs(c: CardState): Card {
   }
 }
 
-export function fromFsrs(id: string, refId: string, c: Card): CardState {
+export function fromFsrs(id: string, refId: string, c: Card, kind: CardKind = 'vokabel'): CardState {
   return {
-    id, kind: 'vokabel', refId,
+    id, kind, refId,
     due: c.due.getTime(), stability: c.stability, difficulty: c.difficulty,
     elapsed_days: c.elapsed_days, scheduled_days: c.scheduled_days, learning_steps: c.learning_steps,
     reps: c.reps, lapses: c.lapses, state: c.state,
@@ -27,7 +27,7 @@ export function fromFsrs(id: string, refId: string, c: Card): CardState {
   }
 }
 
-export const cardId = (wordId: string) => `vokabel:${wordId}`
+export const cardId = (wordId: string, kind: CardKind = 'vokabel') => `${kind}:${wordId}`
 
 /** Gilt als „gelernt“: mindestens einmal bewertet oder per „Kenn ich schon“ übersprungen. */
 export const isLearned = (c: CardState) => c.reps > 0 || !!c.knownSkip
@@ -90,13 +90,13 @@ async function logDay(d: KotobaDB, now: number) {
 }
 
 /** Bewertet eine Karte, speichert Zustand + Log und gibt den neuen Zustand zurück. */
-export async function rate(word: Word, card: CardState | undefined, grade: Grade, durationMs?: number, d: KotobaDB = db, now = Date.now()) {
+export async function rate(word: Word, card: CardState | undefined, grade: Grade, durationMs?: number, d: KotobaDB = db, now = Date.now(), kind: CardKind = 'vokabel') {
   const before = card ? toFsrs(card) : createEmptyCard(new Date(now))
   const next = scheduler.next(before, new Date(now), grade).card
-  const state: CardState = { ...fromFsrs(cardId(word.id), word.id, next), introducedAt: card?.introducedAt ?? now }
+  const state: CardState = { ...fromFsrs(cardId(word.id, kind), word.id, next, kind), introducedAt: card?.introducedAt ?? now }
   await d.transaction('rw', [d.cards, d.reviewLog, d.profile], async () => {
     await d.cards.put(state)
-    await d.reviewLog.add({ cardId: state.id, kind: 'vokabel', rating: grade, at: now, durationMs })
+    await d.reviewLog.add({ cardId: state.id, kind, rating: grade, at: now, durationMs })
     await logDay(d, now)
   })
   return state
@@ -116,4 +116,20 @@ export async function markKnown(word: Word, d: KotobaDB = db, now = Date.now()) 
     await logDay(d, now)
   })
   return state
+}
+
+/**
+ * Quiz-Runde: nur Wörter, die schon als Karteikarte gelernt wurden.
+ * Zuerst fällige Quiz-Karten, dann gelernte Wörter, die noch nie im Quiz waren (Lernreihenfolge).
+ */
+export function quizQueue(words: Word[], cards: CardState[], size = 10, now = Date.now()): QueueItem[] {
+  const byId = new Map(words.map((w) => [w.id, w]))
+  const learned = new Set(cards.filter((c) => c.kind === 'vokabel' && isLearned(c)).map((c) => c.refId))
+  const quiz = cards.filter((c) => c.kind === 'quiz' && byId.has(c.refId))
+  const due = quiz.filter((c) => c.due <= now).sort((a, b) => a.due - b.due)
+    .map((c) => ({ word: byId.get(c.refId)!, card: c }))
+  const inQuiz = new Set(quiz.map((c) => c.refId))
+  const fresh = words.filter((w) => learned.has(w.id) && !inQuiz.has(w.id))
+    .sort((a, b) => a.rank - b.rank).map((word) => ({ word }))
+  return [...due, ...fresh].slice(0, size)
 }
