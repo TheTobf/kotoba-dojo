@@ -60,6 +60,7 @@ const voiceIds = VOICES.map((v) => {
 function norm(kana: string): string {
   let h = wk.toHiragana(kana.replace(/[^\p{Script=Hiragana}\p{Script=Katakana}ー]/gu, ''))
   h = h.replace(/いう/g, 'ゆう') // そういう wird „sō yū“ gesprochen
+  h = h.replace(/づ/g, 'ず').replace(/ぢ/g, 'じ') // gleicher Laut (つづく = tsuzuku)
   h = h.replace(/ー/g, '').replace(/[はわ]/g, 'わ').replace(/[をお]/g, 'お').replace(/[へえ]/g, 'え')
   // おう/おお → お, えい/ええ → え, うう → う, いい → い (Langvokale wie ー behandeln)
   h = h.replace(/([おこそとのほもよろごぞどぼぽょ])[うお]/g, '$1').replace(/([えけせてねへめれげぜでべぺ])[いえ]/g, '$1')
