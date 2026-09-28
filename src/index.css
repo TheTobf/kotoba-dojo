@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Noto Sans JP', system-ui, sans-serif;
+  --color-sakura: #ff5fa2;
+  --color-neon: #3de0ff;
+  --color-matcha: #7bd88f;
+  --color-yuzu: #ffd23f;
+  --color-ink: #1a1026;
+  --color-ink-2: #251a35;
+  --color-ink-3: #34264a;
+  --color-paper: #fdf8f3;
+  --color-paper-2: #ffffff;
+  --color-paper-3: #f3e9ef;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-paper text-ink dark:bg-ink dark:text-paper antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@utility card {
+  @apply rounded-2xl bg-paper-2 shadow-sm ring-1 ring-black/5 dark:bg-ink-2 dark:ring-white/10;
+}
+
+@utility btn {
+  @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 font-medium transition active:scale-95;
+}
+
+@utility btn-primary {
+  @apply btn bg-sakura text-white shadow-md shadow-sakura/30 hover:brightness-110;
+}
