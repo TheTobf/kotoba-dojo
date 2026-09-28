@@ -4,7 +4,8 @@ export type Quelle = 'tatoeba' | 'jmdict' | 'claude' | 'manuell'
 
 export type Wortart =
   | 'Nomen' | 'Verb' | 'i-Adjektiv' | 'na-Adjektiv' | 'Adverb'
-  | 'Partikel' | 'Pronomen' | 'Hilfsverb' | 'Konjunktion' | 'Zählwort' | 'Ausdruck' | 'Sonstiges'
+  | 'Partikel' | 'Pronomen' | 'Hilfsverb' | 'Konjunktion' | 'Zählwort' | 'Ausdruck'
+  | 'Adnominal' | 'Interjektion' | 'Sonstiges'
 
 export interface Word {
   id: string            // z. B. "w0001"
@@ -21,13 +22,24 @@ export interface Word {
   jlpt?: number
   emoji?: string
   image?: string
+  audio?: string
+  audioCredit?: string
 }
+
+/** Furigana-Abschnitt: `r` nur bei Kanji, z. B. 食べる → [{s:'食',r:'た'},{s:'べる'}] */
+export interface Furi {
+  s: string
+  r?: string
+}
+
+export type Role = 'subjekt' | 'objekt' | 'verb' | 'partikel' | 'sonst'
 
 /** Ein Satz, vorab tokenisiert. Die Tokens ergeben aneinandergereiht den Satz. */
 export interface Token {
   s: string             // Oberfläche
-  r?: string            // Furigana (nur wenn Kanji enthalten)
-  role?: 'subjekt' | 'objekt' | 'verb' | 'partikel' | 'sonst'
+  f?: Furi[]            // Furigana-Aufteilung (nur wenn Kanji enthalten)
+  b?: string            // Grundform
+  role?: Role
   target?: boolean      // Zielwort
 }
 
@@ -43,8 +55,9 @@ export interface Sentence {
   chunks: string[]      // Satzteile für die Satzbau-Übung
   source: Quelle
   tatoebaId?: number
-  audio?: string        // Pfad zur Audiodatei
+  audio?: string        // Pfad/URL zur Audiodatei
   audioCredit?: string
+  furiganaSource?: 'tatoeba' | 'kuromoji'
 }
 
 export interface Kanji {

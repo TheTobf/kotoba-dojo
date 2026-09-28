@@ -9,6 +9,9 @@ const base = process.env.GITHUB_PAGES ? '/kotoba-dojo/' : '/'
 
 export default defineConfig({
   base,
+  // Rohdaten (hunderte MB) und Arbeitsdateien nicht beobachten/scannen.
+  server: { watch: { ignored: ['**/scripts/raw/**', '**/scripts/work/**'] } },
+  optimizeDeps: { entries: ['index.html'] },
   plugins: [
     react(),
     tailwindcss(),
@@ -30,9 +33,15 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2,json,mp3,ogg}'],
+        // App + Wort-/Satzdaten sofort offline; Audio und Strichdaten beim ersten Gebrauch (sonst zu groß).
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2}', 'data/*.json'],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
         runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/audio/') || url.pathname.includes('/data/strokes/'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'lernmedien', expiration: { maxEntries: 20000 } },
+          },
           {
             urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
             handler: 'CacheFirst',

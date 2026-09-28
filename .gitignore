@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+scripts/raw/
+.env
+
+scripts/work/

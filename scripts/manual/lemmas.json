@@ -1,0 +1,12 @@
+{
+  "_info": "Feinsteuerung der Wortauswahl. skip = nicht als Vokabel (Bruchstücke/Grammatik, kommt in Satzbau), include = trotz Suffix-/Zahl-Verwendung aufnehmen, reading = Lesung erzwingen.",
+  "skip": ["ん", "お", "く", "し", "す", "てる", "みる", "者", "大", "知れる", "しれる", "名","性", "的", "化", "第"],
+  "include": ["一", "二", "三", "十", "万", "年", "日", "円", "分", "回", "歳"],
+  "reading": {
+    "一": "いち", "二": "に", "三": "さん", "十": "じゅう", "万": "まん",
+    "年": "ねん", "日": "ひ", "円": "えん", "分": "ふん", "回": "かい", "歳": "さい",
+    "間": "あいだ", "金": "かね", "他": "ほか", "日本": "にほん", "方": "ほう", "名": "な", "後": "あと"
+  },
+  "furigana": { "日本": "にほん" },
+  "entry": { "もの": "1502390", "わけ": "1538330", "後": "1269320" }
+}
