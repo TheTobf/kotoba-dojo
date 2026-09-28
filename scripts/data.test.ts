@@ -45,3 +45,11 @@ describe('Lerndaten', () => {
     }
   })
 })
+
+describe('Ziele', () => {
+  it('alle Schlüsselwörter der Japan-Situationen gibt es im Kurs', async () => {
+    const { SITUATIONEN } = await import('../src/content/ziele')
+    const surfaces = new Set(words.map((w) => w.surface))
+    for (const s of SITUATIONEN) for (const x of s.words) expect(surfaces.has(x), `${s.id}: ${x}`).toBe(true)
+  })
+})

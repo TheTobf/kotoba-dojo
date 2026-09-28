@@ -8,6 +8,7 @@ import Quiz from './pages/Quiz'
 import Satzbau from './pages/Satzbau'
 import Schrift from './pages/Schrift'
 import Statistik from './pages/Statistik'
+import Ziele from './pages/Ziele'
 import Einstellungen from './pages/Einstellungen'
 
 const TABS = [
@@ -15,6 +16,7 @@ const TABS = [
   { to: '/quiz', label: 'Quiz', icon: '❓', jp: 'クイズ' },
   { to: '/satzbau', label: 'Satzbau', icon: '🧩', jp: '文法' },
   { to: '/schrift', label: 'Schrift', icon: '✍️', jp: '文字' },
+  { to: '/ziele', label: 'Ziele', icon: '🗾', jp: '目標' },
 ]
 
 const EXTRA = [
@@ -91,6 +93,7 @@ export default function App() {
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/satzbau" element={<Satzbau />} />
               <Route path="/schrift" element={<Schrift />} />
+              <Route path="/ziele" element={<Ziele />} />
               <Route path="/statistik" element={<Statistik />} />
               <Route path="/einstellungen" element={<Einstellungen />} />
             </Routes>
@@ -98,7 +101,7 @@ export default function App() {
         </main>
 
         {/* Tab-Leiste (Handy) */}
-        <nav className="fixed inset-x-0 bottom-0 grid grid-cols-4 border-t border-black/5 bg-paper-2/90 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden dark:border-white/10 dark:bg-ink-2/90">
+        <nav className="fixed inset-x-0 bottom-0 grid grid-cols-5 border-t border-black/5 bg-paper-2/90 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden dark:border-white/10 dark:bg-ink-2/90">
           {TABS.map((t) => (
             <NavLink
               key={t.to}

@@ -31,6 +31,7 @@ export default function Einstellungen() {
             onChange={(e) => set({ dailyGoal: +e.target.value })} className="accent-sakura" />
         </Row>
         <Toggle label="Furigana anzeigen" value={s.furigana} onChange={(v) => set({ furigana: v })} />
+        <Toggle label="Schreibmaschinen-Effekt beim Umdrehen" value={s.typewriter} onChange={(v) => set({ typewriter: v })} />
         <Toggle label="Audio automatisch abspielen" value={s.autoplayAudio} onChange={(v) => set({ autoplayAudio: v })} />
         <Toggle label="Ton aus" value={s.muted} onChange={(v) => set({ muted: v })} />
         <Row label={`Lautstärke: ${Math.round(s.volume * 100)} %`}>

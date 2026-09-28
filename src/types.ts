@@ -92,6 +92,7 @@ export interface CardState {
   state: number         // ts-fsrs State
   last_review?: number
   knownSkip?: boolean   // per „Kenn ich schon" übersprungen
+  introducedAt?: number // erste Bewertung (für das Tageslimit neuer Karten)
 }
 
 export interface ReviewLogEntry {
@@ -125,6 +126,7 @@ export interface Settings {
   volume: number        // 0..1
   muted: boolean
   vibration: boolean
+  typewriter: boolean   // Bedeutung wird Buchstabe für Buchstabe geschrieben
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -138,6 +140,7 @@ export const DEFAULT_SETTINGS: Settings = {
   volume: 0.7,
   muted: false,
   vibration: true,
+  typewriter: true,
 }
 
 export const DEFAULT_PROFILE: Profile = {
