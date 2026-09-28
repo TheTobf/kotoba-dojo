@@ -159,7 +159,7 @@ export function analyse(
     return wk.toRomaji(g.kana)
   }).join(' ')
   romaji = romaji.replace(/ ([.,?!"])/g, '$1').replace(/" /g, '"').trim()
-  romaji = romaji.charAt(0).toUpperCase() + romaji.slice(1)
+  romaji = romaji.replace(/[a-z]/, (c) => c.toUpperCase()) // erster Buchstabe groß (auch nach „“)
 
   const chunks: string[] = []
   kt.forEach((t, i) => {

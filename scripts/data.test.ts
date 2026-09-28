@@ -10,10 +10,10 @@ const kanji = load<Kanji[]>('kanji.json')
 const byId = new Map(sentences.map((s) => [s.id, s]))
 
 describe('Lerndaten', () => {
-  it('Wörter sind nach Rang sortiert und in Lektionen à 20 gruppiert', () => {
+  it('Wörter sind nach Rang sortiert und in Lektionen à 5 gruppiert', () => {
     words.forEach((w, i) => {
       expect(w.rank).toBe(i + 1)
-      expect(w.lesson).toBe(Math.floor(i / 20) + 1)
+      expect(w.lesson).toBe(Math.floor(i / 5) + 1)
     })
     expect(new Set(words.map((w) => w.id)).size).toBe(words.length)
   })
@@ -33,7 +33,7 @@ describe('Lerndaten', () => {
       expect(s.chunks.join(''), s.ja).toBe(s.ja)
       expect(s.de, s.ja).not.toBe('')
       expect(s.grammar, s.ja).not.toBe('')
-      expect(s.romaji, s.ja).toMatch(/^[A-Za-z]/)
+      expect(s.romaji, s.ja).toMatch(/^"?[A-Z]/)
       for (const t of s.tokens) if (t.f) expect(t.f.map((f) => f.s).join(''), s.ja).toBe(t.s)
     }
   })

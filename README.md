@@ -38,10 +38,10 @@ npm run data:download
 Lädt Rohdaten (~600 MB entpackt) nach `scripts/raw/`.
 
 ```bash
-npm run data:build -- 200
+npm run data:build -- 2000
 ```
 
-Baut Wörter/Sätze/Kanji (Zahl = Anzahl Wörter). Braucht viel RAM: vorher in PowerShell
+Baut Wörter/Sätze/Kanji (Zahl = Anzahl Wörter, Lektionen à 5 Wörter). Braucht viel RAM: vorher in PowerShell
 `$env:NODE_OPTIONS="--max-old-space-size=8192"` setzen. Offene Punkte stehen danach in `scripts/work/review.json`.
 
 ```bash

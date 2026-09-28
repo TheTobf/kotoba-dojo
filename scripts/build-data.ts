@@ -6,7 +6,7 @@
  *   public/data/words.json, sentences.json, kanji.json, strokes/<hex>.json
  *   scripts/work/review.json – Kandidaten + offene Punkte zur manuellen Prüfung
  */
-import { createReadStream, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { createReadStream, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createInterface } from 'node:readline'
 import { join } from 'node:path'
 import * as wk from 'wanakana'
@@ -19,7 +19,7 @@ const ROOT = join(import.meta.dirname, '..')
 const RAW = join(ROOT, 'scripts/raw')
 const OUT = join(ROOT, 'public/data')
 const WORK = join(ROOT, 'scripts/work')
-const LESSON_SIZE = 20
+const LESSON_SIZE = 5
 const MAX_LEN = 26
 
 const readJson = <T>(p: string, fallback: T): T => (existsSync(p) ? JSON.parse(readFileSync(p, 'utf8')) : fallback)
@@ -35,8 +35,13 @@ interface ManualWord {
   pos?: Wortart
   sentence?: { tatoebaId?: number; ja?: string; de?: string; grammar?: string }
 }
-const manualWords = readJson<Record<string, ManualWord>>(join(ROOT, 'scripts/manual/words.json'), {})
-const manualKanji = readJson<Record<string, string[]>>(join(ROOT, 'scripts/manual/kanji.json'), {})
+// Ergänzungen sind auf mehrere Dateien verteilt (words.json, words-0201.json, …; kanji*.json).
+const mergeDir = <T>(prefix: string): Record<string, T> =>
+  Object.assign({}, ...readdirSync(join(ROOT, 'scripts/manual'))
+    .filter((f) => f.startsWith(prefix) && f.endsWith('.json')).sort()
+    .map((f) => readJson<Record<string, T>>(join(ROOT, 'scripts/manual', f), {})))
+const manualWords = mergeDir<ManualWord>('words')
+const manualKanji = mergeDir<string[]>('kanji')
 const lemmaCfg = readJson<{
   skip: string[]; include: string[]; reading: Record<string, string>; entry: Record<string, string>; furigana: Record<string, string>
 }>(join(ROOT, 'scripts/manual/lemmas.json'), { skip: [], include: [], reading: {}, entry: {}, furigana: {} })
@@ -252,7 +257,9 @@ for (const [idx, p] of picked.entries()) {
   const reading = p.reading
   // Schreibweise: Kana, wenn das Wort üblicherweise in Kana geschrieben wird, sonst die gängige Kanji-Form.
   const mainKanji = e.kanji.find((k) => k.text === p.lemma) ?? e.kanji.find((k) => k.common && !k.tags.includes('rK')) ?? e.kanji[0]
-  const surface = isUk(e) || !mainKanji ? (kanaForm ? p.lemma : reading) : kanaForm ? mainKanji.text : p.lemma
+  // Katakana-Wörter (イラク) und Kana-Wörter mit seltener Kanji-Form (其れから, 嗚呼) bleiben in Kana.
+  const keepKana = kanaForm && (wk.isKatakana(p.lemma) || !mainKanji?.common)
+  const surface = isUk(e) || !mainKanji || keepKana ? (kanaForm ? p.lemma : reading) : kanaForm ? mainKanji.text : p.lemma
   const senses = e.sense.filter((s) =>
     (s.appliesToKana.includes('*') || s.appliesToKana.includes(reading)) &&
     (kanaForm || s.appliesToKanji.includes('*') || s.appliesToKanji.includes(p.lemma)))
