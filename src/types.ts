@@ -72,6 +72,18 @@ export interface Kanji {
   svg?: string          // KanjiVG-Pfade
 }
 
+export type SchriftStufe = 'hiragana' | 'hiragana-dakuten' | 'katakana' | 'katakana-dakuten' | 'kanji'
+
+export interface Kana {
+  char: string
+  romaji: string
+  script: 'hiragana' | 'katakana'
+  stage: Exclude<SchriftStufe, 'kanji'>
+  row: number
+  svg?: string          // Striche (KanjiVG)
+  audio?: string
+}
+
 // ---------- Nutzerdaten (IndexedDB) ----------
 
 /** Welche Übung eine Karte trainiert – jede hat ihren eigenen FSRS-Zustand. */

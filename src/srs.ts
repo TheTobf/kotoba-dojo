@@ -1,4 +1,4 @@
-﻿import { createEmptyCard, fsrs, generatorParameters, Rating, State, type Card, type Grade } from 'ts-fsrs'
+import { createEmptyCard, fsrs, generatorParameters, Rating, State, type Card, type Grade } from 'ts-fsrs'
 import { db, type KotobaDB } from './db'
 import type { CardKind, CardState, Word } from './types'
 
@@ -90,7 +90,7 @@ async function logDay(d: KotobaDB, now: number) {
 }
 
 /** Bewertet eine Karte, speichert Zustand + Log und gibt den neuen Zustand zurück. */
-export async function rate(word: Word, card: CardState | undefined, grade: Grade, durationMs?: number, d: KotobaDB = db, now = Date.now(), kind: CardKind = 'vokabel') {
+export async function rate(word: Pick<Word, 'id'>, card: CardState | undefined, grade: Grade, durationMs?: number, d: KotobaDB = db, now = Date.now(), kind: CardKind = 'vokabel') {
   const before = card ? toFsrs(card) : createEmptyCard(new Date(now))
   const next = scheduler.next(before, new Date(now), grade).card
   const state: CardState = { ...fromFsrs(cardId(word.id, kind), word.id, next, kind), introducedAt: card?.introducedAt ?? now }

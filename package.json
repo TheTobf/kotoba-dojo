@@ -12,6 +12,7 @@
     "data:download": "tsx scripts/download.ts",
     "data:build": "tsx scripts/build-data.ts",
     "audio:gen": "tsx scripts/gen-audio.ts",
+    "kana:build": "tsx scripts/build-kana.ts",
     "typecheck": "tsc -b && tsc -p tsconfig.scripts.json"
   },
   "dependencies": {

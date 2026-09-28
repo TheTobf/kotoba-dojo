@@ -1,4 +1,4 @@
-import type { Kanji, Sentence, Word } from './types'
+import type { Kana, Kanji, Sentence, Word } from './types'
 
 const url = (p: string) => `${import.meta.env.BASE_URL}${p}`
 
@@ -25,3 +25,16 @@ export function loadData(): Promise<LearnData> {
 }
 
 export const assetUrl = url
+
+let kanaCache: Promise<Kana[]> | undefined
+export function loadKana(): Promise<Kana[]> {
+  kanaCache ??= fetch(url('data/kana.json')).then((r) => r.json() as Promise<Kana[]>)
+  return kanaCache
+}
+
+const strokeCache = new Map<string, Promise<string[]>>()
+/** SVG-Pfade der Striche (109×109-Raster von KanjiVG), in Schreibreihenfolge. */
+export function loadStrokes(file: string): Promise<string[]> {
+  if (!strokeCache.has(file)) strokeCache.set(file, fetch(url(`data/${file}`)).then((r) => r.json() as Promise<string[]>))
+  return strokeCache.get(file)!
+}

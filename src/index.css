@@ -65,6 +65,25 @@ body {
   animation: pop-in 0.45s ease-out both;
 }
 
+@keyframes stroke-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fade-in {
+  to { opacity: 1; }
+}
+@keyframes shrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.shake {
+  animation: shake 0.25s ease-in-out 2;
+}
+
 @utility btn-primary {
   @apply btn bg-sakura text-white shadow-md shadow-sakura/30 hover:brightness-110;
 }
