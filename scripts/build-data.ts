@@ -19,7 +19,8 @@ const ROOT = join(import.meta.dirname, '..')
 const RAW = join(ROOT, 'scripts/raw')
 const OUT = join(ROOT, 'public/data')
 const WORK = join(ROOT, 'scripts/work')
-const LESSON_SIZE = 5
+// Reise Ende Sept. 2027 (Obsidian „Japan-Reise 2027“): ~2040 Wörter / 6 = 340 Lektionen ≈ 1 pro Tag ab 29.09.2026.
+const LESSON_SIZE = 6
 const MAX_LEN = 26
 
 const readJson = <T>(p: string, fallback: T): T => (existsSync(p) ? JSON.parse(readFileSync(p, 'utf8')) : fallback)
@@ -44,9 +45,13 @@ const manualWords = mergeDir<ManualWord>('words')
 const manualKanji = mergeDir<string[]>('kanji')
 const lemmaCfg = readJson<{
   skip: string[]; include: string[]; reading: Record<string, string>; entry: Record<string, string>; furigana: Record<string, string>
-}>(join(ROOT, 'scripts/manual/lemmas.json'), { skip: [], include: [], reading: {}, entry: {}, furigana: {} })
+  /** Zusätzlich aufnehmen, auch wenn nicht unter den N häufigsten (Reisewortschatz). */
+  extra: string[]
+  /** Reise-Block: diese Wörter kommen in genau dieser Reihenfolge ganz an den Anfang. */
+  travel: string[]
+}>(join(ROOT, 'scripts/manual/lemmas.json'), { skip: [], include: [], reading: {}, entry: {}, furigana: {}, extra: [], travel: [] })
 const skipLemma = new Set(lemmaCfg.skip)
-const includeLemma = new Set(lemmaCfg.include)
+const includeLemma = new Set([...lemmaCfg.include, ...(lemmaCfg.extra ?? [])])
 
 // ---------- Häufigkeitsliste ----------
 console.time('lemmas')
@@ -240,6 +245,15 @@ for (const [lemma, rank] of lemmaRank) {
   seen.add(id)
   picked.push({ entry: e, reading: found.reading, lemma, rank })
 }
+// Reise-Ergänzungen (unabhängig von der Häufigkeitsliste)
+for (const lemma of lemmaCfg.extra ?? []) {
+  const found = lookup(lemma)
+  if (!found) { skipped.push({ lemma, why: 'Extra nicht in JMdict' }); continue }
+  const id = `w${found.entry.id}`
+  if (seen.has(id)) continue
+  seen.add(id)
+  picked.push({ entry: found.entry, reading: found.reading, lemma, rank: lemmaRank.get(lemma) ?? 90000 })
+}
 
 // ---------- Sätze wählen ----------
 const words: Word[] = []
@@ -248,6 +262,9 @@ const review: unknown[] = []
 const usedSentences = new Set<number>()
 /** Muttersprachler-Aufnahmen, die gen-audio herunterlädt (statt TTS). */
 const tatoebaAudio: { sentenceId: string; audioId: number; user: string; license: string }[] = []
+/** Grundformen der Inhaltswörter im Beispielsatz – für die aufbauende Reihenfolge. */
+const basicsOf = new Map<string, string[]>()
+const lemmaOf = new Map<string, string>()
 
 for (const [idx, p] of picked.entries()) {
   const e = p.entry
@@ -305,6 +322,17 @@ for (const [idx, p] of picked.entries()) {
       : analyse(tk, ja,
           (t) => t.pos !== '助詞' && t.pos !== '助動詞' && (forms.has(t.basic_form) || [...forms].some((f) => t.surface_form.includes(f))),
           undefined, { ...lemmaCfg.furigana, [surface]: reading })
+    // Rückfall: Zielwort über mehrere Tokens verteilt (何時 = 何 + 時) → zusammenhängende Tokens markieren.
+    if (!a.tokens.some((t) => t.target)) {
+      const text = a.tokens.map((t) => t.s)
+      outer: for (let i = 0; i < text.length; i++) {
+        let acc = ''
+        for (let j = i; j < text.length && acc.length < surface.length; j++) {
+          acc += text[j]
+          if (acc === surface) { for (let k = i; k <= j; k++) a.tokens[k].target = true; break outer }
+        }
+      }
+    }
     const au = choiceId ? audio.get(choiceId) : undefined
     if (choiceId) usedSentences.add(choiceId)
     sentence = {
@@ -323,11 +351,13 @@ for (const [idx, p] of picked.entries()) {
     }
     if (au) tatoebaAudio.push({ sentenceId: sentence.id, audioId: au.audioId, user: au.user, license: au.license })
     sentences.push(sentence)
+    basicsOf.set(id, a.basics)
   }
+  lemmaOf.set(id, p.lemma)
 
   const meaningsDe = m.meaningsDe ?? de
   words.push({
-    id, rank: idx + 1, lesson: Math.floor(idx / LESSON_SIZE) + 1,
+    id, rank: idx + 1, lesson: Math.floor(idx / LESSON_SIZE) + 1, freqRank: p.rank,
     surface, reading, romaji: wk.toRomaji(reading), pos,
     meaningsDe,
     meaningSource: m.meaningsDe ? 'claude' : 'jmdict',
@@ -349,6 +379,39 @@ for (const [idx, p] of picked.entries()) {
     alternatives: cands.slice(1).map((c) => ({ tatoebaId: c.sid, ja: jpn.get(c.sid)!.text, de: deu.get(c.sid), en: eng.get(c.sid), audio: audio.has(c.sid) })),
   })
 }
+
+// ---------- Lernreihenfolge ----------
+// 1. Reise-Block in fester Reihenfolge. 2. Rest nach Häufigkeit, aber aufbauend: aus den nächsten
+// 30 häufigsten Wörtern kommt zuerst das, dessen Beispielsatz die wenigsten noch unbekannten Wörter enthält.
+const known = new Set<string>()
+const learn = (w: Word) => [w.surface, w.reading, lemmaOf.get(w.id)!].forEach((f) => known.add(f))
+const order: Word[] = []
+const missingTravel: string[] = []
+for (const t of lemmaCfg.travel ?? []) {
+  const w = words.find((w) => !order.includes(w) && (w.surface === t || w.reading === t || lemmaOf.get(w.id) === t))
+  if (w) { order.push(w); learn(w) } else missingTravel.push(t)
+}
+const rest = words.filter((w) => !order.includes(w))
+const inCourse = new Set(words.flatMap((w) => [w.surface, w.reading, lemmaOf.get(w.id)!]))
+const WINDOW = Number(process.env.ORDER_WINDOW ?? 120)
+const PENALTY = Number(process.env.ORDER_PENALTY ?? 25)
+while (rest.length) {
+  let best = 0
+  let bestScore = Infinity
+  rest.slice(0, WINDOW).forEach((w, i) => {
+    const own = new Set([w.surface, lemmaOf.get(w.id)])
+    // nur Wörter zählen, die überhaupt im Kurs vorkommen (lernbar); seltene Wörter bleiben immer unbekannt
+    const unknown = (basicsOf.get(w.id) ?? []).filter((b) => inCourse.has(b) && !known.has(b) && !own.has(b)).length
+    const score = unknown * PENALTY + i
+    if (score < bestScore) { bestScore = score; best = i }
+  })
+  const [w] = rest.splice(best, 1)
+  order.push(w)
+  learn(w)
+}
+order.forEach((w, i) => { w.rank = i + 1; w.lesson = Math.floor(i / LESSON_SIZE) + 1 })
+words.splice(0, words.length, ...order)
+if (missingTravel.length) console.log('Reisewörter nicht gefunden:', missingTravel.join(' '))
 
 // ---------- Kanji ----------
 console.time('kanji')

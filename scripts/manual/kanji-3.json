@@ -1,0 +1,6 @@
+{
+  "四": ["vier"], "六": ["sechs"], "七": ["sieben"], "八": ["acht"], "九": ["neun"], "昼": ["Mittag", "tagsüber"],
+  "符": ["Zeichen", "Marke"], "鍵": ["Schlüssel"], "荷": ["Gepäck", "Last"], "茶": ["Tee"], "飯": ["Reis (gekocht)", "Mahlzeit"],
+  "乾": ["trocken"], "杯": ["Becher", "Zählwort (Gläser)"], "布": ["Stoff", "Tuch"], "替": ["tauschen", "ersetzen"],
+  "袋": ["Beutel", "Tüte"], "寺": ["Tempel"], "温": ["warm"], "泉": ["Quelle"], "閉": ["schließen"]
+}

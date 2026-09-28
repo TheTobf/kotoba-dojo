@@ -9,8 +9,9 @@ export type Wortart =
 
 export interface Word {
   id: string            // z. B. "w0001"
-  rank: number          // Häufigkeitsrang (1 = häufigstes)
-  lesson: number        // Lektion à 20 Einträge
+  rank: number          // Position in der Lernreihenfolge (Reise-Block zuerst, dann aufbauend)
+  lesson: number        // Lektion à 6 Wörter
+  freqRank?: number     // Häufigkeitsrang in der Leeds-Liste
   surface: string       // Schreibweise (Kanji/Kana)
   reading: string       // Lesung in Hiragana
   romaji: string
@@ -128,7 +129,7 @@ export interface Settings {
 
 export const DEFAULT_SETTINGS: Settings = {
   id: 'me',
-  newPerDay: 15,
+  newPerDay: 6, // = 1 Lektion pro Tag → alle Wörter bis zur Japan-Reise (Ende Sept. 2027)
   dailyGoal: 20,
   dailyGoalType: 'karten',
   theme: 'system',

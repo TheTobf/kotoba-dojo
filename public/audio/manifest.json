@@ -19998,5 +19998,435 @@
   "file": "s/s148389.mp3",
   "text": "首相は明日記者会見をします。",
   "credit": "VOICEVOX:青山龍星"
+ },
+ "s3277390": {
+  "file": "s/s3277390.mp3",
+  "text": "すみません、通ります。",
+  "credit": "Mizu (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s203728": {
+  "file": "s/s203728.mp3",
+  "text": "タクシーで行こうよ。",
+  "credit": "yomi (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s142089": {
+  "file": "s/s142089.mp3",
+  "text": "切符を見せてください。",
+  "credit": "huizi99 (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s2988140": {
+  "file": "s/s2988140.mp3",
+  "text": "ここは入口ではありません。",
+  "credit": "Mizu (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s3549611": {
+  "file": "s/s3549611.mp3",
+  "text": "出口はどこですか？",
+  "credit": "yomi (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s1142909": {
+  "file": "s/s1142909.mp3",
+  "text": "エレベーターはありますか？",
+  "credit": "yomi (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s3606373": {
+  "file": "s/s3606373.mp3",
+  "text": "私の鍵知らない？",
+  "credit": "yomi (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s2465639": {
+  "file": "s/s2465639.mp3",
+  "text": "切符買ってくるから、ちょっと荷物見てて。",
+  "credit": "yomi (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s2423918": {
+  "file": "s/s2423918.mp3",
+  "text": "パスポートが盗まれました。",
+  "credit": "Mizu (Tatoeba, CC BY-NC 4.0)"
+ },
+ "s2744796": {
+  "file": "s/s2744796.mp3",
+  "text": "今日の晩ご飯カレーだといいな。",
+  "credit": "yomi (Tatoeba, CC BY-NC 4.0)"
+ },
+ "w1583250": {
+  "file": "w/w1583250.mp3",
+  "text": "いいえ",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1295060": {
+  "file": "w/w1295060.mp3",
+  "text": "すみません",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1612820": {
+  "file": "w/w1612820.mp3",
+  "text": "おはよう",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1289480": {
+  "file": "w/w1289480.mp3",
+  "text": "こんばんは",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1291050": {
+  "file": "w/w1291050.mp3",
+  "text": "さようなら",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1579470": {
+  "file": "w/w1579470.mp3",
+  "text": "よん",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1268060": {
+  "file": "w/w1268060.mp3",
+  "text": "ご",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1585310": {
+  "file": "w/w1585310.mp3",
+  "text": "ろく",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1319210": {
+  "file": "w/w1319210.mp3",
+  "text": "なな",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1583090": {
+  "file": "w/w1583090.mp3",
+  "text": "はち",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1578150": {
+  "file": "w/w1578150.mp3",
+  "text": "きゅう",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1488000": {
+  "file": "w/w1488000.mp3",
+  "text": "ひゃく",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1388740": {
+  "file": "w/w1388740.mp3",
+  "text": "せん",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1188770": {
+  "file": "w/w1188770.mp3",
+  "text": "なんじ",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1426250": {
+  "file": "w/w1426250.mp3",
+  "text": "ひる",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1255890": {
+  "file": "w/w1255890.mp3",
+  "text": "げつようび",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1420900": {
+  "file": "w/w1420900.mp3",
+  "text": "ちかてつ",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1076190": {
+  "file": "w/w1076190.mp3",
+  "text": "タクシー",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1385170": {
+  "file": "w/w1385170.mp3",
+  "text": "きっぷ",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1580600": {
+  "file": "w/w1580600.mp3",
+  "text": "まっすぐ",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1582820": {
+  "file": "w/w1582820.mp3",
+  "text": "いりぐち",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1338850": {
+  "file": "w/w1338850.mp3",
+  "text": "でぐち",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1203020": {
+  "file": "w/w1203020.mp3",
+  "text": "かい",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1030630": {
+  "file": "w/w1030630.mp3",
+  "text": "エレベーター",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1553130": {
+  "file": "w/w1553130.mp3",
+  "text": "りょかん",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1260490": {
+  "file": "w/w1260490.mp3",
+  "text": "かぎ",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1195430": {
+  "file": "w/w1195430.mp3",
+  "text": "にもつ",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1101510": {
+  "file": "w/w1101510.mp3",
+  "text": "パスポート",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1053280": {
+  "file": "w/w1053280.mp3",
+  "text": "コンビニ",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1002430": {
+  "file": "w/w1002430.mp3",
+  "text": "おちゃ",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1270590": {
+  "file": "w/w1270590.mp3",
+  "text": "ごはん",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1410800": {
+  "file": "w/w1410800.mp3",
+  "text": "いただきます",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1270520": {
+  "file": "w/w1270520.mp3",
+  "text": "ごちそうさま",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1590950": {
+  "file": "w/w1590950.mp3",
+  "text": "かんぱい",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1296970": {
+  "file": "w/w1296970.mp3",
+  "text": "さいふ",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1553820": {
+  "file": "w/w1553820.mp3",
+  "text": "りょうがえ",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1411070": {
+  "file": "w/w1411070.mp3",
+  "text": "ふくろ",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1145060": {
+  "file": "w/w1145060.mp3",
+  "text": "レシート",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1364670": {
+  "file": "w/w1364670.mp3",
+  "text": "じんじゃ",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1315240": {
+  "file": "w/w1315240.mp3",
+  "text": "てら",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1183450": {
+  "file": "w/w1183450.mp3",
+  "text": "おんせん",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "w1436560": {
+  "file": "w/w1436560.mp3",
+  "text": "しまる",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "w1218380": {
+  "file": "w/w1218380.mp3",
+  "text": "あぶない",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s90182": {
+  "file": "s/s90182.mp3",
+  "text": "彼女は五歳です。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s1046234": {
+  "file": "s/s1046234.mp3",
+  "text": "私は四十歳です。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s85415": {
+  "file": "s/s85415.mp3",
+  "text": "百歳以上生きる人はほとんどいない。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s1388740c": {
+  "file": "s/s1388740c.mp3",
+  "text": "これは千円です。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s8865844": {
+  "file": "s/s8865844.mp3",
+  "text": "十六歳ですよ。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s1483516": {
+  "file": "s/s1483516.mp3",
+  "text": "もう九時です。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s126233": {
+  "file": "s/s126233.mp3",
+  "text": "朝の八時です。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s13128674": {
+  "file": "s/s13128674.mp3",
+  "text": "七歳です。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s10982414": {
+  "file": "s/s10982414.mp3",
+  "text": "ここは二階です。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s509771": {
+  "file": "s/s509771.mp3",
+  "text": "いいえ。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s1598216": {
+  "file": "s/s1598216.mp3",
+  "text": "おはよう。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s426900": {
+  "file": "s/s426900.mp3",
+  "text": "こんばんは。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s426889": {
+  "file": "s/s426889.mp3",
+  "text": "さようなら！",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s1410800c": {
+  "file": "s/s1410800c.mp3",
+  "text": "いただきます！",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s10100070": {
+  "file": "s/s10100070.mp3",
+  "text": "ごちそうさまでした。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s184053": {
+  "file": "s/s184053.mp3",
+  "text": "乾杯！",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s1188770c": {
+  "file": "s/s1188770c.mp3",
+  "text": "今何時ですか？",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s175603": {
+  "file": "s/s175603.mp3",
+  "text": "月曜日です。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s127015": {
+  "file": "s/s127015.mp3",
+  "text": "地下鉄に乗ろう。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s1580600c": {
+  "file": "s/s1580600c.mp3",
+  "text": "この道をまっすぐ行ってください。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s230419": {
+  "file": "s/s230419.mp3",
+  "text": "あの旅館は家庭的だ。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s1296970c": {
+  "file": "s/s1296970c.mp3",
+  "text": "財布をなくしました。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s2244802": {
+  "file": "s/s2244802.mp3",
+  "text": "両替は承っておりません。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s3335510": {
+  "file": "s/s3335510.mp3",
+  "text": "ちょっとコンビニ行ってくるね。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s8721048": {
+  "file": "s/s8721048.mp3",
+  "text": "同じ袋の中にそれ全部が入ってたの？",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s10778306": {
+  "file": "s/s10778306.mp3",
+  "text": "レシートはまだお持ちですか？",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s3366823": {
+  "file": "s/s3366823.mp3",
+  "text": "お茶を持ってきて。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s181873": {
+  "file": "s/s181873.mp3",
+  "text": "京都には多くの神社がある。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s209776": {
+  "file": "s/s209776.mp3",
+  "text": "その寺にも行ったよ。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s3464976": {
+  "file": "s/s3464976.mp3",
+  "text": "日本には温泉がたくさんある。",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s10156125": {
+  "file": "s/s10156125.mp3",
+  "text": "昼まで寝てました。",
+  "credit": "VOICEVOX:四国めたん"
+ },
+ "s8692224": {
+  "file": "s/s8692224.mp3",
+  "text": "窓は閉まってた？",
+  "credit": "VOICEVOX:青山龍星"
+ },
+ "s183597": {
+  "file": "s/s183597.mp3",
+  "text": "危ない！",
+  "credit": "VOICEVOX:四国めたん"
  }
 }

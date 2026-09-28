@@ -21,7 +21,7 @@ describe('Backup', () => {
     await expect(importBackup({ app: 'anki' } as never, new KotobaDB('test-c'))).rejects.toThrow()
   })
 
-  it('liefert Standard-Einstellungen (15 neue Karten/Tag)', async () => {
-    expect((await getSettings(new KotobaDB('test-d'))).newPerDay).toBe(15)
+  it('liefert Standard-Einstellungen (6 neue Karten/Tag = 1 Lektion)', async () => {
+    expect((await getSettings(new KotobaDB('test-d'))).newPerDay).toBe(6)
   })
 })
