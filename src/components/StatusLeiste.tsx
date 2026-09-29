@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { aktuellerStreak, levelInfo, rangFuer } from '../motivation'
+import { omamoriVerfuegbar } from '../pass'
 import { DEFAULT_PROFILE, DEFAULT_SETTINGS } from '../types'
 
 /** Streak-Flamme, Tagesziel-Ring und Level – kompakt für Kopfzeile/Seitenleiste. */
@@ -10,7 +11,7 @@ export default function StatusLeiste({ kompakt = false }: { kompakt?: boolean })
   const s = { ...DEFAULT_SETTINGS, ...useLiveQuery(() => db.settings.get('me')) }
   const heute = p.activeDays[new Date().toISOString().slice(0, 10)] ?? 0
   const ziel = Math.min(1, heute / s.dailyGoal)
-  const streak = aktuellerStreak(p)
+  const streak = aktuellerStreak(p, Date.now(), omamoriVerfuegbar(p))
   const lv = levelInfo(p.xp)
   const rang = rangFuer(lv.level)
   const R = 15, U = 2 * Math.PI * R

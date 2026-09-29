@@ -125,6 +125,8 @@ export interface Profile {
   achievements: string[]
   unlockedThemes: string[]
   activeDays: Record<string, number> // Tag → Anzahl Karten (Heatmap)
+  seasonXp?: Record<string, number>  // Reise-Pass: XP je Saison
+  omamoriUsed?: number               // verbrauchte Streak-Glücksbringer
 }
 
 export interface Settings {
@@ -140,6 +142,11 @@ export interface Settings {
   vibration: boolean
   typewriter: boolean   // Bedeutung wird Buchstabe für Buchstabe geschrieben
   accent: string        // Farbthema (muss freigeschaltet sein)
+  companion: string     // Begleiter-Tierchen (Belohnungs-ID)
+  cardPattern: string   // Kartenmuster ('' = keins)
+  soundPack: string     // Klangpaket ('' = Standard)
+  title: string         // Titel-ID ('' = keiner)
+  edgeEffect: string    // Randeffekt ('' = aus)
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -155,6 +162,11 @@ export const DEFAULT_SETTINGS: Settings = {
   vibration: true,
   typewriter: true,
   accent: 'sakura',
+  companion: 'tier-neko',
+  cardPattern: '',
+  soundPack: '',
+  title: '',
+  edgeEffect: '',
 }
 
 export const DEFAULT_PROFILE: Profile = {

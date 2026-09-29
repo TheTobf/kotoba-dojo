@@ -112,3 +112,14 @@ body {
 :root[data-accent='yuzu'] { --color-sakura: #f5a000; }
 :root[data-accent='fuji'] { --color-sakura: #9b7bff; }
 :root[data-accent='momiji'] { --color-sakura: #ff5a36; }
+
+@keyframes koban-puls {
+  0% { box-shadow: 0 0 0 0 rgba(255, 210, 63, 0.9); background: rgba(255, 240, 180, 0.6); }
+  100% { box-shadow: 0 0 0 6px rgba(255, 210, 63, 0); background: transparent; }
+}
+.koban-puls {
+  animation: koban-puls 0.35s ease-out forwards;
+}
+
+:root { --card-bg: var(--color-paper-2); }
+:root.dark { --card-bg: var(--color-ink-2); }

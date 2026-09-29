@@ -6,6 +6,8 @@ import { isLearned, startOfDay } from '../srs'
 import { aktuellerStreak, ERFOLGE, levelInfo, RAENGE, rangFuer } from '../motivation'
 import { heatmap, prognose, trefferquote } from '../statistik'
 import { DEFAULT_PROFILE, type CardKind } from '../types'
+import { ALLE_BELOHNUNGEN } from '../content/pass'
+import { omamoriVerfuegbar } from '../pass'
 
 const ART: Record<CardKind, string> = { vokabel: 'Vokabeln', quiz: 'Quiz', zeichen: 'Zeichen' }
 
@@ -14,6 +16,7 @@ export default function Statistik() {
   const cards = useLiveQuery(() => db.cards.toArray())
   const log = useLiveQuery(() => db.reviewLog.where('at').above(Date.now() - 30 * 86_400_000).toArray())
   const p = { ...DEFAULT_PROFILE, ...useLiveQuery(() => db.profile.get('me')) }
+  const settings = useLiveQuery(() => db.settings.get('me'))
   useEffect(() => { loadData().then((d) => setTotal(d.words.length)) }, [])
   if (!cards || !log) return <p className="opacity-60">Lade …</p>
 
@@ -28,6 +31,7 @@ export default function Statistik() {
   const maxProg = Math.max(1, ...prog.map((x) => x.anzahl))
   const lernTage = Object.keys(p.activeDays).length
   const erfolge = new Set(p.achievements)
+  const titel = ALLE_BELOHNUNGEN.find((b) => b.id === settings?.title)
 
   return (
     <section className="space-y-5">
@@ -41,6 +45,7 @@ export default function Statistik() {
         </div>
         <div className="min-w-0 flex-1">
           <div className="font-bold"><span lang="ja" className="text-lg">{rang.jp}</span> · {rang.de}</div>
+          {titel && <div className="text-xs font-bold text-sakura">🏷️ {titel.name}</div>}
           <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
             <div className="h-full rounded-full bg-yuzu" style={{ width: `${lv.ratio * 100}%` }} />
           </div>
@@ -53,7 +58,7 @@ export default function Statistik() {
 
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <Zahl n={`${woerter}`} sub={`von ${total} Wörtern`} />
-        <Zahl n={`🔥 ${aktuellerStreak(p)}`} sub={`Streak · Rekord ${p.bestStreak}`} />
+        <Zahl n={`🔥 ${aktuellerStreak(p, Date.now(), omamoriVerfuegbar(p))}`} sub={`Streak · Rekord ${p.bestStreak}`} />
         <Zahl n={quote.gesamt === undefined ? '–' : `${Math.round(quote.gesamt * 100)} %`} sub="Treffer (30 Tage)" />
         <Zahl n={`${heuteFaellig}`} sub="heute fällig" />
       </div>

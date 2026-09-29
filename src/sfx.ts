@@ -49,9 +49,8 @@ export function flipSound({ volume, muted }: SfxOpts) {
   g.gain.exponentialRampToValueAtTime(0.0001, t + len)
   src.connect(bp).connect(g).connect(c.destination)
   src.start(t)
-  // Ding: Grundton + Oktave, leicht glockig
-  tone(1318.5, t + 0.12, 0.6, 0.18 * volume)
-  tone(2637, t + 0.12, 0.35, 0.06 * volume)
+  // Ding (je nach Klangpaket)
+  klangTon(1318.5, t + 0.12, 0.18 * volume)
 }
 
 /** Leiser Tipp-Klick für die Schreibmaschine (max. alle 45 ms). */
@@ -93,6 +92,7 @@ export function correctSound(combo: number, { volume, muted }: SfxOpts) {
   if (muted || volume <= 0) return
   const t = ac().currentTime
   const base = 880 * 2 ** (Math.min(combo, 12) / 12)
+  if (pack) { klangTon(base, t, 0.14 * volume); klangTon(base * 1.5, t + 0.08, 0.1 * volume); return }
   tone(base, t, 0.18, 0.13 * volume)
   tone(base * 1.5, t + 0.07, 0.3, 0.12 * volume)
 }
@@ -119,4 +119,69 @@ export function levelSound({ volume, muted }: SfxOpts) {
   ;[523.25, 659.25, 783.99].forEach((f) => tone(f, t, 0.35, 0.09 * volume, 'square'))
   ;[659.25, 783.99, 1046.5].forEach((f) => tone(f, t + 0.18, 0.4, 0.09 * volume, 'square'))
   ;[1046.5, 1318.5, 1568, 2093].forEach((f) => tone(f, t + 0.38, 0.8, 0.08 * volume))
+}
+
+// ---------- Klangpakete (Reise-Pass) ----------
+
+let pack = ''
+/** Klangpaket setzen ('' = Standard, 'koto' | 'kane' | 'uguisu' | 'furin'). */
+export function setSoundPack(id: string) { pack = id }
+
+/** Ein „Belohnungston“ im Stil des aktiven Klangpakets. */
+function klangTon(freq: number, t: number, gain: number) {
+  switch (pack) {
+    case 'koto': { // gezupfte Saite: Dreieck, schneller Abfall, leichtes Absinken
+      const c = ac(), o = c.createOscillator(), g = c.createGain()
+      o.type = 'triangle'
+      o.frequency.setValueAtTime(freq / 2 * 1.01, t)
+      o.frequency.exponentialRampToValueAtTime(freq / 2, t + 0.15)
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain * 1.4, t + 0.004)
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.7)
+      o.connect(g).connect(c.destination); o.start(t); o.stop(t + 0.75)
+      tone(freq, t, 0.25, gain * 0.25, 'sine')
+      return
+    }
+    case 'kane': // Tempelglocke: tief, lange Obertöne
+      tone(freq / 4, t, 2.2, gain * 0.9)
+      tone(freq / 4 * 2.76, t, 1.4, gain * 0.35)
+      tone(freq / 4 * 5.4, t, 0.8, gain * 0.15)
+      return
+    case 'uguisu': { // Vogelruf: zwei schnelle Pfeiftöne mit Glissando
+      const c = ac()
+      for (const [s, f0, f1] of [[0, freq, freq * 1.5], [0.14, freq * 1.3, freq * 1.9]] as const) {
+        const o = c.createOscillator(), g = c.createGain()
+        o.frequency.setValueAtTime(f0, t + s); o.frequency.exponentialRampToValueAtTime(f1, t + s + 0.1)
+        g.gain.setValueAtTime(0, t + s); g.gain.linearRampToValueAtTime(gain, t + s + 0.01)
+        g.gain.exponentialRampToValueAtTime(0.0001, t + s + 0.13)
+        o.connect(g).connect(c.destination); o.start(t + s); o.stop(t + s + 0.15)
+      }
+      return
+    }
+    case 'furin': // Windspiel: hohe, unharmonische Teiltöne, lang
+      tone(freq * 2, t, 1.6, gain * 0.5)
+      tone(freq * 2 * 2.76, t, 1.0, gain * 0.2)
+      tone(freq * 2 * 5.4, t + 0.01, 0.6, gain * 0.1)
+      tone(freq * 2.02, t + 0.35, 1.2, gain * 0.25)
+      return
+    default:
+      tone(freq, t, 0.6, gain)
+      tone(freq * 2, t, 0.35, gain / 3)
+  }
+}
+
+/** Vorschau eines Klangpakets (Einstellungen / Pass). */
+export function previewPack(id: string, opts: SfxOpts) {
+  const alt = pack
+  pack = id
+  flipSound(opts)
+  pack = alt
+}
+
+/** Koban-Münze landet in der Leiste: helles „Klimpern“, Tonhöhe steigt mit jeder Münze. */
+export function coinSound(n: number, { volume, muted }: SfxOpts) {
+  if (muted || volume <= 0) return
+  const t = ac().currentTime
+  const f = 1800 * 2 ** (Math.min(n, 24) / 24)
+  tone(f, t, 0.08, 0.06 * volume, 'square')
+  tone(f * 1.5, t + 0.02, 0.18, 0.07 * volume)
 }

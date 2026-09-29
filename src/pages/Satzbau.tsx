@@ -9,7 +9,7 @@ import { mischen, ordnenSaetze, ordnungRichtig, partikelAufgabe, beispiele, type
 import { GRAMMATIK } from '../content/grammatik'
 import { correctSound, unlockSound, vibrate, wrongSound } from '../sfx'
 import { DEFAULT_SETTINGS, type Sentence, type Settings } from '../types'
-import { belohnen, zaehleAktivitaet, XP } from '../motivation'
+import { belohnen, sammeln, zaehleAktivitaet, XP } from '../motivation'
 import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
 
@@ -39,7 +39,7 @@ export default function Satzbau() {
     setRunde([...pool].sort(() => Math.random() - 0.5).slice(0, RUNDE))
   }
   const fertig = (r: { right: number; total: number }) => {
-    setRunde(undefined); setErgebnis(r)
+    setRunde(undefined); setErgebnis(r); setTimeout(sammeln, 250)
     if (r.total && r.right === r.total) unlockSound(settings)
   }
 

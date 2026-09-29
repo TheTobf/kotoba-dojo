@@ -1,6 +1,8 @@
 import { db, type KotobaDB } from './db'
 import { isLearned, startOfDay } from './srs'
 import { DEFAULT_PROFILE, type CardState, type Profile } from './types'
+import { aktuelleSaison, neueBelohnungen, omamoriVerfuegbar, stufeAus } from './pass'
+import type { Belohnung } from './content/pass'
 
 // ---------- Level & Ränge ----------
 
@@ -91,19 +93,25 @@ export const dayKey = (t = Date.now()) => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-/** Neuer Streak-Stand nach Aktivität heute. */
-export function nextStreak(p: Profile, now = Date.now()) {
-  const today = dayKey(now)
-  if (p.lastActiveDay === today) return { streak: p.streak, erhoeht: false }
-  const gestern = dayKey(now - 86_400_000)
-  const streak = p.lastActiveDay === gestern ? p.streak + 1 : 1
-  return { streak, erhoeht: true }
+/** Wie viele Tage seit dem letzten Lerntag verpasst wurden (0 = gestern gelernt), bis max; sonst undefined. */
+function verpasst(last: string, now: number, max: number) {
+  for (let k = 1; k <= max + 1; k++) if (dayKey(now - k * 86_400_000) === last) return k - 1
+  return undefined
 }
 
-/** Streak, wie er gerade angezeigt wird (0, wenn gestern und heute nichts gelernt). */
-export function aktuellerStreak(p: Profile, now = Date.now()) {
+/** Neuer Streak-Stand nach Aktivität heute. Omamori retten verpasste Tage (je Tag eins). */
+export function nextStreak(p: Profile, now = Date.now(), omamori = 0) {
+  if (p.lastActiveDay === dayKey(now)) return { streak: p.streak, erhoeht: false, verbraucht: 0 }
+  const m = p.lastActiveDay ? verpasst(p.lastActiveDay, now, omamori) : undefined
+  if (m === undefined) return { streak: 1, erhoeht: true, verbraucht: 0 }
+  return { streak: p.streak + 1, erhoeht: true, verbraucht: m }
+}
+
+/** Streak, wie er gerade angezeigt wird (0, wenn er gerissen ist und kein Omamori ihn rettet). */
+export function aktuellerStreak(p: Profile, now = Date.now(), omamori = 0) {
   if (!p.lastActiveDay) return 0
-  return p.lastActiveDay === dayKey(now) || p.lastActiveDay === dayKey(now - 86_400_000) ? p.streak : 0
+  if (p.lastActiveDay === dayKey(now)) return p.streak
+  return verpasst(p.lastActiveDay, now, omamori) === undefined ? 0 : p.streak
 }
 
 // ---------- Ereignisse (für Toast, Maskottchen, Konfetti) ----------
@@ -115,6 +123,9 @@ export type Ereignis =
   | { typ: 'tagesziel' }
   | { typ: 'erfolg'; icon: string; name: string; text: string }
   | { typ: 'thema'; name: string }
+  | { typ: 'pass'; stufe: number; saison: string; belohnung: Belohnung }
+  | { typ: 'omamori'; tage: number }
+  | { typ: 'sammeln' }
 
 export function emit(e: Ereignis) {
   window.dispatchEvent(new CustomEvent('kotoba', { detail: e }))
@@ -163,15 +174,23 @@ export async function belohnen(menge: number, { dailyGoal = 20, d = db, now = Da
 
 async function belohnenIntern(menge: number, dailyGoal: number, d: KotobaDB, now: number, situationen?: number) {
   const alt: Profile = { ...DEFAULT_PROFILE, ...(await d.profile.get('me')) }
-  const { streak, erhoeht } = nextStreak(alt, now)
+  const { streak, erhoeht, verbraucht } = nextStreak(alt, now, omamoriVerfuegbar(alt))
+  const saison = aktuelleSaison(now)
+  const sxAlt = alt.seasonXp?.[saison.id] ?? 0
   const p: Profile = {
     ...alt,
     xp: alt.xp + menge,
     streak,
     bestStreak: Math.max(alt.bestStreak, streak),
     lastActiveDay: dayKey(now),
+    seasonXp: { ...alt.seasonXp, [saison.id]: sxAlt + menge },
+    omamoriUsed: (alt.omamoriUsed ?? 0) + verbraucht,
   }
   const events: Ereignis[] = [{ typ: 'xp', menge }]
+  if (verbraucht) events.push({ typ: 'omamori', tage: verbraucht })
+  const altStufe = stufeAus(sxAlt).stufe
+  neueBelohnungen(saison, sxAlt, sxAlt + menge).forEach((b, i) =>
+    events.push({ typ: 'pass', stufe: altStufe + i + 1, saison: saison.name, belohnung: b }))
 
   const lvAlt = levelInfo(alt.xp).level
   const lvNeu = levelInfo(p.xp).level
@@ -214,3 +233,6 @@ export async function zaehleAktivitaet(d: KotobaDB = db, now = Date.now()) {
     await d.profile.put({ ...p, activeDays: { ...p.activeDays, [day]: (p.activeDays[day] ?? 0) + 1 } })
   })
 }
+
+/** Am Ende einer Übung: gesammelte XP als Koban in die Pass-Leiste fliegen lassen. */
+export const sammeln = () => { if (typeof window !== 'undefined') emit({ typ: 'sammeln' }) }

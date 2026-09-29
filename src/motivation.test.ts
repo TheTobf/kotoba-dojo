@@ -31,9 +31,9 @@ describe('Level & Ränge', () => {
 describe('Streak', () => {
   const p = (last?: string, streak = 0) => ({ ...DEFAULT_PROFILE, lastActiveDay: last, streak })
   it('zählt hoch an Folgetagen, bleibt am selben Tag, reißt nach Pause', () => {
-    expect(nextStreak(p(dayKey(mittag - DAY), 4), mittag)).toEqual({ streak: 5, erhoeht: true })
-    expect(nextStreak(p(dayKey(mittag), 5), mittag)).toEqual({ streak: 5, erhoeht: false })
-    expect(nextStreak(p(dayKey(mittag - 3 * DAY), 9), mittag)).toEqual({ streak: 1, erhoeht: true })
+    expect(nextStreak(p(dayKey(mittag - DAY), 4), mittag)).toMatchObject({ streak: 5, erhoeht: true })
+    expect(nextStreak(p(dayKey(mittag), 5), mittag)).toMatchObject({ streak: 5, erhoeht: false })
+    expect(nextStreak(p(dayKey(mittag - 3 * DAY), 9), mittag)).toMatchObject({ streak: 1, erhoeht: true })
   })
   it('Anzeige: gestern gelernt zählt noch, vorgestern nicht', () => {
     expect(aktuellerStreak(p(dayKey(mittag - DAY), 4), mittag)).toBe(4)

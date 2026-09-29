@@ -9,7 +9,8 @@ import { DEFAULT_SETTINGS, type Settings } from '../types'
 import { buildQueue, countNewToday, markKnown, previewIntervals, rate, Rating, type QueueItem } from '../srs'
 import { flipSound, rateSound, tickSound, unlockSound, vibrate } from '../sfx'
 import { learnedIds, newlyReached, situationStatus } from '../progress'
-import { belohnen, XP } from '../motivation'
+import { belohnen, sammeln, XP } from '../motivation'
+import { ALLE_BELOHNUNGEN, MUSTER_CSS, NEKO } from '../content/pass'
 import type { Medium, Situation } from '../content/ziele'
 import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
@@ -67,6 +68,7 @@ export default function Vokabeln() {
     if (reached.situationen.length || reached.medien.length) setTimeout(() => unlockSound(settings), 300)
     setSession(undefined)
     setResult({ session: s, ...reached })
+    setTimeout(sammeln, 250)
   }
 
   if (session) {
@@ -79,6 +81,7 @@ export default function Vokabeln() {
   const nextLesson = plan.find((q) => !q.card)?.word.lesson
   const learned = learnedIds(cardsArr)
   const nextGoal = situationStatus(data.words, learned).filter((x) => !x.ready).sort((a, b) => b.pct - a.pct)[0]
+  const begleiter = ALLE_BELOHNUNGEN.find((b) => b.id === settings.companion) ?? NEKO
 
   return (
     <section className="space-y-4">
@@ -119,7 +122,7 @@ export default function Vokabeln() {
           </div>
 
           <div className="card flex items-center gap-4 p-4">
-            <div className="text-3xl">{nextGoal?.s.icon ?? '🗾'}</div>
+            <div className="mascot text-4xl" title={begleiter.name}>{begleiter.icon}</div>
             <div className="min-w-0 flex-1">
               <div className="text-sm opacity-60">{learned.size} von {data.words.length} Wörtern gelernt</div>
               {nextGoal && <div className="font-bold">Nächstes Ziel: {nextGoal.s.title} ({nextGoal.pct} %)</div>}
@@ -258,7 +261,8 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
       <div className="flip-scene" onClick={flip}>
         <div className={`flip-card cursor-pointer select-none ${flipped ? 'is-flipped' : ''}`}>
           {/* Vorderseite */}
-          <div className="flip-face card flex min-h-80 flex-col items-center justify-center gap-3 p-6">
+          <div className="flip-face card flex min-h-80 flex-col items-center justify-center gap-3 p-6"
+            style={settings.cardPattern && MUSTER_CSS[settings.cardPattern] ? { background: `${MUSTER_CSS[settings.cardPattern]('#888888')}, var(--card-bg)` } : undefined}>
             <span className={`rounded-full px-3 py-0.5 text-xs font-bold ${isNew ? 'bg-sakura/15 text-sakura' : 'bg-neon/15 text-sky-700 dark:text-neon'}`}>
               {isNew ? `NEU · Lektion ${word.lesson}` : 'Wiederholung'}
             </span>

@@ -9,7 +9,7 @@ import { DEFAULT_SETTINGS, type Settings } from '../types'
 import { isLearned, quizQueue, rate, Rating, type QueueItem } from '../srs'
 import { addResult, answerOf, checkTyped, choicesFor, verdict, type QuizMode, type QuizStats } from '../quiz'
 import { correctSound, vibrate, wrongSound } from '../sfx'
-import { belohnen, comboXp, merkeCombo, merkeQuizPerfekt, XP } from '../motivation'
+import { belohnen, comboXp, merkeCombo, merkeQuizPerfekt, sammeln, XP } from '../motivation'
 import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
 
@@ -56,7 +56,7 @@ export default function Quiz() {
   if (run) {
     return <Runde data={data} run={run} learned={learned} settings={settings} onUpdate={setRun}
       onFinish={(st) => {
-        setRun(undefined); setDone(st)
+        setRun(undefined); setDone(st); setTimeout(sammeln, 400)
         if (st.total >= 5 && st.right === st.total) { merkeQuizPerfekt(); void belohnen(25, { dailyGoal: settings.dailyGoal }) }
       }} />
   }

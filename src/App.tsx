@@ -8,6 +8,11 @@ import { kontext } from './motivation'
 import { learnedIds, situationStatus } from './progress'
 import Belohnungen from './components/Belohnungen'
 import StatusLeiste from './components/StatusLeiste'
+import PassLeiste from './components/PassLeiste'
+import Randeffekt from './components/Randeffekt'
+import Pass from './pages/Pass'
+import { ALLE_BELOHNUNGEN } from './content/pass'
+import { besitztId } from './pass'
 import Vokabeln from './pages/Vokabeln'
 import Quiz from './pages/Quiz'
 import Satzbau from './pages/Satzbau'
@@ -25,6 +30,7 @@ const TABS = [
 ]
 
 const EXTRA = [
+  { to: '/pass', label: 'Reise-Pass', icon: '🎫' },
   { to: '/statistik', label: 'Statistik', icon: '📊' },
   { to: '/einstellungen', label: 'Einstellungen', icon: '⚙️' },
 ]
@@ -33,7 +39,13 @@ function useTheme() {
   const settings = useLiveQuery(() => db.settings.get('me'))
   const theme = settings?.theme ?? DEFAULT_SETTINGS.theme
   const accent = settings?.accent ?? DEFAULT_SETTINGS.accent
-  useEffect(() => { document.documentElement.dataset.accent = accent }, [accent])
+  useEffect(() => {
+    // Pass-Farben (farbe-…) setzen die Akzentfarbe direkt, die übrigen über data-accent (index.css)
+    const hex = ALLE_BELOHNUNGEN.find((b) => b.id === accent)?.wert
+    document.documentElement.dataset.accent = hex ? '' : accent
+    if (hex) document.documentElement.style.setProperty('--color-sakura', hex)
+    else document.documentElement.style.removeProperty('--color-sakura')
+  }, [accent])
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
     const apply = () =>
@@ -71,6 +83,7 @@ export default function App() {
   return (
     <div className="flex h-full">
       <Belohnungen />
+      <Rand />
       {/* Seitenleiste (PC) */}
       <aside className="hidden w-60 shrink-0 flex-col gap-1 border-r border-black/5 p-4 md:flex dark:border-white/10">
         <div className="mb-6 px-3">
@@ -99,18 +112,20 @@ export default function App() {
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Kopfzeile (Handy) */}
         <header className="flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),0.75rem)] pb-2 md:hidden">
-          <div className="text-xl font-bold">
+          <div className="shrink-0 text-xl font-bold whitespace-nowrap">
             言葉<span className="text-sakura">道場</span>
           </div>
           <StatusLeiste kompakt />
           <div className="flex gap-1">
-            {EXTRA.map((t) => (
+            {EXTRA.filter((t) => t.to !== '/pass').map((t) => (
               <NavLink key={t.to} to={t.to} aria-label={t.label} className="btn min-h-10 px-2 text-xl">
                 {t.icon}
               </NavLink>
             ))}
           </div>
         </header>
+
+        <PassLeiste />
 
         <main className="flex-1 overflow-y-auto px-4 pb-28 md:px-8 md:py-8 md:pb-8">
           <div className="mx-auto max-w-2xl">
@@ -121,6 +136,7 @@ export default function App() {
               <Route path="/satzbau" element={<Satzbau />} />
               <Route path="/schrift" element={<Schrift />} />
               <Route path="/ziele" element={<Ziele />} />
+              <Route path="/pass" element={<Pass />} />
               <Route path="/statistik" element={<Statistik />} />
               <Route path="/einstellungen" element={<Einstellungen />} />
             </Routes>
@@ -147,4 +163,13 @@ export default function App() {
       </div>
     </div>
   )
+}
+
+/** Randeffekt nur, wenn er freigeschaltet ist. */
+function Rand() {
+  const s = useLiveQuery(() => db.settings.get('me'))
+  const p = useLiveQuery(() => db.profile.get('me'))
+  const art = s?.edgeEffect ?? ''
+  const frei = !!art && !!p && besitztId(p, `effekt-${art}`)
+  return <Randeffekt art={frei ? art : ''} />
 }

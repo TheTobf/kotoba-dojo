@@ -8,6 +8,7 @@ import { glyphsFor, isMastered, pickRound, stageProgress, STUFEN, UNLOCK_AT, unl
 import { DEFAULT_SETTINGS, type Kana, type SchriftStufe, type Settings } from '../types'
 import { Memory, Quizspiel, Zeichnen, type Spiel } from '../components/SchriftSpiele'
 import { StrokeOrder } from '../components/Strokes'
+import { sammeln } from '../motivation'
 
 const SPIELE: { id: Spiel; icon: string; label: string; desc: string; kana?: boolean }[] = [
   { id: 'erkennen', icon: '⚡', label: 'Blitz-Erkennen', desc: 'Zeichen erkennen unter Zeitdruck' },
@@ -47,7 +48,7 @@ export default function Schrift() {
   if (spiel) {
     const props = {
       round: spiel.round, pool, cards: zeichenCards, settings,
-      onDone: (r: { right: number; total: number; bestCombo: number }) => { setLast({ ...r, spiel: spiel.id }); setSpiel(undefined) },
+      onDone: (r: { right: number; total: number; bestCombo: number }) => { setLast({ ...r, spiel: spiel.id }); setSpiel(undefined); setTimeout(sammeln, 250) },
     }
     if (spiel.id === 'memory') return <Memory {...props} />
     if (spiel.id === 'zeichnen') return <Zeichnen {...props} />
