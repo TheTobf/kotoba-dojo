@@ -87,3 +87,28 @@ body {
 @utility btn-primary {
   @apply btn bg-sakura text-white shadow-md shadow-sakura/30 hover:brightness-110;
 }
+
+@keyframes xp-float {
+  0% { transform: translateY(8px); opacity: 0; }
+  20% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-24px); opacity: 0; }
+}
+.xp-float {
+  animation: xp-float 1.2s ease-out forwards;
+}
+@keyframes mascot {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-12deg) scale(1.15); }
+  75% { transform: rotate(12deg) scale(1.15); }
+}
+.mascot {
+  display: inline-block;
+  animation: mascot 0.6s ease-in-out 3;
+}
+
+/* Freischaltbare Farbthemen: überschreiben die Akzentfarbe */
+:root[data-accent='neon'] { --color-sakura: #22c7f0; }
+:root[data-accent='matcha'] { --color-sakura: #3fb67c; }
+:root[data-accent='yuzu'] { --color-sakura: #f5a000; }
+:root[data-accent='fuji'] { --color-sakura: #9b7bff; }
+:root[data-accent='momiji'] { --color-sakura: #ff5a36; }

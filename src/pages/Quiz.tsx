@@ -8,7 +8,8 @@ import { speak } from '../audio'
 import { DEFAULT_SETTINGS, type Settings } from '../types'
 import { isLearned, quizQueue, rate, Rating, type QueueItem } from '../srs'
 import { addResult, answerOf, checkTyped, choicesFor, verdict, type QuizMode, type QuizStats } from '../quiz'
-import { correctSound, unlockSound, vibrate, wrongSound } from '../sfx'
+import { correctSound, vibrate, wrongSound } from '../sfx'
+import { belohnen, comboXp, merkeCombo, merkeQuizPerfekt, XP } from '../motivation'
 import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
 
@@ -56,7 +57,7 @@ export default function Quiz() {
     return <Runde data={data} run={run} learned={learned} settings={settings} onUpdate={setRun}
       onFinish={(st) => {
         setRun(undefined); setDone(st)
-        if (st.total && st.right === st.total) setTimeout(() => unlockSound(settings), 200)
+        if (st.total >= 5 && st.right === st.total) { merkeQuizPerfekt(); void belohnen(25, { dailyGoal: settings.dailyGoal }) }
       }} />
   }
 
@@ -155,6 +156,7 @@ function Runde({ data, run, learned, settings, onUpdate, onFinish }: {
     if (!settings.muted && mode !== 'hoeren') setTimeout(() => speak(sentence.ja, sentence.audio, { volume: settings.volume }), 350)
     // Nur der erste Versuch zählt fürs FSRS; falsche Wörter kommen am Ende der Runde nochmal
     const retry = run.retried.has(item.word.id)
+    if (!retry) { merkeCombo(combo); void belohnen(ok ? XP.quizRichtig + comboXp(combo) : XP.quizFalsch, { dailyGoal: settings.dailyGoal }) }
     const card = retry ? undefined : await rate(item.word, item.card, ok ? Rating.Good : Rating.Again, Date.now() - shownAt.current, db, Date.now(), 'quiz')
     const queue = !ok && !retry ? [...run.queue, { word: item.word, card }] : run.queue
     const modes = !ok && !retry ? [...run.modes, mode] : run.modes

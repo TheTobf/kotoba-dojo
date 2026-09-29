@@ -9,6 +9,7 @@ import { DEFAULT_SETTINGS, type Settings } from '../types'
 import { buildQueue, countNewToday, markKnown, previewIntervals, rate, Rating, type QueueItem } from '../srs'
 import { flipSound, rateSound, tickSound, unlockSound, vibrate } from '../sfx'
 import { learnedIds, newlyReached, situationStatus } from '../progress'
+import { belohnen, XP } from '../motivation'
 import type { Medium, Situation } from '../content/ziele'
 import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
@@ -203,6 +204,7 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
     const now = Date.now()
     const state = await rate(item.word, item.card, grade, now - shownAt.current)
     rateSound(grade, sfx)
+    void belohnen(grade >= Rating.Good ? XP.karteGut : grade === Rating.Hard ? XP.karteSchwer : XP.karteNochmal, { dailyGoal: settings.dailyGoal })
     const queue = [...session.queue]
     // Lernschritte (< 1 Std) kommen in dieser Einheit noch einmal
     if (state.due - now < 60 * 60_000) queue.push({ word: item.word, card: state })
@@ -218,6 +220,7 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
     setBusy(true)
     await markKnown(item.word)
     rateSound(Rating.Easy, sfx)
+    void belohnen(XP.kennIchSchon, { dailyGoal: settings.dailyGoal })
     advance({ ...session, idx: session.idx + 1, known: session.known + 1 })
     setBusy(false)
   }, [busy, item, session, advance]) // eslint-disable-line react-hooks/exhaustive-deps

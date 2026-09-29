@@ -3,6 +3,11 @@ import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from './db'
 import { DEFAULT_SETTINGS } from './types'
+import { loadData, loadKana } from './data'
+import { kontext } from './motivation'
+import { learnedIds, situationStatus } from './progress'
+import Belohnungen from './components/Belohnungen'
+import StatusLeiste from './components/StatusLeiste'
 import Vokabeln from './pages/Vokabeln'
 import Quiz from './pages/Quiz'
 import Satzbau from './pages/Satzbau'
@@ -27,6 +32,8 @@ const EXTRA = [
 function useTheme() {
   const settings = useLiveQuery(() => db.settings.get('me'))
   const theme = settings?.theme ?? DEFAULT_SETTINGS.theme
+  const accent = settings?.accent ?? DEFAULT_SETTINGS.accent
+  useEffect(() => { document.documentElement.dataset.accent = accent }, [accent])
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
     const apply = () =>
@@ -42,10 +49,28 @@ const linkCls = ({ isActive }: { isActive: boolean }) =>
     isActive ? 'bg-sakura/15 text-sakura font-bold' : 'hover:bg-black/5 dark:hover:bg-white/5'
   }`
 
+/** Kontext für die Erfolgsprüfung (Kana-Listen, Japan-Situationen). */
+function useKontext() {
+  useEffect(() => {
+    loadKana().then((k) => {
+      kontext.kana = {
+        hiragana: k.filter((x) => x.script === 'hiragana').map((x) => x.char),
+        katakana: k.filter((x) => x.script === 'katakana').map((x) => x.char),
+      }
+    })
+    kontext.situationen = async () => {
+      const [data, cards] = await Promise.all([loadData(), db.cards.toArray()])
+      return situationStatus(data.words, learnedIds(cards)).filter((s) => s.ready).length
+    }
+  }, [])
+}
+
 export default function App() {
   useTheme()
+  useKontext()
   return (
     <div className="flex h-full">
+      <Belohnungen />
       {/* Seitenleiste (PC) */}
       <aside className="hidden w-60 shrink-0 flex-col gap-1 border-r border-black/5 p-4 md:flex dark:border-white/10">
         <div className="mb-6 px-3">
@@ -54,6 +79,7 @@ export default function App() {
           </div>
           <div className="text-sm opacity-60">Kotoba Dojo</div>
         </div>
+        <div className="mb-3"><StatusLeiste /></div>
         {TABS.map((t) => (
           <NavLink key={t.to} to={t.to} className={linkCls}>
             <span className="text-xl">{t.icon}</span>
@@ -76,6 +102,7 @@ export default function App() {
           <div className="text-xl font-bold">
             言葉<span className="text-sakura">道場</span>
           </div>
+          <StatusLeiste kompakt />
           <div className="flex gap-1">
             {EXTRA.map((t) => (
               <NavLink key={t.to} to={t.to} aria-label={t.label} className="btn min-h-10 px-2 text-xl">

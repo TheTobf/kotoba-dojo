@@ -104,3 +104,19 @@ export function wrongSound({ volume, muted }: SfxOpts) {
   tone(196, t, 0.22, 0.14 * volume, 'triangle')
   tone(147, t + 0.09, 0.3, 0.12 * volume, 'triangle')
 }
+
+/** Streak: kurzes aufsteigendes Arpeggio mit „Feuer-Zischen“. */
+export function streakSound({ volume, muted }: SfxOpts) {
+  if (muted || volume <= 0) return
+  const t = ac().currentTime
+  ;[523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => tone(f, t + i * 0.06, 0.35, 0.1 * volume, 'triangle'))
+}
+
+/** Level-Up-Fanfare: Dur-Akkord, dann Oktave. */
+export function levelSound({ volume, muted }: SfxOpts) {
+  if (muted || volume <= 0) return
+  const t = ac().currentTime
+  ;[523.25, 659.25, 783.99].forEach((f) => tone(f, t, 0.35, 0.09 * volume, 'square'))
+  ;[659.25, 783.99, 1046.5].forEach((f) => tone(f, t + 0.18, 0.4, 0.09 * volume, 'square'))
+  ;[1046.5, 1318.5, 1568, 2093].forEach((f) => tone(f, t + 0.38, 0.8, 0.08 * volume))
+}

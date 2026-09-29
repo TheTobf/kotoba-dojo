@@ -139,6 +139,7 @@ export interface Settings {
   muted: boolean
   vibration: boolean
   typewriter: boolean   // Bedeutung wird Buchstabe für Buchstabe geschrieben
+  accent: string        // Farbthema (muss freigeschaltet sein)
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -153,6 +154,7 @@ export const DEFAULT_SETTINGS: Settings = {
   muted: false,
   vibration: true,
   typewriter: true,
+  accent: 'sakura',
 }
 
 export const DEFAULT_PROFILE: Profile = {

@@ -9,6 +9,7 @@ import { mischen, ordnenSaetze, ordnungRichtig, partikelAufgabe, beispiele, type
 import { GRAMMATIK } from '../content/grammatik'
 import { correctSound, unlockSound, vibrate, wrongSound } from '../sfx'
 import { DEFAULT_SETTINGS, type Sentence, type Settings } from '../types'
+import { belohnen, zaehleAktivitaet, XP } from '../motivation'
 import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
 
@@ -142,6 +143,7 @@ function Ordnen({ runde, settings, onDone }: { runde: Sentence[]; settings: Sett
   const pruefen = () => {
     const r = ordnungRichtig(gelegt.map((k) => kacheln[k].text), s)
     setOk(r)
+    void zaehleAktivitaet().then(() => belohnen(r ? XP.satzRichtig : XP.satzFalsch, { dailyGoal: settings.dailyGoal }))
     if (r) { setRight((x) => x + 1); correctSound(right + 1, sfx); vibrate(settings.vibration) } else { wrongSound(sfx); vibrate(settings.vibration, [30, 40, 30]) }
     if (!settings.muted) setTimeout(() => speak(s.ja, s.audio, { volume: settings.volume }), 300)
   }
@@ -187,6 +189,7 @@ function Partikeln({ runde, settings, onDone }: { runde: Sentence[]; settings: S
     if (gewaehlt) return
     setGewaehlt(p)
     const ok = p === aufgabe.answer
+    void zaehleAktivitaet().then(() => belohnen(ok ? XP.satzRichtig : XP.satzFalsch, { dailyGoal: settings.dailyGoal }))
     if (ok) { setRight((x) => x + 1); correctSound(right + 1, sfx); vibrate(settings.vibration) } else { wrongSound(sfx); vibrate(settings.vibration, [30, 40, 30]) }
     if (!settings.muted) setTimeout(() => speak(aufgabe.sentence.ja, aufgabe.sentence.audio, { volume: settings.volume }), 300)
   }

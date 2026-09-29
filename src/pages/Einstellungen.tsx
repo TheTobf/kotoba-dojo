@@ -1,11 +1,13 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
-import { DEFAULT_SETTINGS, type Settings } from '../types'
+import { DEFAULT_PROFILE, DEFAULT_SETTINGS, type Settings } from '../types'
+import { THEMEN } from '../motivation'
 
 export default function Einstellungen() {
   const stored = useLiveQuery(() => db.settings.get('me'))
   const s: Settings = { ...DEFAULT_SETTINGS, ...stored }
   const set = (patch: Partial<Settings>) => db.settings.put({ ...s, ...patch })
+  const profile = { ...DEFAULT_PROFILE, ...useLiveQuery(() => db.profile.get('me')) }
 
   return (
     <section className="space-y-4">
@@ -22,6 +24,23 @@ export default function Einstellungen() {
             <option value="dunkel">Dunkel</option>
           </select>
         </Row>
+        <div className="space-y-2 px-4 py-3">
+          <div>Farbthema</div>
+          <div className="flex flex-wrap gap-2">
+            {THEMEN.map((t) => {
+              const frei = profile.unlockedThemes.includes(t.id) || t.id === 'sakura'
+              return (
+                <button key={t.id} type="button" disabled={!frei} onClick={() => set({ accent: t.id })}
+                  title={frei ? t.name : `Freischalten: ${t.bedingung}`}
+                  className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-sm ring-1 transition ${
+                    s.accent === t.id ? 'ring-2 ring-current font-bold' : 'ring-black/10 dark:ring-white/20'} ${frei ? '' : 'opacity-40'}`}>
+                  <span className="h-4 w-4 rounded-full" style={{ background: t.farbe }} />
+                  {frei ? t.name : `🔒 ${t.bedingung}`}
+                </button>
+              )
+            })}
+          </div>
+        </div>
         <Row label={`Neue Karten pro Tag: ${s.newPerDay}`}>
           <input type="range" min={0} max={50} value={s.newPerDay}
             onChange={(e) => set({ newPerDay: +e.target.value })} className="accent-sakura" />

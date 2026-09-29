@@ -7,6 +7,7 @@ import { optionsFor, type Glyph } from '../schrift'
 import { correctSound, unlockSound, vibrate, wrongSound, type SfxOpts } from '../sfx'
 import type { CardState, Settings } from '../types'
 import { StrokeOrder, TraceBoard } from './Strokes'
+import { belohnen, comboXp, merkeCombo, XP } from '../motivation'
 
 export type Spiel = 'erkennen' | 'hoeren' | 'memory' | 'zeichnen'
 
@@ -67,6 +68,8 @@ export function Quizspiel({ round, pool, cards, settings, onDone, mode }: SpielP
     if (ok) { correctSound(combo, sfx); vibrate(settings.vibration) } else { wrongSound(sfx); vibrate(settings.vibration, [30, 40, 30]) }
     if (mode === 'erkennen' && g.audio && ok) speak(g.char, g.audio, { volume: settings.volume })
     void rateGlyph(g, cards, ok ? Rating.Good : Rating.Again)
+    merkeCombo(combo)
+    void belohnen(ok ? XP.zeichenRichtig + comboXp(combo) : XP.zeichenFalsch, { dailyGoal: settings.dailyGoal })
     setTimeout(() => {
       if (i + 1 >= round.length) onDone({ right: next.right, total: round.length, bestCombo: next.bestCombo })
       else setI(i + 1)
@@ -140,6 +143,7 @@ export function Memory({ round, settings, onDone }: SpielProps) {
       setOpen([])
       correctSound(f.size, sfx)
       if (a.g.audio) speak(a.g.char, a.g.audio, { volume: settings.volume })
+      void belohnen(4, { dailyGoal: settings.dailyGoal })
       if (f.size === glyphs.length) {
         setTimeout(() => { unlockSound(sfx); onDone({ right: glyphs.length, total: moves + 1, bestCombo: 0 }) }, 900)
       }
@@ -190,6 +194,7 @@ export function Zeichnen({ round, cards, settings, onDone }: SpielProps) {
     if (mistakes <= 2) setRight((r) => r + 1)
     unlockSound(sfx)
     void rateGlyph(g, cards, grade)
+    void belohnen(mistakes === 0 ? XP.zeichnen : mistakes <= 2 ? XP.zeichenRichtig : XP.zeichenFalsch, { dailyGoal: settings.dailyGoal })
   }
   const next = () => (i + 1 >= withStrokes.length ? onDone({ right, total: withStrokes.length, bestCombo: 0 }) : setI(i + 1))
 
