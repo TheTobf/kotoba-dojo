@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import type { LearnData } from '../data'
-import type { CardState } from '../types'
+import type { CardState, Settings } from '../types'
 import { formatInterval, isLearned } from '../srs'
-import SentenceText from './SentenceText'
+import SentenceText, { KanjiTippbar } from './SentenceText'
+import KanjiUeben from './KanjiUeben'
 import PlayButtons from './PlayButtons'
 
 /** Alle Wörter einer Lektion zum Nachschlagen, mit Lernstand. */
-export default function WortListe({ data, cards, furigana }: { data: LearnData; cards: Map<string, CardState>; furigana: boolean }) {
+export default function WortListe({ data, cards, settings }: { data: LearnData; cards: Map<string, CardState>; settings: Settings }) {
+  const furigana = settings.furigana
+  const [ueben, setUeben] = useState<{ wort: string; start: string }>()
   const current = Math.min(...data.words.filter((w) => !cards.get(w.id)).map((w) => w.lesson), Infinity)
   const [lesson, setLesson] = useState(Number.isFinite(current) ? current : 1)
   const lessons = Math.max(...data.words.map((w) => w.lesson))
@@ -30,7 +33,9 @@ export default function WortListe({ data, cards, furigana }: { data: LearnData; 
                 <span className="text-3xl">{w.emoji}</span>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-baseline gap-x-2">
-                    <span lang="ja" className="text-2xl font-bold">{w.surface}</span>
+                    <span lang="ja" className="text-2xl font-bold">
+                      <KanjiTippbar text={w.surface} onKanji={(k) => setUeben({ wort: w.surface, start: k })} />
+                    </span>
                     <span lang="ja" className="opacity-70">{w.reading}</span>
                     <span className="text-sm opacity-50">{w.romaji} · {w.pos}</span>
                   </div>
@@ -44,7 +49,8 @@ export default function WortListe({ data, cards, furigana }: { data: LearnData; 
               {s && (
                 <div className="rounded-xl bg-black/[0.03] p-3 dark:bg-white/[0.04]">
                   <div className="flex items-start gap-2">
-                    <SentenceText sentence={s} furigana={furigana} className="flex-1 text-xl" />
+                    <SentenceText sentence={s} furigana={furigana} className="flex-1 text-xl"
+                      onKanji={(k) => setUeben(w.surface.includes(k) ? { wort: w.surface, start: k } : { wort: k, start: k })} />
                     <PlayButtons text={s.ja} file={s.audio} credit={s.audioCredit} size="sm" />
                   </div>
                   <div className="text-sm opacity-60">{s.romaji}</div>
@@ -62,6 +68,7 @@ export default function WortListe({ data, cards, furigana }: { data: LearnData; 
           )
         })}
       </ul>
+      {ueben && <KanjiUeben wort={ueben.wort} start={ueben.start} data={data} settings={settings} onClose={() => setUeben(undefined)} />}
     </div>
   )
 }

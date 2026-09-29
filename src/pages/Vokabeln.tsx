@@ -16,6 +16,8 @@ import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
 import Typewriter from '../components/Typewriter'
 import WortListe from '../components/WortListe'
+import KanjiUeben, { kanjiVon } from '../components/KanjiUeben'
+import { KanjiTippbar } from '../components/SentenceText'
 
 const BUTTONS: { grade: Grade; label: string; key: string; cls: string }[] = [
   { grade: Rating.Again, label: 'Nochmal', key: '1', cls: 'bg-rose-500/15 text-rose-600 dark:text-rose-300' },
@@ -98,7 +100,7 @@ export default function Vokabeln() {
         ))}
       </div>
 
-      {view === 'liste' ? <WortListe data={data} cards={cards} furigana={settings.furigana} /> : (
+      {view === 'liste' ? <WortListe data={data} cards={cards} settings={settings} /> : (
         <>
           {result && <Ergebnis result={result} />}
 
@@ -181,6 +183,7 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
   const [flipped, setFlipped] = useState(false)
   const [skipType, setSkipType] = useState(false)
   const [busy, setBusy] = useState(false)
+  const [ueben, setUeben] = useState<{ wort: string; start: string }>()
   const shownAt = useRef(Date.now())
   const sfx = { volume: settings.volume, muted: settings.muted }
 
@@ -230,7 +233,7 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement) return
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || document.body.dataset.modal) return
       if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip() }
       else if (flipped && ['1', '2', '3', '4'].includes(e.key)) void answer(+e.key as Grade)
       else if (!flipped && e.key.toLowerCase() === 'k') void known()
@@ -276,7 +279,9 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
             <div className="flex items-start gap-3">
               <span className="text-4xl">{word.emoji}</span>
               <div className="min-w-0 flex-1">
-                <div lang="ja" className="text-4xl font-bold">{word.surface}</div>
+                <div lang="ja" className="text-4xl font-bold">
+                  <KanjiTippbar text={word.surface} onKanji={(c) => setUeben({ wort: word.surface, start: c })} />
+                </div>
                 <div className="opacity-70">
                   {hasKanji && <span lang="ja">{word.reading} · </span>}{word.romaji} · <span className="text-sm">{word.pos}</span>
                 </div>
@@ -292,7 +297,8 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
             {sentence && (
               <div className="rounded-xl bg-black/[0.03] p-3 dark:bg-white/[0.04]">
                 <div className="flex items-start gap-2">
-                  <SentenceText sentence={sentence} furigana={settings.furigana} className="flex-1 text-xl" />
+                  <SentenceText sentence={sentence} furigana={settings.furigana} className="flex-1 text-xl"
+                    onKanji={(c) => setUeben(word.surface.includes(c) ? { wort: word.surface, start: c } : { wort: c, start: c })} />
                   <span onClick={(e) => e.stopPropagation()}>
                     <PlayButtons text={sentence.ja} file={sentence.audio} credit={sentence.audioCredit} size="sm" />
                   </span>
@@ -301,6 +307,12 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
                 <div className="mt-1">{sentence.de}</div>
               </div>
             )}
+            {kanjiVon(word.surface, data).length > 0 && (
+              <button onClick={(e) => { e.stopPropagation(); setUeben({ wort: word.surface, start: kanjiVon(word.surface, data)[0] }) }}
+                className="self-start text-sm text-sakura underline-offset-4 hover:underline">
+                ✍️ Kanji nachzeichnen ({kanjiVon(word.surface, data).join('')})
+              </button>
+            )}
             <a href={`https://youglish.com/pronounce/${encodeURIComponent(word.surface)}/japanese`} target="_blank" rel="noreferrer"
               onClick={(e) => e.stopPropagation()} className="self-start text-sm text-sakura underline-offset-4 hover:underline">
               ▶️ In echten Videos hören (YouGlish)
@@ -308,6 +320,8 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
           </div>
         </div>
       </div>
+
+      {ueben && <KanjiUeben wort={ueben.wort} start={ueben.start} data={data} settings={settings} onClose={() => setUeben(undefined)} />}
 
       {flipped ? (
         <div className="grid grid-cols-4 gap-2">

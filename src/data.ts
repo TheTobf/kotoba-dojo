@@ -16,13 +16,20 @@ export function loadData(): Promise<LearnData> {
     fetch(url('data/words.json')).then((r) => r.json() as Promise<Word[]>),
     fetch(url('data/sentences.json')).then((r) => r.json() as Promise<Sentence[]>),
     fetch(url('data/kanji.json')).then((r) => r.json() as Promise<Kanji[]>),
-  ]).then(([words, sentences, kanji]) => ({
-    words,
-    sentences: new Map(sentences.map((s) => [s.id, s])),
-    kanji: new Map(kanji.map((k) => [k.char, k])),
-  }))
+  ]).then(([words, sentences, kanji]) => {
+    mitStrichen = new Set(kanji.filter((k) => k.svg).map((k) => k.char))
+    return {
+      words,
+      sentences: new Map(sentences.map((s) => [s.id, s])),
+      kanji: new Map(kanji.map((k) => [k.char, k])),
+    }
+  })
   return cache
 }
+
+let mitStrichen = new Set<string>()
+/** Gibt es für dieses Kanji Strichdaten (zum Nachzeichnen)? Gilt nach loadData(). */
+export const hatStriche = (c: string) => mitStrichen.has(c)
 
 export const assetUrl = url
 
