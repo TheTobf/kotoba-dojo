@@ -12,6 +12,29 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Notfall: startet die App nicht, Fehler zeigen und Zwischenspeicher leeren können -->
+    <script>
+      (function () {
+        var fehler = []
+        var merk = function (m) { fehler.push(String(m).slice(0, 300)) }
+        window.addEventListener('error', function (e) { merk(e.message || (e.target && e.target.src) || 'Ladefehler') }, true)
+        window.addEventListener('unhandledrejection', function (e) { merk(e.reason && (e.reason.stack || e.reason.message) || e.reason) })
+        window.kotobaReset = function () {
+          var sw = navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(function (r) { return Promise.all(r.map(function (x) { return x.unregister() })) }) : Promise.resolve()
+          var c = window.caches ? caches.keys().then(function (k) { return Promise.all(k.map(function (x) { return caches.delete(x) })) }) : Promise.resolve()
+          Promise.all([sw, c]).finally(function () { location.reload() })
+        }
+        setTimeout(function () {
+          var root = document.getElementById('root')
+          if (root && root.children.length) return
+          document.body.innerHTML = '<div style="font-family:sans-serif;color:#eee;background:#1a1026;min-height:100vh;padding:24px">' +
+            '<h2>Kotoba Dojo startet nicht 😿</h2><p>Meist hilft es, den Zwischenspeicher zu leeren. Dein Lernfortschritt bleibt erhalten.</p>' +
+            '<button onclick="kotobaReset()" style="font-size:18px;padding:12px 20px;border-radius:12px;border:0;background:#ff5d8f;color:#fff">🔄 Neu laden</button>' +
+            '<p style="margin-top:24px;opacity:.7;font-size:13px">Fehler (bitte an Claude schicken):</p><pre style="white-space:pre-wrap;font-size:12px;opacity:.8">' +
+            (fehler.join('\n\n') || 'keine Meldung') + '\n\n' + navigator.userAgent + '</pre></div>'
+        }, 8000)
+      })()
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
