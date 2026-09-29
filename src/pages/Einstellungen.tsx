@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { db, exportBackup, importBackup } from '../db'
 import { DEFAULT_PROFILE, DEFAULT_SETTINGS, type Settings } from '../types'
 import { THEMEN } from '../motivation'
+import { letzterSync, synchronisieren, syncToken } from '../sync'
 
 export default function Einstellungen() {
   const stored = useLiveQuery(() => db.settings.get('me'))
@@ -61,6 +62,7 @@ export default function Einstellungen() {
         <Toggle label="Vibration" value={s.vibration} onChange={(v) => set({ vibration: v })} />
       </div>
 
+      <Sync />
       <Daten />
 
       <div className="card space-y-1 p-4 text-xs opacity-70">
@@ -108,6 +110,66 @@ function Daten() {
           <input type="file" accept="application/json,.json" className="hidden" onChange={(e) => importieren(e.target.files?.[0])} />
         </label>
       </div>
+      {msg && <p className="text-sm">{msg}</p>}
+    </div>
+  )
+}
+
+/** Automatischer Abgleich Handy ↔ Mac über ein privates GitHub Gist. */
+function Sync() {
+  const [token, setToken] = useState(syncToken.get())
+  const [eingabe, setEingabe] = useState('')
+  const [msg, setMsg] = useState<string>()
+  const [busy, setBusy] = useState(false)
+  const zeit = letzterSync()
+  const jetzt = async () => {
+    setBusy(true)
+    try { setMsg(await synchronisieren()) } catch (e) { setMsg(`✗ ${(e as Error).message}`) }
+    setBusy(false)
+  }
+  const speichern = async () => {
+    syncToken.set(eingabe)
+    setToken(syncToken.get())
+    setEingabe('')
+    await jetzt()
+  }
+  const trennen = () => {
+    if (!confirm('Abgleich auf diesem Gerät beenden? Dein Fortschritt bleibt hier und im Gist erhalten.')) return
+    syncToken.set('')
+    setToken('')
+    setMsg(undefined)
+  }
+  return (
+    <div className="card space-y-3 p-4">
+      <div className="font-bold">🔄 Geräte-Abgleich (GitHub)</div>
+      {token ? (
+        <>
+          <p className="text-sm opacity-70">
+            Aktiv. Gleicht automatisch beim Öffnen und Verlassen der App ab.
+            {zeit && <> Zuletzt: {new Date(zeit).toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'short' })}</>}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={jetzt} disabled={busy} className="btn-primary">{busy ? 'Gleiche ab …' : '🔄 Jetzt abgleichen'}</button>
+            <button onClick={trennen} className="btn bg-black/5 dark:bg-white/10">Trennen</button>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="text-sm opacity-70">
+            Einmal pro Gerät einen GitHub-Token (classic, nur Recht <b>gist</b>) einfügen – dann bleiben Handy und Mac automatisch gleich.
+            Der Token bleibt nur auf diesem Gerät.
+          </p>
+          <a className="text-sm text-sakura underline" target="_blank" rel="noreferrer"
+            href="https://github.com/settings/tokens/new?scopes=gist&description=Kotoba%20Dojo%20Sync">
+            → Token auf GitHub erstellen
+          </a>
+          <div className="flex gap-2">
+            <input type="password" value={eingabe} onChange={(e) => setEingabe(e.target.value)} placeholder="ghp_…" autoComplete="off"
+              className="min-w-0 flex-1 rounded-xl bg-black/5 px-3 py-2 dark:bg-white/10" />
+            <button onClick={speichern} disabled={!eingabe.trim() || busy} className="btn-primary">Verbinden</button>
+          </div>
+        </>
+      )}
       {msg && <p className="text-sm">{msg}</p>}
     </div>
   )
