@@ -23,7 +23,7 @@ sondern im Bereich *Satzbau* geübt. Feinsteuerung: `scripts/manual/lemmas.json`
 |---|---|
 | **JMdict** | © Electronic Dictionary Research and Development Group (EDRDG), [Lizenz CC BY-SA 4.0](https://www.edrdg.org/edrdg/licence.html). Aufbereitet von [jmdict-simplified](https://github.com/scriptin/jmdict-simplified). Verwendet: Lesungen, Wortarten, deutsche Glossen (stammen großteils aus dem Wadoku-Projekt über JMdict). |
 | **KANJIDIC2** | © EDRDG, CC BY-SA 4.0. Verwendet: On-/Kun-Lesungen, Strichzahl, Häufigkeitsrang. |
-| **KanjiVG** | © Ulrich Apel, [CC BY-SA 3.0](https://kanjivg.tagaini.net/). Verwendet: Strichpfade und Strichreihenfolge (`public/data/strokes/`). |
+| **KanjiVG** | © Ulrich Apel, [CC BY-SA 3.0](https://kanjivg.tagaini.net/). Verwendet: Strichpfade und Strichreihenfolge (`public/data/strokes/`, `public/data/kana-strokes/`). |
 
 Die deutschen Bedeutungen der Wörter und Kanji wurden von Claude (KI) auf Basis der JMdict-/KANJIDIC2-Einträge
 knapp formuliert (`scripts/manual/words.json`, `scripts/manual/kanji.json`, Kennzeichnung `meaningSource: "claude"`).
@@ -56,3 +56,9 @@ knapp formuliert (`scripts/manual/words.json`, `scripts/manual/kanji.json`, Kenn
 
 Die App bettet **keine** Anime-/Video-Clips ein. Der Button „In echten Videos hören“ öffnet lediglich eine externe
 Suche (YouGlish bzw. YouTube).
+
+
+## Kana-Aussprache und externe Links
+
+- `public/audio/k/` – Silben einzeln mit VOICEVOX:四国めたん erzeugt (`npm run kana:build -- --audio`).
+- Ziele-Seite und YouGlish-Knopf verlinken nur auf externe Angebote (YouTube-/Google-/Spotify-Suche, cijapanese.com, tadoku.org, youglish.com). Es werden keine fremden Videos, Bilder oder Texte in die App kopiert.

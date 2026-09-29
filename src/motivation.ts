@@ -154,6 +154,14 @@ export const kontext: { kana?: { hiragana: string[]; katakana: string[] }; situa
  * `dailyGoal`: Tagesziel in Karten (für die Meldung „Tagesziel geschafft“).
  */
 export async function belohnen(menge: number, { dailyGoal = 20, d = db, now = Date.now() } = {}) {
+  const situationen = await kontext.situationen?.()
+  // In einer Transaktion, damit parallele Schreibvorgänge (Tageszähler aus rate()) nicht verloren gehen
+  const { profile, events } = await d.transaction('rw', [d.profile, d.cards], () => belohnenIntern(menge, dailyGoal, d, now, situationen))
+  if (typeof window !== 'undefined') events.forEach(emit)
+  return { profile, events }
+}
+
+async function belohnenIntern(menge: number, dailyGoal: number, d: KotobaDB, now: number, situationen?: number) {
   const alt: Profile = { ...DEFAULT_PROFILE, ...(await d.profile.get('me')) }
   const { streak, erhoeht } = nextStreak(alt, now)
   const p: Profile = {
@@ -180,7 +188,7 @@ export async function belohnen(menge: number, { dailyGoal = 20, d = db, now = Da
     events.push({ typ: 'tagesziel' })
   }
 
-  const st = await stand(d, p, { kana: kontext.kana, situationen: await kontext.situationen?.() })
+  const st = await stand(d, p, { kana: kontext.kana, situationen })
   for (const e of ERFOLGE) {
     if (p.achievements.includes(e.id) || !e.check(st)) continue
     p.achievements = [...p.achievements, e.id]
@@ -192,7 +200,6 @@ export async function belohnen(menge: number, { dailyGoal = 20, d = db, now = Da
   }
 
   await d.profile.put(p)
-  if (typeof window !== 'undefined') events.forEach(emit)
   return { profile: p, events }
 }
 
@@ -202,6 +209,8 @@ export const comboXp = (combo: number) => (combo >= 3 ? XP.comboBonus * Math.min
 /** Zählt eine Übung ohne FSRS-Karte (z. B. Satzbau) für Tagesziel und Heatmap. */
 export async function zaehleAktivitaet(d: KotobaDB = db, now = Date.now()) {
   const day = new Date(now).toISOString().slice(0, 10)
-  const p: Profile = { ...DEFAULT_PROFILE, ...(await d.profile.get('me')) }
-  await d.profile.put({ ...p, activeDays: { ...p.activeDays, [day]: (p.activeDays[day] ?? 0) + 1 } })
+  await d.transaction('rw', d.profile, async () => {
+    const p: Profile = { ...DEFAULT_PROFILE, ...(await d.profile.get('me')) }
+    await d.profile.put({ ...p, activeDays: { ...p.activeDays, [day]: (p.activeDays[day] ?? 0) + 1 } })
+  })
 }

@@ -45,6 +45,17 @@ describe('Streak', () => {
 })
 
 describe('Belohnen', () => {
+  it('parallel zu einer Bewertung geht der Tageszähler nicht verloren', async () => {
+    const { rate, Rating } = await import('./srs')
+    const d = new KotobaDB('mot-2')
+    const w = { id: 'w1' }
+    await Promise.all([rate(w, undefined, Rating.Good, undefined, d), belohnen(10, { d })])
+    await Promise.all([rate({ id: 'w2' }, undefined, Rating.Good, undefined, d), belohnen(10, { d })])
+    const p = await d.profile.get('me')
+    expect(Object.values(p!.activeDays)[0]).toBe(2)
+    expect(p!.xp).toBe(20)
+  })
+
   it('vergibt XP, meldet Level-Up und Streak', async () => {
     const d = new KotobaDB('mot-1')
     await d.profile.put({ ...DEFAULT_PROFILE, xp: 95, streak: 2, lastActiveDay: dayKey(mittag - DAY) })

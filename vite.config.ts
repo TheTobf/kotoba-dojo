@@ -38,7 +38,7 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.includes('/audio/') || url.pathname.includes('/data/strokes/'),
+            urlPattern: ({ url }) => url.pathname.includes('/audio/') || url.pathname.includes('/data/strokes/') || url.pathname.includes('/data/kana-strokes/'),
             handler: 'CacheFirst',
             options: { cacheName: 'lernmedien', expiration: { maxEntries: 20000 } },
           },

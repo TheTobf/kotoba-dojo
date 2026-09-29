@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../db'
+import { useState } from 'react'
+import { db, exportBackup, importBackup } from '../db'
 import { DEFAULT_PROFILE, DEFAULT_SETTINGS, type Settings } from '../types'
 import { THEMEN } from '../motivation'
 
@@ -59,7 +60,56 @@ export default function Einstellungen() {
         </Row>
         <Toggle label="Vibration" value={s.vibration} onChange={(v) => set({ vibration: v })} />
       </div>
+
+      <Daten />
+
+      <div className="card space-y-1 p-4 text-xs opacity-70">
+        <div className="font-bold">Quellen & Lizenzen</div>
+        <p>Wörterbuch: JMdict/KANJIDIC2 (EDRDG, CC BY-SA 4.0) · Strichreihenfolge: KanjiVG (CC BY-SA 3.0) · Häufigkeit: Leeds-Korpus</p>
+        <p>Sätze & Aufnahmen: Tatoeba (CC BY 2.0 FR; Audio CC BY / CC BY-NC) · Sprachausgabe: VOICEVOX:四国めたん, VOICEVOX:青山龍星</p>
+        <p>Deutsche Übersetzungen, Notizen und Ersatzsätze teils von Claude (in der Wortliste als „Claude“ markiert).</p>
+      </div>
     </section>
+  )
+}
+
+/** Sicherung als JSON-Datei exportieren und auf einem anderen Gerät wieder einlesen. */
+function Daten() {
+  const [msg, setMsg] = useState<string>()
+  const exportieren = async () => {
+    const b = await exportBackup()
+    const url = URL.createObjectURL(new Blob([JSON.stringify(b)], { type: 'application/json' }))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `kotoba-dojo-${new Date().toISOString().slice(0, 10)}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+    setMsg(`✓ ${b.cards.length} Karten gesichert`)
+  }
+  const importieren = async (f?: File) => {
+    if (!f) return
+    if (!confirm('Alle Lerndaten auf diesem Gerät werden durch die Sicherung ersetzt. Fortfahren?')) return
+    try {
+      const b = JSON.parse(await f.text())
+      await importBackup(b)
+      setMsg(`✓ ${b.cards.length} Karten wiederhergestellt`)
+    } catch (e) {
+      setMsg(`✗ ${(e as Error).message}`)
+    }
+  }
+  return (
+    <div className="card space-y-3 p-4">
+      <div className="font-bold">Daten & Sicherung</div>
+      <p className="text-sm opacity-70">Dein Fortschritt liegt nur auf diesem Gerät. Mit einer Sicherungsdatei kannst du ihn auf Handy/PC übertragen.</p>
+      <div className="flex flex-wrap gap-2">
+        <button onClick={exportieren} className="btn-primary">⬇️ Sicherung speichern</button>
+        <label className="btn cursor-pointer bg-black/5 dark:bg-white/10">
+          ⬆️ Sicherung laden
+          <input type="file" accept="application/json,.json" className="hidden" onChange={(e) => importieren(e.target.files?.[0])} />
+        </label>
+      </div>
+      {msg && <p className="text-sm">{msg}</p>}
+    </div>
   )
 }
 

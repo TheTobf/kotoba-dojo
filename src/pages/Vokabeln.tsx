@@ -297,6 +297,10 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
                 <div className="mt-1">{sentence.de}</div>
               </div>
             )}
+            <a href={`https://youglish.com/pronounce/${encodeURIComponent(word.surface)}/japanese`} target="_blank" rel="noreferrer"
+              onClick={(e) => e.stopPropagation()} className="self-start text-sm text-sakura underline-offset-4 hover:underline">
+              ▶️ In echten Videos hören (YouGlish)
+            </a>
           </div>
         </div>
       </div>
