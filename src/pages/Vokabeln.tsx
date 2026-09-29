@@ -207,28 +207,42 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
   const answer = useCallback(async (grade: Grade) => {
     if (busy || !flipped) return
     setBusy(true)
-    const now = Date.now()
-    const state = await rate(item.word, item.card, grade, now - shownAt.current)
-    rateSound(grade, sfx)
-    void belohnen(grade >= Rating.Good ? XP.karteGut : grade === Rating.Hard ? XP.karteSchwer : XP.karteNochmal, { dailyGoal: settings.dailyGoal })
-    const queue = [...session.queue]
-    // Lernschritte (< 1 Std) kommen in dieser Einheit noch einmal
-    if (state.due - now < 60 * 60_000) queue.push({ word: item.word, card: state })
-    advance({
-      ...session, queue, idx: session.idx + 1,
-      reviewed: session.reviewed + 1, good: session.good + (grade >= Rating.Good ? 1 : 0),
-    })
-    setBusy(false)
+    try {
+      const now = Date.now()
+      // aktuellen Stand aus der DB – die Karte kann sich seit dem Aufbau der Warteschlange geändert haben
+      const card = (await db.cards.get(`vokabel:${item.word.id}`)) ?? item.card
+      const state = await rate(item.word, card, grade, now - shownAt.current)
+      rateSound(grade, sfx)
+      void belohnen(grade >= Rating.Good ? XP.karteGut : grade === Rating.Hard ? XP.karteSchwer : XP.karteNochmal, { dailyGoal: settings.dailyGoal })
+      const queue = [...session.queue]
+      // Lernschritte (< 1 Std) kommen in dieser Einheit noch einmal
+      if (state.due - now < 60 * 60_000) queue.push({ word: item.word, card: state })
+      advance({
+        ...session, queue, idx: session.idx + 1,
+        reviewed: session.reviewed + 1, good: session.good + (grade >= Rating.Good ? 1 : 0),
+      })
+    } catch (e) {
+      console.error('Bewertung fehlgeschlagen', e)
+      alert(`Bewertung konnte nicht gespeichert werden: ${(e as Error).message}`)
+    } finally {
+      setBusy(false)
+    }
   }, [busy, flipped, item, session, advance]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const known = useCallback(async () => {
     if (busy || item.card) return
     setBusy(true)
-    await markKnown(item.word)
-    rateSound(Rating.Easy, sfx)
-    void belohnen(XP.kennIchSchon, { dailyGoal: settings.dailyGoal })
-    advance({ ...session, idx: session.idx + 1, known: session.known + 1 })
-    setBusy(false)
+    try {
+      await markKnown(item.word)
+      rateSound(Rating.Easy, sfx)
+      void belohnen(XP.kennIchSchon, { dailyGoal: settings.dailyGoal })
+      advance({ ...session, idx: session.idx + 1, known: session.known + 1 })
+    } catch (e) {
+      console.error('Kenn ich schon fehlgeschlagen', e)
+      alert(`Konnte nicht gespeichert werden: ${(e as Error).message}`)
+    } finally {
+      setBusy(false)
+    }
   }, [busy, item, session, advance]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
