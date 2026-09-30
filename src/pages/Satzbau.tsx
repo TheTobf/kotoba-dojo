@@ -138,8 +138,6 @@ function Ordnen({ runde, settings, onDone }: { runde: Sentence[]; settings: Sett
   const [ok, setOk] = useState<boolean>()
   const sfx = { volume: settings.volume, muted: settings.muted }
 
-  useEffect(() => { setGelegt([]); setOk(undefined) }, [i])
-
   const pruefen = () => {
     const r = ordnungRichtig(gelegt.map((k) => kacheln[k].text), s)
     setOk(r)
@@ -147,7 +145,12 @@ function Ordnen({ runde, settings, onDone }: { runde: Sentence[]; settings: Sett
     if (r) { setRight((x) => x + 1); correctSound(right + 1, sfx); vibrate(settings.vibration) } else { wrongSound(sfx); vibrate(settings.vibration, [30, 40, 30]) }
     if (!settings.muted) setTimeout(() => speak(s.ja, s.audio, { volume: settings.volume }), 300)
   }
-  const weiter = () => (i + 1 >= runde.length ? onDone({ right, total: runde.length }) : setI(i + 1))
+  // Zurücksetzen im selben Schritt wie der Satzwechsel – sonst zeigt ein Zwischenbild
+  // die Kacheln des alten Satzes mit den Teilen des neuen (Absturz bei weniger Teilen).
+  const weiter = () => {
+    if (i + 1 >= runde.length) return onDone({ right, total: runde.length })
+    setGelegt([]); setOk(undefined); setI(i + 1)
+  }
 
   return (
     <section className="space-y-4">
@@ -183,7 +186,6 @@ function Partikeln({ runde, settings, onDone }: { runde: Sentence[]; settings: S
   const aufgabe = useMemo<PartikelAufgabe>(() => partikelAufgabe(runde[i])!, [runde, i])
   const [gewaehlt, setGewaehlt] = useState<string>()
   const sfx = { volume: settings.volume, muted: settings.muted }
-  useEffect(() => setGewaehlt(undefined), [i])
 
   const waehlen = (p: string) => {
     if (gewaehlt) return
@@ -193,7 +195,10 @@ function Partikeln({ runde, settings, onDone }: { runde: Sentence[]; settings: S
     if (ok) { setRight((x) => x + 1); correctSound(right + 1, sfx); vibrate(settings.vibration) } else { wrongSound(sfx); vibrate(settings.vibration, [30, 40, 30]) }
     if (!settings.muted) setTimeout(() => speak(aufgabe.sentence.ja, aufgabe.sentence.audio, { volume: settings.volume }), 300)
   }
-  const weiter = () => (i + 1 >= runde.length ? onDone({ right, total: runde.length }) : setI(i + 1))
+  const weiter = () => {
+    if (i + 1 >= runde.length) return onDone({ right, total: runde.length })
+    setGewaehlt(undefined); setI(i + 1)
+  }
   const s = aufgabe.sentence
 
   return (

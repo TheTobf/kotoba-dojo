@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
+import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import Fehlergrenze from './components/Fehlergrenze'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from './db'
 import { DEFAULT_SETTINGS } from './types'
@@ -80,6 +81,7 @@ function useKontext() {
 export default function App() {
   useTheme()
   useKontext()
+  const pfad = useLocation().pathname
   return (
     <div className="flex h-full">
       <Belohnungen />
@@ -129,6 +131,7 @@ export default function App() {
 
         <main className="flex-1 overflow-y-auto px-4 pb-28 md:px-8 md:py-8 md:pb-8">
           <div className="mx-auto max-w-2xl">
+            <Fehlergrenze seite={pfad}>
             <Routes>
               <Route path="/" element={<Navigate to="/vokabeln" replace />} />
               <Route path="/vokabeln" element={<Vokabeln />} />
@@ -140,6 +143,7 @@ export default function App() {
               <Route path="/statistik" element={<Statistik />} />
               <Route path="/einstellungen" element={<Einstellungen />} />
             </Routes>
+            </Fehlergrenze>
           </div>
         </main>
 

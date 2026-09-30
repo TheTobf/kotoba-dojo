@@ -54,7 +54,7 @@ export default function Quiz() {
   }
 
   if (run) {
-    return <Runde data={data} run={run} learned={learned} settings={settings} onUpdate={setRun}
+    return <Runde key={run.idx} data={data} run={run} learned={learned} settings={settings} onUpdate={setRun}
       onFinish={(st) => {
         setRun(undefined); setDone(st); setTimeout(sammeln, 400)
         if (st.total >= 5 && st.right === st.total) { merkeQuizPerfekt(); void belohnen(25, { dailyGoal: settings.dailyGoal }) }
