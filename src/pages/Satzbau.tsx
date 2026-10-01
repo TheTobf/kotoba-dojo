@@ -12,8 +12,10 @@ import { DEFAULT_SETTINGS, type Sentence, type Settings } from '../types'
 import { belohnen, sammeln, zaehleAktivitaet, XP } from '../motivation'
 import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
+import { ShadowRunde } from '../components/Shadowing'
+import { shadowSaetze } from '../shadowing'
 
-type Tab = 'ordnen' | 'partikel' | 'grammatik'
+type Tab = 'ordnen' | 'partikel' | 'shadowing' | 'grammatik'
 const RUNDE = 8
 
 export default function Satzbau() {
@@ -36,7 +38,9 @@ export default function Satzbau() {
 
   const start = () => {
     setErgebnis(undefined)
-    setRunde([...pool].sort(() => Math.random() - 0.5).slice(0, RUNDE))
+    setRunde(tab === 'shadowing'
+      ? shadowSaetze(data.words, data.sentences, learned, RUNDE)
+      : [...pool].sort(() => Math.random() - 0.5).slice(0, RUNDE))
   }
   const fertig = (r: { right: number; total: number }) => {
     setRunde(undefined); setErgebnis(r); setTimeout(sammeln, 250)
@@ -44,6 +48,7 @@ export default function Satzbau() {
   }
 
   if (runde) {
+    if (tab === 'shadowing') return <ShadowRunde runde={runde} settings={settings} onDone={fertig} />
     return tab === 'ordnen'
       ? <Ordnen runde={runde} settings={settings} onDone={fertig} />
       : <Partikeln runde={runde} settings={settings} onDone={fertig} />
@@ -55,13 +60,22 @@ export default function Satzbau() {
         Satzbau <span className="text-sakura">文法</span>
       </h1>
       <div className="flex gap-2 overflow-x-auto">
-        {([['ordnen', '🧩 Sätze bauen'], ['partikel', '🔗 Partikeln'], ['grammatik', '📘 Grammatik']] as const).map(([id, label]) => (
+        {([['ordnen', '🧩 Sätze bauen'], ['partikel', '🔗 Partikeln'], ['shadowing', '🎙️ Shadowing'], ['grammatik', '📘 Grammatik']] as const).map(([id, label]) => (
           <button key={id} onClick={() => { setTab(id); setErgebnis(undefined) }}
             className={`btn min-h-10 shrink-0 ${tab === id ? 'bg-sakura/15 font-bold text-sakura' : 'opacity-60'}`}>{label}</button>
         ))}
       </div>
 
-      {tab === 'grammatik' ? <Grammatik data={data} learned={learned} settings={settings} /> : (
+      {tab === 'grammatik' ? <Grammatik data={data} learned={learned} settings={settings} /> : tab === 'shadowing' ? (
+        <>
+          {ergebnis && <div className="card pop-in p-4 text-center font-bold">🎙️ {ergebnis.right} / {ergebnis.total} Sätze „passt!“</div>}
+          <div className="card space-y-3 p-5 text-center">
+            <p className="opacity-80">Hör den Satz, sprich ihn sofort nach – mit derselben Melodie und demselben Tempo. Danach hörst du Original und dich direkt hintereinander.</p>
+            <p className="text-sm opacity-60">{RUNDE} Sätze · {learned.size ? 'aus deinen gelernten Wörtern' : 'aus dem Reise-Block'} · Aufnahmen bleiben nur auf diesem Gerät und verschwinden nach der Runde</p>
+            <button onClick={start} className="btn-primary w-full text-lg">Runde starten</button>
+          </div>
+        </>
+      ) : (
         <>
           {ergebnis && (
             <div className="card pop-in p-4 text-center font-bold">

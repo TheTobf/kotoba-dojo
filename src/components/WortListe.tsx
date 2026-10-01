@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { sucheWoerter } from '../suche'
 import type { LearnData } from '../data'
 import type { CardState, Settings } from '../types'
 import { formatInterval, isLearned } from '../srs'
@@ -13,16 +14,43 @@ export default function WortListe({ data, cards, settings }: { data: LearnData; 
   const current = Math.min(...data.words.filter((w) => !cards.get(w.id)).map((w) => w.lesson), Infinity)
   const [lesson, setLesson] = useState(Number.isFinite(current) ? current : 1)
   const lessons = Math.max(...data.words.map((w) => w.lesson))
-  const list = data.words.filter((w) => w.lesson === lesson)
+  const [suche, setSuche] = useState('')
+  const [nurGelernt, setNurGelernt] = useState(false)
+  const treffer = useMemo(() => {
+    const pool = nurGelernt ? data.words.filter((w) => { const c = cards.get(w.id); return c && isLearned(c) }) : data.words
+    return sucheWoerter(pool, suche)
+  }, [data, cards, suche, nurGelernt])
+  const sucht = suche.trim().length > 0
+  const list = sucht ? treffer : data.words.filter((w) => w.lesson === lesson)
 
   return (
     <div className="space-y-3">
-      <select value={lesson} onChange={(e) => setLesson(+e.target.value)}
-        className="rounded-lg bg-paper-2 p-2 ring-1 ring-black/10 dark:bg-ink-2 dark:ring-white/20">
-        {Array.from({ length: lessons }, (_, i) => (
-          <option key={i} value={i + 1}>Lektion {i + 1}</option>
-        ))}
-      </select>
+      <div className="relative">
+        <input type="search" value={suche} onChange={(e) => setSuche(e.target.value)} enterKeyHint="search"
+          placeholder="🔍 Suchen: Wasser, みず, 水, mizu …" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false}
+          className="w-full rounded-xl bg-paper-2 px-4 py-3 text-lg ring-1 ring-black/10 focus:outline-none focus:ring-2 focus:ring-sakura dark:bg-ink-2 dark:ring-white/20" />
+        {sucht && <button onClick={() => setSuche('')} aria-label="Suche leeren" className="absolute inset-y-0 right-2 px-2 opacity-60">✕</button>}
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        {!sucht && (
+          <select value={lesson} onChange={(e) => setLesson(+e.target.value)}
+            className="rounded-lg bg-paper-2 p-2 ring-1 ring-black/10 dark:bg-ink-2 dark:ring-white/20">
+            {Array.from({ length: lessons }, (_, i) => (
+              <option key={i} value={i + 1}>Lektion {i + 1}</option>
+            ))}
+          </select>
+        )}
+        {sucht && (
+          <>
+            {([[false, 'Alle Wörter'], [true, 'Nur gelernte']] as const).map(([v, label]) => (
+              <button key={label} onClick={() => setNurGelernt(v)}
+                className={`btn min-h-9 px-3 text-sm ${nurGelernt === v ? 'bg-sakura/15 font-bold text-sakura' : 'opacity-60'}`}>{label}</button>
+            ))}
+            <span className="text-sm opacity-60">{treffer.length >= 60 ? '60+' : treffer.length} Treffer</span>
+          </>
+        )}
+      </div>
+      {sucht && treffer.length === 0 && <p className="card p-4 text-center opacity-70">Nichts gefunden{nurGelernt ? ' unter deinen gelernten Wörtern' : ''}.</p>}
       <ul className="space-y-3">
         {list.map((w) => {
           const s = data.sentences.get(w.sentenceIds[0])
@@ -41,7 +69,7 @@ export default function WortListe({ data, cards, settings }: { data: LearnData; 
                   </div>
                   <div>{w.meaningsDe.join(', ')}</div>
                   <div className="mt-1 text-xs opacity-60">
-                    {!c ? '○ neu' : isLearned(c) ? `✓ gelernt · nächste Wiederholung in ${formatInterval(Math.max(0, c.due - Date.now()))}` : '◐ in Arbeit'}
+                    {sucht && `Lektion ${w.lesson} · `}{!c ? '○ neu' : isLearned(c) ? `✓ gelernt · nächste Wiederholung in ${formatInterval(Math.max(0, c.due - Date.now()))}` : '◐ in Arbeit'}
                   </div>
                 </div>
                 <PlayButtons text={w.reading} file={w.audio} credit={w.audioCredit} size="sm" />

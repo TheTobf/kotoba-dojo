@@ -18,6 +18,7 @@ import Typewriter from '../components/Typewriter'
 import WortListe from '../components/WortListe'
 import KanjiUeben, { kanjiVon } from '../components/KanjiUeben'
 import { KanjiTippbar } from '../components/SentenceText'
+import { ShadowFenster } from '../components/Shadowing'
 
 const BUTTONS: { grade: Grade; label: string; key: string; cls: string }[] = [
   { grade: Rating.Again, label: 'Nochmal', key: '1', cls: 'bg-rose-500/15 text-rose-600 dark:text-rose-300' },
@@ -184,6 +185,7 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
   const [skipType, setSkipType] = useState(false)
   const [busy, setBusy] = useState(false)
   const [ueben, setUeben] = useState<{ wort: string; start: string }>()
+  const [shadow, setShadow] = useState(false)
   const shownAt = useRef(Date.now())
   const sfx = { volume: settings.volume, muted: settings.muted }
 
@@ -315,6 +317,8 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
                     onKanji={(c) => setUeben(word.surface.includes(c) ? { wort: word.surface, start: c } : { wort: c, start: c })} />
                   <span onClick={(e) => e.stopPropagation()}>
                     <PlayButtons text={sentence.ja} file={sentence.audio} credit={sentence.audioCredit} size="sm" />
+                    <button type="button" aria-label="Shadowing" onClick={() => setShadow(true)}
+                      className="ml-1 h-9 w-9 rounded-full bg-yuzu/20 text-base transition hover:bg-yuzu/30 active:scale-90">🎙️</button>
                   </span>
                 </div>
                 <div className="text-sm opacity-60">{sentence.romaji}</div>
@@ -335,6 +339,7 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
         </div>
       </div>
 
+      {shadow && sentence && <ShadowFenster s={sentence} settings={settings} onClose={() => setShadow(false)} />}
       {ueben && <KanjiUeben wort={ueben.wort} start={ueben.start} data={data} settings={settings} onClose={() => setUeben(undefined)} />}
 
       {flipped ? (
