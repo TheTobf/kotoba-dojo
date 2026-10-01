@@ -4,12 +4,15 @@ import { loadData, type LearnData } from '../data'
 import { db } from '../db'
 import { MEDIEN, REISE_START } from '../content/ziele'
 import { learnedIds, situationStatus } from '../progress'
+import { abdeckung, hochrechnung, stufe, tempo } from '../coverage'
+import { DEFAULT_SETTINGS } from '../types'
 
 /** Wohin du hinarbeitest: Was geht in Japan schon, welche Medien sind freigeschaltet. */
 export default function Ziele() {
   const [data, setData] = useState<LearnData>()
   const [open, setOpen] = useState<string>()
   const cards = useLiveQuery(() => db.cards.where('kind').equals('vokabel').toArray())
+  const settings = useLiveQuery(() => db.settings.get('me'))
   useEffect(() => { loadData().then(setData) }, [])
   if (!data || !cards) return <p className="opacity-60">Lade …</p>
 
@@ -18,6 +21,9 @@ export default function Ziele() {
   const ready = status.filter((x) => x.ready).length
   const days = Math.ceil((new Date(REISE_START).getTime() - Date.now()) / 86_400_000)
   const nextMedium = MEDIEN.find((m) => learned.size < m.minWords)
+  const jetzt = abdeckung(data.words, learned)
+  const t = tempo(cards, settings?.newPerDay ?? DEFAULT_SETTINGS.newPerDay)
+  const reise = hochrechnung(data.words, learned, t.proTag, Math.max(0, days))
 
   return (
     <section className="space-y-6">
@@ -29,6 +35,44 @@ export default function Ziele() {
         <Big n={days > 0 ? days : 0} label="Tage bis Japan" />
         <Big n={learned.size} label={`von ${data.words.length} Wörtern`} />
         <Big n={ready} label={`von ${status.length} Situationen`} />
+      </div>
+
+      <div className="card space-y-3 p-5">
+        <h2 className="text-xl font-bold">📈 Wie weit bist du?</h2>
+        <div>
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="font-bold">Reise-Situationen</span>
+            <span className="text-sm tabular-nums opacity-70">{ready} / {status.length} bereit</span>
+          </div>
+          <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+            <div className="h-full rounded-full bg-matcha" style={{ width: `${(ready / status.length) * 100}%` }} />
+          </div>
+        </div>
+        <div>
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="font-bold">Wortabdeckung im Alltagsjapanisch</span>
+            <span className="text-sm tabular-nums opacity-70">ca. {jetzt.low}–{jetzt.high} %</span>
+          </div>
+          <div className="relative mt-1.5 h-2.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+            <div className="absolute inset-y-0 left-0 rounded-full bg-sakura/35" style={{ width: `${jetzt.high}%` }} />
+            <div className="absolute inset-y-0 left-0 rounded-full bg-sakura" style={{ width: `${jetzt.low}%` }} />
+          </div>
+          <p className="mt-1 text-sm opacity-80">{stufe(jetzt.mid)}</p>
+        </div>
+        <div className="rounded-lg bg-black/[0.03] p-3 text-sm dark:bg-white/[0.04]">
+          <div className="font-bold">Zum Reisestart ({days > 0 ? `in ${days} Tagen` : 'jetzt'})</div>
+          {days > 0 ? (
+            <p className="opacity-80">
+              Bei {String(t.proTag).replace('.', ',')} neuen Wörtern pro Tag {t.gemessen ? '(dein gemessenes Tempo)' : '(dein Tageslimit)'}
+              {' '}hast du ca. <b>{reise.woerter}</b> Wörter, <b>{reise.situationenBereit} von {reise.situationen}</b> Situationen
+              {' '}und eine Wortabdeckung von ca. {reise.abdeckung.low}–{reise.abdeckung.high} %. Vorausgesetzt, du bleibst dran und wiederholst.
+            </p>
+          ) : <p className="opacity-80">Die Reise läuft – viel Spaß!</p>}
+        </div>
+        <p className="text-xs opacity-60">
+          Das ist eine Schätzung, keine Messung. Sie rechnet aus der Häufigkeit deiner gelernten Wörter (Web-Texte, nicht gesprochene Sprache), deshalb die Spanne.
+          Wortabdeckung ist nicht Verständnis: Grammatik, Tempo und Aussprache kommen dazu. Für dein Ziel – dich auf Reisen verständigen – zählen die Situationen mehr als die Prozentzahl.
+        </p>
       </div>
 
       <div className="space-y-3">
@@ -70,7 +114,7 @@ export default function Ziele() {
       <div className="space-y-3">
         <h2 className="text-xl font-bold">🎧 Echtes Japanisch – freigeschaltet</h2>
         <p className="text-sm opacity-60">
-          Die Wortschwellen sind grobe Schätzungen: ab da solltest du einen großen Teil verstehen. Ein Mess-Feature (echte Abdeckung in %) folgt später.
+          Die Wortschwellen sind grobe Schätzungen: ab da solltest du einen großen Teil verstehen. Lücken füllst du dabei oft aus dem Zusammenhang.
         </p>
         {MEDIEN.map((m) => {
           const unlocked = learned.size >= m.minWords

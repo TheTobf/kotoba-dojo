@@ -85,6 +85,12 @@ export const SITUATIONEN: Situation[] = [
     words: ['病院', '薬', '警察', '助ける', '痛い', '危ない', '大丈夫'],
   },
   {
+    id: 'dorf', icon: '🌾', title: 'Dörfer, Felder & Natur',
+    canDo: 'Einheimische fragen, wie man zu einem Berg oder Dorf kommt und was hier angebaut oder hergestellt wird.',
+    phrase: { ja: 'ここで何を作っていますか。', de: 'Was wird hier angebaut (hergestellt)?' },
+    words: ['村', '町', '山', '川', '森', '自然', '米', '野菜', '作る', '育てる', '何', '道', '近く', '教える'],
+  },
+  {
     id: 'wetter', icon: '☀️', title: 'Smalltalk übers Wetter',
     canDo: 'Das klassische Gesprächsthema: Wetter, Hitze, Regen.',
     phrase: { ja: '今日は暑いですね。', de: 'Heute ist es heiß, nicht wahr?' },
