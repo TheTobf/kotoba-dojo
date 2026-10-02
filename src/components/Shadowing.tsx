@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { assetUrl } from '../data'
 import { speak } from '../audio'
-import { abspielen, aufnehmen, kannAufnehmen, kurveAusBlob, kurveAusDatei, type Aufnahme } from '../shadowing'
+import { abspielen, aufnehmen, kannAufnehmen, kurveAusBlob, kurveAusDatei, satzAbspielen, XP_SHADOW, type Aufnahme } from '../shadowing'
 import { belohnen } from '../motivation'
 import { correctSound, wrongSound } from '../sfx'
 import type { Sentence, Settings } from '../types'
@@ -10,8 +9,6 @@ import SentenceText from './SentenceText'
 
 type Kurve = { kurve: number[]; dauer: number }
 export type Urteil = 'nochmal' | 'fast' | 'passt'
-
-const XP_SHADOW: Record<Urteil, number> = { nochmal: 2, fast: 6, passt: 12 }
 
 /** Ein Satz: anhören → nachsprechen → Original + eigene Aufnahme vergleichen → selbst einschätzen. */
 export function ShadowSatz({ s, settings, onUrteil }: { s: Sentence; settings: Settings; onUrteil?: (u: Urteil) => void }) {
@@ -31,7 +28,7 @@ export function ShadowSatz({ s, settings, onUrteil }: { s: Sentence; settings: S
   }, [s]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => () => { if (urlRef.current) URL.revokeObjectURL(urlRef.current) }, [])
 
-  const original = (slow = false) => s.audio ? abspielen(assetUrl(s.audio), vol, slow ? 0.7 : 1) : (speak(s.ja, undefined, { slow, volume: vol }), new Promise<void>((r) => setTimeout(r, 400 + s.ja.length * 180)))
+  const original = (slow = false) => satzAbspielen(s, vol, slow)
 
   const starten = async () => {
     setFehler(undefined)

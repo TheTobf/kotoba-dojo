@@ -1,10 +1,14 @@
 import { assetUrl } from './data'
+import { speak } from './audio'
 import type { Sentence, Word } from './types'
 
 /**
  * Shadowing: Original hören, nachsprechen, vergleichen.
  * Aufnahmen bleiben nur im Speicher (Blob) – nichts wird gespeichert oder hochgeladen.
  */
+
+/** XP je Selbsteinschätzung (Shadowing-Runde, Vokabelkarte und Automodus). */
+export const XP_SHADOW = { nochmal: 2, fast: 6, passt: 12 } as const
 
 /** Sätze für eine Runde: gelernte zuerst, dann in Lernreihenfolge (Reise-Block vorn); kurze zuerst, mit Audio bevorzugt. */
 export function shadowSaetze(words: Word[], sentences: Map<string, Sentence>, learned: Set<string>, n = 8, rand = Math.random) {
@@ -62,23 +66,47 @@ async function dekodiere(buf: ArrayBuffer) {
 export const kurveAusDatei = async (file: string) => dekodiere(await (await fetch(assetUrl(file))).arrayBuffer())
 export const kurveAusBlob = async (blob: Blob) => dekodiere(await blob.arrayBuffer())
 
-/** Spielt eine URL ab und wartet, bis sie fertig ist. */
-export function abspielen(url: string, volume = 1, rate = 1) {
+/** Spielt eine URL ab und wartet, bis sie fertig ist (oder `signal` abbricht). */
+export function abspielen(url: string, volume = 1, rate = 1, signal?: AbortSignal) {
   return new Promise<void>((ok) => {
+    if (signal?.aborted) return ok()
     const a = new Audio(url)
     a.volume = volume
     a.playbackRate = rate
     a.preservesPitch = true
-    a.onended = () => ok()
-    a.onerror = () => ok()
-    a.play().catch(() => ok())
+    const fertig = () => { signal?.removeEventListener('abort', abbruch); ok() }
+    const abbruch = () => { a.pause(); fertig() }
+    signal?.addEventListener('abort', abbruch, { once: true })
+    a.onended = fertig
+    a.onerror = fertig
+    a.play().catch(fertig)
   })
 }
 
-export interface Aufnahme { stop: () => void; fertig: Promise<Blob> }
+/** Spielt den Satz ab (Audiodatei, sonst Browser-Stimme) und wartet, bis er fertig ist. */
+export function satzAbspielen(s: Pick<Sentence, 'ja' | 'audio'>, volume = 1, slow = false, signal?: AbortSignal) {
+  if (s.audio) return abspielen(assetUrl(s.audio), volume, slow ? 0.7 : 1, signal)
+  speak(s.ja, undefined, { slow, volume })
+  return warten(400 + s.ja.length * 180, signal, () => speechSynthesis?.cancel())
+}
 
-/** Startet die Aufnahme; stoppt automatisch nach ~1,2 s Stille (sobald gesprochen wurde) oder nach `maxMs`. */
-export async function aufnehmen(onPegel?: (p: number) => void, maxMs = 12_000): Promise<Aufnahme> {
+/** Wartet `ms` – oder bis `signal` abbricht (dann läuft `beiAbbruch`). */
+export function warten(ms: number, signal?: AbortSignal, beiAbbruch?: () => void) {
+  return new Promise<void>((ok) => {
+    if (signal?.aborted) return ok()
+    const abbruch = () => { clearTimeout(t); beiAbbruch?.(); ok() }
+    const t = setTimeout(() => { signal?.removeEventListener('abort', abbruch); ok() }, ms)
+    signal?.addEventListener('abort', abbruch, { once: true })
+  })
+}
+
+export interface Aufnahme { stop: () => void; fertig: Promise<Blob>; gesprochen: () => boolean }
+
+/**
+ * Startet die Aufnahme; stoppt automatisch nach ~1,2 s Stille (sobald gesprochen wurde), nach `maxMs`,
+ * oder nach `ohneSpracheMs`, wenn bis dahin gar nichts gesagt wurde.
+ */
+export async function aufnehmen(onPegel?: (p: number) => void, maxMs = 12_000, ohneSpracheMs = maxMs): Promise<Aufnahme> {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } })
   const rec = new MediaRecorder(stream)
   const teile: Blob[] = []
@@ -114,11 +142,12 @@ export async function aufnehmen(onPegel?: (p: number) => void, maxMs = 12_000): 
     const jetzt = Date.now()
     if (pegel > 0.03) { gesprochen = true; stilleSeit = 0 } else if (gesprochen && !stilleSeit) stilleSeit = jetzt
     if ((gesprochen && stilleSeit && jetzt - stilleSeit > 1200) || jetzt - start > maxMs) return stop()
+    if (!gesprochen && jetzt - start > ohneSpracheMs) return stop()
     raf = requestAnimationFrame(pruefe)
   }
   rec.start()
   raf = requestAnimationFrame(pruefe)
-  return { stop, fertig }
+  return { stop, fertig, gesprochen: () => gesprochen }
 }
 
 export const kannAufnehmen = () => typeof MediaRecorder !== 'undefined' && !!navigator.mediaDevices?.getUserMedia

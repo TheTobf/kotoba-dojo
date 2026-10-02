@@ -13,7 +13,9 @@ import { belohnen, sammeln, zaehleAktivitaet, XP } from '../motivation'
 import SentenceText from '../components/SentenceText'
 import PlayButtons from '../components/PlayButtons'
 import { ShadowRunde } from '../components/Shadowing'
+import Automodus from '../components/Automodus'
 import { shadowSaetze } from '../shadowing'
+import { kannBefehle } from '../sprachbefehl'
 
 type Tab = 'ordnen' | 'partikel' | 'shadowing' | 'grammatik'
 const RUNDE = 8
@@ -22,6 +24,7 @@ export default function Satzbau() {
   const [data, setData] = useState<LearnData>()
   const [tab, setTab] = useState<Tab>('ordnen')
   const [runde, setRunde] = useState<Sentence[]>()
+  const [auto, setAuto] = useState(false)
   const [ergebnis, setErgebnis] = useState<{ right: number; total: number }>()
   const cards = useLiveQuery(() => db.cards.where('kind').equals('vokabel').toArray())
   const stored = useLiveQuery(() => db.settings.get('me'))
@@ -38,17 +41,27 @@ export default function Satzbau() {
 
   const start = () => {
     setErgebnis(undefined)
+    setAuto(false)
     setRunde(tab === 'shadowing'
       ? shadowSaetze(data.words, data.sentences, learned, RUNDE)
       : [...pool].sort(() => Math.random() - 0.5).slice(0, RUNDE))
   }
+  const startAuto = () => {
+    setErgebnis(undefined)
+    setAuto(true)
+    setRunde(shadowSaetze(data.words, data.sentences, learned, 60)) // Vorrat, läuft reihum
+  }
   const fertig = (r: { right: number; total: number }) => {
-    setRunde(undefined); setErgebnis(r); setTimeout(sammeln, 250)
+    setRunde(undefined); setAuto(false); setErgebnis(r); setTimeout(sammeln, 250)
     if (r.total && r.right === r.total) unlockSound(settings)
   }
 
   if (runde) {
-    if (tab === 'shadowing') return <ShadowRunde runde={runde} settings={settings} onDone={fertig} />
+    if (tab === 'shadowing') {
+      return auto
+        ? <Automodus vorrat={runde} settings={settings} onDone={fertig} />
+        : <ShadowRunde runde={runde} settings={settings} onDone={fertig} />
+    }
     return tab === 'ordnen'
       ? <Ordnen runde={runde} settings={settings} onDone={fertig} />
       : <Partikeln runde={runde} settings={settings} onDone={fertig} />
@@ -73,6 +86,23 @@ export default function Satzbau() {
             <p className="opacity-80">Hör den Satz, sprich ihn sofort nach – mit derselben Melodie und demselben Tempo. Danach hörst du Original und dich direkt hintereinander.</p>
             <p className="text-sm opacity-60">{RUNDE} Sätze · {learned.size ? 'aus deinen gelernten Wörtern' : 'aus dem Reise-Block'} · Aufnahmen bleiben nur auf diesem Gerät und verschwinden nach der Runde</p>
             <button onClick={start} className="btn-primary w-full text-lg">Runde starten</button>
+          </div>
+          <div className="card space-y-3 p-5 text-center">
+            <div className="text-lg font-bold">🚆 Automodus – freihändig</div>
+            <p className="opacity-80">
+              Läuft von selbst: Satz hören → Ton → nachsprechen → Original + du → Ton → {kannBefehle() ? 'sag' : 'tipp'}{' '}
+              <b>„passt“</b>, <b>„fast“</b> oder <b>„nochmal“</b>. {kannBefehle() ? <><b>„Stopp“</b> oder ein Tipp auf den Bildschirm hält an.</> : 'Ein Tipp auf den Bildschirm hält an.'}
+            </p>
+            <ul className="space-y-1 text-left text-sm opacity-70">
+              <li>🎧 Am besten mit Kopfhörern (mit Mikrofon).</li>
+              <li>📱 Der Bildschirm bleibt an – Handy nicht sperren, sonst pausiert der Automodus.</li>
+              {kannBefehle()
+                ? <li>🌐 Die Sprachbefehle laufen über die Spracherkennung von Chrome (Google) und brauchen Internet. Deine Nachsprech-Aufnahmen bleiben auf dem Gerät.</li>
+                : <li>🙊 Sprachbefehle gehen in diesem Browser nicht (Chrome kann es) – du bekommst Knöpfe.</li>}
+              <li>🤫 Keine Antwort zählt wie „fast“; nach drei Sätzen ohne Antwort pausiert er.</li>
+            </ul>
+            {settings.muted && <p className="text-sm font-bold text-amber-700 dark:text-amber-300">Der Ton ist in den Einstellungen stumm geschaltet – dann hörst du die Sätze nicht.</p>}
+            <button onClick={startAuto} className="btn-primary w-full text-lg">🚆 Automodus starten</button>
           </div>
         </>
       ) : (

@@ -105,6 +105,20 @@ export function wrongSound({ volume, muted }: SfxOpts) {
   tone(147, t + 0.09, 0.3, 0.12 * volume, 'triangle')
 }
 
+/** Automodus: „Du bist dran“ – ein kurzer heller Ton vor dem Nachsprechen. */
+export function dranSound({ volume, muted }: SfxOpts) {
+  if (muted || volume <= 0) return
+  tone(988, ac().currentTime, 0.15, 0.14 * volume)
+}
+
+/** Automodus: „Wie war's?“ – zwei Töne aufwärts vor dem Antwortfenster. */
+export function frageSound({ volume, muted }: SfxOpts) {
+  if (muted || volume <= 0) return
+  const t = ac().currentTime
+  tone(660, t, 0.12, 0.12 * volume)
+  tone(990, t + 0.11, 0.2, 0.12 * volume)
+}
+
 /** Streak: kurzes aufsteigendes Arpeggio mit „Feuer-Zischen“. */
 export function streakSound({ volume, muted }: SfxOpts) {
   if (muted || volume <= 0) return
