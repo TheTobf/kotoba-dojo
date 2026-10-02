@@ -252,7 +252,7 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || document.body.dataset.modal) return
       if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip() }
       else if (flipped && ['1', '2', '3', '4'].includes(e.key)) void answer(+e.key as Grade)
-      else if (!flipped && e.key.toLowerCase() === 'k') void known()
+      else if (e.key.toLowerCase() === 'k') void known()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -343,14 +343,22 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
       {ueben && <KanjiUeben wort={ueben.wort} start={ueben.start} data={data} settings={settings} onClose={() => setUeben(undefined)} />}
 
       {flipped ? (
-        <div className="grid grid-cols-4 gap-2">
-          {BUTTONS.map((b) => (
-            <button key={b.grade} disabled={busy} onClick={() => answer(b.grade)}
-              className={`btn flex-col gap-0 py-2 ${b.cls}`}>
-              <span className="font-bold">{b.label}</span>
-              <span className="text-xs opacity-70">{intervals[b.grade - 1]}</span>
+        <div className="space-y-2">
+          <div className="grid grid-cols-4 gap-2">
+            {BUTTONS.map((b) => (
+              <button key={b.grade} disabled={busy} onClick={() => answer(b.grade)}
+                className={`btn flex-col gap-0 py-2 ${b.cls}`}>
+                <span className="font-bold">{b.label}</span>
+                <span className="text-xs opacity-70">{intervals[b.grade - 1]}</span>
+              </button>
+            ))}
+          </div>
+          {/* Auch nach dem Umdrehen: erst den Satz hören, dann das Wort als bekannt überspringen */}
+          {isNew && (
+            <button onClick={known} disabled={busy} className="btn w-full bg-matcha/20 text-emerald-700 dark:text-matcha">
+              Kenn ich schon <span className="text-xs opacity-70">· Kontrolle in 7 T</span>
             </button>
-          ))}
+          )}
         </div>
       ) : (
         <div className="flex gap-2">
