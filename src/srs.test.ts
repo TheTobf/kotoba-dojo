@@ -33,6 +33,15 @@ describe('Karteikarten (FSRS)', () => {
     expect(await countNewToday(d, now)).toBe(1)
   })
 
+  it('„Kenn ich schon“ bei schon gelernter Karte schiebt sie ~6 Monate weg', async () => {
+    const d = new KotobaDB('srs-2b')
+    const now = Date.now()
+    const alt = await rate(words[1], undefined, Rating.Easy, undefined, d, now - 3 * DAY)
+    const c = await markKnown(words[1], d, now)
+    expect(c.due).toBe(now + 180 * DAY)
+    expect(c.introducedAt).toBe(alt.introducedAt)
+  })
+
   it('„Nochmal“ bei neuer Karte bleibt kurz, „Einfach“ springt Tage weiter', () => {
     const [again, , , easy] = previewIntervals(undefined)
     expect(again).toMatch(/Min/)

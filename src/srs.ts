@@ -102,13 +102,22 @@ export async function rate(word: Pick<Word, 'id'>, card: CardState | undefined, 
   return state
 }
 
-/** „Kenn ich schon“: Karte überspringt das Lernen und kommt in 7 Tagen zur Kontrolle wieder. */
+/** Abstand für „Kenn ich schon“ bei Karten, die schon gelernt sind (z. B. Zahlen): ~6 Monate. */
+export const KNOWN_DAYS_LEARNED = 180
+
+/**
+ * „Kenn ich schon“: neue Karte überspringt das Lernen und kommt in 7 Tagen zur Kontrolle wieder;
+ * eine schon gelernte Karte kommt erst in ~6 Monaten wieder.
+ */
 export async function markKnown(word: Word, d: KotobaDB = db, now = Date.now()) {
+  const alt = await d.cards.get(cardId(word.id))
+  const tage = alt && isLearned(alt) ? KNOWN_DAYS_LEARNED : 7
   const good = scheduler.next(createEmptyCard(new Date(now)), new Date(now), Rating.Easy).card
   const state: CardState = {
     ...fromFsrs(cardId(word.id), word.id, good),
-    state: State.Review, stability: Math.max(good.stability, 7), scheduled_days: 7,
-    due: now + 7 * DAY, knownSkip: true, introducedAt: now,
+    state: State.Review, stability: Math.max(good.stability, tage), scheduled_days: tage,
+    due: now + tage * DAY, knownSkip: true, introducedAt: alt?.introducedAt ?? now,
+    reps: Math.max(good.reps, alt?.reps ?? 0), last_review: now,
   }
   await d.transaction('rw', [d.cards, d.reviewLog, d.profile], async () => {
     await d.cards.put(state)

@@ -5,7 +5,7 @@ import type { Grade } from 'ts-fsrs'
 import { loadData, type LearnData } from '../data'
 import { db } from '../db'
 import { speak } from '../audio'
-import { DEFAULT_SETTINGS, type Settings } from '../types'
+import { DEFAULT_SETTINGS, type CardState, type Settings } from '../types'
 import { buildQueue, countNewToday, markKnown, previewIntervals, rate, Rating, type QueueItem } from '../srs'
 import { flipSound, rateSound, tickSound, unlockSound, vibrate } from '../sfx'
 import { learnedIds, newlyReached, situationStatus } from '../progress'
@@ -35,6 +35,10 @@ interface Session {
   reviewed: number
   good: number
   known: number
+  /** Kartenstand vor der ersten Bewertung je Position – damit Zurückspringen + neu Bewerten sauber überschreibt */
+  vorher: Record<number, CardState | null>
+  /** weiteste erreichte Position (Weiter-Knopf geht nur bis hierhin) */
+  max: number
 }
 
 interface Result { session: Session; situationen: Situation[]; medien: Medium[] }
@@ -62,7 +66,7 @@ export default function Vokabeln() {
 
   const start = () => {
     setResult(undefined)
-    setSession({ queue: plan, idx: 0, before: learnedIds(cardsArr), started: Date.now(), reviewed: 0, good: 0, known: 0 })
+    setSession({ queue: plan, idx: 0, before: learnedIds(cardsArr), started: Date.now(), reviewed: 0, good: 0, known: 0, vorher: {}, max: 0 })
   }
 
   const finish = async (s: Session) => {
@@ -202,26 +206,48 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
   }, [flipped, item, settings]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const advance = useCallback((next: Session) => {
+    next = { ...next, max: Math.max(next.max, next.idx) }
     if (next.idx >= next.queue.length) onFinish(next)
     else onUpdate(next)
   }, [onFinish, onUpdate])
+
+  /**
+   * Vor dem Bewerten: Stand vor der ersten Bewertung dieser Position merken – oder, wenn der Nutzer
+   * zurückgesprungen ist, diesen Stand wiederherstellen, damit die neue Bewertung die alte ersetzt.
+   */
+  const vorbereiten = async () => {
+    const id = `vokabel:${item.word.id}`
+    const nochmal = session.idx in session.vorher
+    if (nochmal) {
+      const alt = session.vorher[session.idx]
+      if (alt) await db.cards.put(alt); else await db.cards.delete(id)
+    }
+    const card = nochmal ? session.vorher[session.idx] ?? undefined : await db.cards.get(id)
+    // Wiederholung, die die alte Bewertung hinten angehängt hat, wieder entfernen
+    const queue = nochmal
+      ? session.queue.filter((q, i) => i <= session.max || q.word.id !== item.word.id)
+      : [...session.queue]
+    const vorher = nochmal ? session.vorher : { ...session.vorher, [session.idx]: card ?? null }
+    return { card: card ?? (nochmal ? undefined : item.card), nochmal, queue, vorher }
+  }
+
+  const zurueck = () => { if (session.idx > 0 && !busy) onUpdate({ ...session, idx: session.idx - 1 }) }
+  const vor = () => { if (session.idx < session.max && !busy) onUpdate({ ...session, idx: session.idx + 1 }) }
 
   const answer = useCallback(async (grade: Grade) => {
     if (busy || !flipped) return
     setBusy(true)
     try {
       const now = Date.now()
-      // aktuellen Stand aus der DB – die Karte kann sich seit dem Aufbau der Warteschlange geändert haben
-      const card = (await db.cards.get(`vokabel:${item.word.id}`)) ?? item.card
+      const { card, nochmal, queue, vorher } = await vorbereiten()
       const state = await rate(item.word, card, grade, now - shownAt.current)
       rateSound(grade, sfx)
-      void belohnen(grade >= Rating.Good ? XP.karteGut : grade === Rating.Hard ? XP.karteSchwer : XP.karteNochmal, { dailyGoal: settings.dailyGoal })
-      const queue = [...session.queue]
+      if (!nochmal) void belohnen(grade >= Rating.Good ? XP.karteGut : grade === Rating.Hard ? XP.karteSchwer : XP.karteNochmal, { dailyGoal: settings.dailyGoal })
       // Lernschritte (< 1 Std) kommen in dieser Einheit noch einmal
       if (state.due - now < 60 * 60_000) queue.push({ word: item.word, card: state })
       advance({
-        ...session, queue, idx: session.idx + 1,
-        reviewed: session.reviewed + 1, good: session.good + (grade >= Rating.Good ? 1 : 0),
+        ...session, queue, vorher, idx: session.idx + 1,
+        reviewed: session.reviewed + (nochmal ? 0 : 1), good: session.good + (!nochmal && grade >= Rating.Good ? 1 : 0),
       })
     } catch (e) {
       console.error('Bewertung fehlgeschlagen', e)
@@ -232,13 +258,14 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
   }, [busy, flipped, item, session, advance]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const known = useCallback(async () => {
-    if (busy || item.card) return
+    if (busy) return
     setBusy(true)
     try {
+      const { nochmal, queue, vorher } = await vorbereiten()
       await markKnown(item.word)
       rateSound(Rating.Easy, sfx)
-      void belohnen(XP.kennIchSchon, { dailyGoal: settings.dailyGoal })
-      advance({ ...session, idx: session.idx + 1, known: session.known + 1 })
+      if (!nochmal) void belohnen(XP.kennIchSchon, { dailyGoal: settings.dailyGoal })
+      advance({ ...session, queue, vorher, idx: session.idx + 1, known: session.known + (nochmal ? 0 : 1) })
     } catch (e) {
       console.error('Kenn ich schon fehlgeschlagen', e)
       alert(`Konnte nicht gespeichert werden: ${(e as Error).message}`)
@@ -253,10 +280,12 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
       if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip() }
       else if (flipped && ['1', '2', '3', '4'].includes(e.key)) void answer(+e.key as Grade)
       else if (e.key.toLowerCase() === 'k') void known()
+      else if (e.key === 'ArrowLeft') zurueck()
+      else if (e.key === 'ArrowRight') vor()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [flip, answer, known, flipped])
+  }, [flip, answer, known, flipped, session, busy]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const intervals = useMemo(() => previewIntervals(item?.card), [item])
   if (!item) return null
@@ -275,6 +304,16 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
             style={{ width: `${(100 * session.idx) / session.queue.length}%` }} />
         </div>
         <span className="text-sm tabular-nums opacity-60">{remaining}</span>
+      </div>
+
+      <div className="flex justify-between gap-2">
+        <button onClick={zurueck} disabled={busy || session.idx === 0}
+          className="btn min-h-10 px-3 text-sm disabled:opacity-30">← Zurück</button>
+        {session.idx in session.vorher && (
+          <span className="self-center text-xs opacity-60">schon bewertet – neu bewerten ersetzt es</span>
+        )}
+        <button onClick={vor} disabled={busy || session.idx >= session.max}
+          className="btn min-h-10 px-3 text-sm disabled:opacity-30">Weiter →</button>
       </div>
 
       <div className="flip-scene" onClick={flip}>
@@ -354,25 +393,21 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
             ))}
           </div>
           {/* Auch nach dem Umdrehen: erst den Satz hören, dann das Wort als bekannt überspringen */}
-          {isNew && (
-            <button onClick={known} disabled={busy} className="btn w-full bg-matcha/20 text-emerald-700 dark:text-matcha">
-              Kenn ich schon <span className="text-xs opacity-70">· Kontrolle in 7 T</span>
-            </button>
-          )}
+          <button onClick={known} disabled={busy} className="btn w-full bg-matcha/20 text-emerald-700 dark:text-matcha">
+            Kenn ich schon <span className="text-xs opacity-70">· {isNew ? 'Kontrolle in 7 T' : 'erst in ~6 Mon. wieder'}</span>
+          </button>
         </div>
       ) : (
         <div className="flex gap-2">
           <button onClick={flip} className="btn-primary flex-1">Umdrehen</button>
-          {isNew && (
-            <button onClick={known} disabled={busy} className="btn bg-matcha/20 text-emerald-700 dark:text-matcha"
-              title="Überspringt das Lernen – Kontrolle in 7 Tagen">
-              Kenn ich schon
-            </button>
-          )}
+          <button onClick={known} disabled={busy} className="btn bg-matcha/20 text-emerald-700 dark:text-matcha"
+            title={isNew ? 'Überspringt das Lernen – Kontrolle in 7 Tagen' : 'Sitzt sicher – kommt erst in ~6 Monaten wieder'}>
+            Kenn ich schon
+          </button>
         </div>
       )}
       <p className="hidden text-center text-xs opacity-40 md:block">
-        Leertaste = umdrehen · 1–4 = bewerten{isNew ? ' · K = kenn ich schon' : ''}
+        Leertaste = umdrehen · 1–4 = bewerten · K = kenn ich schon
       </p>
     </section>
   )
