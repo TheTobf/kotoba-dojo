@@ -195,6 +195,14 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
 
   useEffect(() => { setFlipped(false); setSkipType(!settings.typewriter); shownAt.current = Date.now() }, [session.idx, settings.typewriter])
 
+  // Satz vorne: gleich beim Zeigen der Karte abspielen (Hörverstehen, bevor man umdreht)
+  useEffect(() => {
+    const s = item && data.sentences.get(item.word.sentenceIds[0])
+    if (!s || !settings.satzVorne || !settings.autoplayAudio || settings.muted) return
+    const t = setTimeout(() => speak(s.ja, s.audio, { volume: settings.volume }), 400)
+    return () => clearTimeout(t)
+  }, [session.idx]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const flip = useCallback(() => {
     if (flipped) { setSkipType(true); return }
     setFlipped(true)
@@ -325,7 +333,15 @@ function Lernen({ data, session, settings, onUpdate, onFinish, onCancel }: {
               {isNew ? `NEU · Lektion ${word.lesson}` : 'Wiederholung'}
             </span>
             {settings.furigana && hasKanji && <div lang="ja" className="text-lg opacity-50">{word.reading}</div>}
-            <div lang="ja" className="text-6xl font-bold md:text-7xl">{word.surface}</div>
+            <div lang="ja" className={`font-bold ${settings.satzVorne && sentence ? 'text-5xl md:text-6xl' : 'text-6xl md:text-7xl'}`}>{word.surface}</div>
+            {settings.satzVorne && sentence && (
+              <div className="mt-2 flex w-full items-start gap-2 rounded-xl bg-black/[0.03] p-3 dark:bg-white/[0.04]">
+                <SentenceText sentence={sentence} furigana={settings.furigana} className="flex-1 text-xl" />
+                <span onClick={(e) => e.stopPropagation()}>
+                  <PlayButtons text={sentence.ja} file={sentence.audio} credit={sentence.audioCredit} size="sm" />
+                </span>
+              </div>
+            )}
             <div className="mt-4 text-sm opacity-40">Tippen zum Umdrehen</div>
           </div>
 

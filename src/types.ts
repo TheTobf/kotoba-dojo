@@ -141,6 +141,7 @@ export interface Settings {
   muted: boolean
   vibration: boolean
   typewriter: boolean   // Bedeutung wird Buchstabe für Buchstabe geschrieben
+  satzVorne: boolean    // Beispielsatz schon auf der Vorderseite (Hörverstehen im Kontext)
   accent: string        // Farbthema (muss freigeschaltet sein)
   companion: string     // Begleiter-Tierchen (Belohnungs-ID)
   cardPattern: string   // Kartenmuster ('' = keins)
@@ -161,6 +162,7 @@ export const DEFAULT_SETTINGS: Settings = {
   muted: false,
   vibration: true,
   typewriter: true,
+  satzVorne: true,
   accent: 'sakura',
   companion: 'tier-neko',
   cardPattern: '',
