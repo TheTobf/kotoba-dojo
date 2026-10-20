@@ -54,6 +54,7 @@ export interface Sentence {
   de: string
   grammar: string       // kurze Grammatik-Notiz auf Deutsch
   chunks: string[]      // Satzteile für die Satzbau-Übung
+  chunkAudio?: string[] // Aufnahme je Satzteil (Reihenfolge wie chunks), '' = keine
   source: Quelle
   tatoebaId?: number
   audio?: string        // Pfad/URL zur Audiodatei

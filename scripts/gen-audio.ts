@@ -1,32 +1,30 @@
 /**
- * Erzeugt Audio für Wörter und Sätze.
+ * Erzeugt Audio für Wörter, Sätze und die Satzteile der Satzbau-Übung.
  *  1. Tatoeba-Muttersprachleraufnahmen (CC BY / CC BY-NC) werden heruntergeladen.
  *  2. Alles andere spricht VOICEVOX (lokale Engine, http://127.0.0.1:50021),
  *     abwechselnd 四国めたん und 青山龍星. Die Aussprache wird gegen unsere geprüfte Lesung
  *     abgeglichen; bei Abweichung wird mit der Lesung neu erzeugt.
+ *  3. Satzteile („Sätze bauen“): je Teil eine Aufnahme mit der Stimme des Satzes, Lesung aus den Tokens.
  *
- * Aufruf: npm run data:build && npm run audio:gen && npm run data:build
+ * Aufruf: npm run data:build && npm run audio:gen   (verknüpft am Ende selbst; ohne neue Daten reicht audio:gen)
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import * as wk from 'wanakana'
 import { Mp3Encoder } from '@breezystack/lamejs'
-import { AUDIO_DIR, MANIFEST, loadManifest, sentenceText, wordText } from './lib/audio-manifest'
+import { AUDIO_DIR, MANIFEST, VOICES, attachAudio, chunkTeile, loadManifest, sentenceText, wordText } from './lib/audio-manifest'
+import { ordnenSaetze } from '../src/satzbau'
 import type { Sentence, Word } from '../src/types'
 
 const ROOT = join(import.meta.dirname, '..')
 const ENGINE = process.env.VOICEVOX_URL ?? 'http://127.0.0.1:50021'
-const VOICES = [
-  { name: '四国めたん', style: 'ノーマル' },
-  { name: '青山龍星', style: 'ノーマル' },
-]
 
 const words: Word[] = JSON.parse(readFileSync(join(ROOT, 'public/data/words.json'), 'utf8'))
 const sentences: Sentence[] = JSON.parse(readFileSync(join(ROOT, 'public/data/sentences.json'), 'utf8'))
 const tatoeba: { sentenceId: string; audioId: number; user: string; license: string }[] =
   JSON.parse(readFileSync(join(ROOT, 'scripts/work/tatoeba-audio.json'), 'utf8'))
 const manifest = loadManifest()
-for (const d of ['w', 's']) mkdirSync(join(AUDIO_DIR, d), { recursive: true })
+for (const d of ['w', 's', 'c']) mkdirSync(join(AUDIO_DIR, d), { recursive: true })
 const save = () => writeFileSync(MANIFEST, JSON.stringify(manifest, null, 1))
 const isFresh = (id: string, text: string) => manifest[id]?.text === text
 
@@ -97,9 +95,9 @@ function wavToMp3(wav: Buffer): Buffer {
 
 const mismatches: { id: string; text: string; expected: string; got: string }[] = []
 
-/** Spricht `text`, prüft gegen `expectedKana`, fällt ggf. auf `fallbackText` (Lesung) zurück. */
-async function speak(id: string, file: string, key: string, text: string, expectedKana: string, fallbackText: string, n: number) {
-  const v = voiceIds[n % voiceIds.length]
+/** Spricht `text` mit Stimme `v`, prüft gegen `expectedKana`, fällt ggf. auf `fallbackText` (Lesung) zurück. */
+async function speak(id: string, file: string, key: string, text: string, expectedKana: string, fallbackText: string,
+  v: (typeof voiceIds)[number]) {
   let q = await query(text, v.id)
   if (norm(q.kana) !== norm(expectedKana)) {
     const q2 = await query(fallbackText, v.id)
@@ -111,22 +109,37 @@ async function speak(id: string, file: string, key: string, text: string, expect
 }
 
 let n = 0
+// Satzteile nur für Sätze, die „Sätze bauen“ überhaupt stellt (unabhängig davon, was schon gelernt ist)
+const teile = new Map(ordnenSaetze(sentences, new Set(sentences.map((s) => s.wordId)))
+  .flatMap(chunkTeile).filter((c) => !isFresh(`c:${c.key}`, c.key)).map((c) => [c.key, c]))
 const todo = [
   ...words.filter((w) => !isFresh(w.id, wordText(w))).map((w) => ({ kind: 'w' as const, w })),
   ...sentences.filter((s) => !tatoebaBySentence.has(s.id) && !isFresh(s.id, sentenceText(s))).map((s) => ({ kind: 's' as const, s })),
+  ...[...teile.values()].map((c) => ({ kind: 'c' as const, c })),
 ]
-console.log(`VOICEVOX: ${todo.length} Aufnahmen …`)
+console.log(`VOICEVOX: ${todo.length} Aufnahmen (davon ${teile.size} Satzteile) …`)
 for (const t of todo) {
   n++
+  const v = voiceIds[n % voiceIds.length]
   if (t.kind === 'w') {
-    await speak(t.w.id, `w/${t.w.id}.mp3`, wordText(t.w), t.w.surface, t.w.reading, t.w.reading, n)
-  } else {
+    await speak(t.w.id, `w/${t.w.id}.mp3`, wordText(t.w), t.w.surface, t.w.reading, t.w.reading, v)
+  } else if (t.kind === 's') {
     const s = t.s
     const kanaText = s.tokens.map((tk) => (tk.f ? tk.f.map((f) => f.r ?? f.s).join('') : tk.s)).join('')
-    await speak(s.id, `s/${s.id}.mp3`, sentenceText(s), s.ja, s.kana, kanaText, n)
+    await speak(s.id, `s/${s.id}.mp3`, sentenceText(s), s.ja, s.kana, kanaText, v)
+  } else {
+    const c = t.c
+    await speak(`c:${c.key}`, c.file, c.key, c.text, c.kana, c.kana, voiceIds.find((x) => x.name === c.stimme) ?? v)
   }
   if (n % 25 === 0) { save(); console.log(`  ${n}/${todo.length}`) }
 }
 save()
 writeFileSync(join(ROOT, 'scripts/work/audio-mismatches.json'), JSON.stringify(mismatches, null, 1))
 console.log(`Fertig. Abweichende Aussprache trotz Fallback: ${mismatches.length} (siehe scripts/work/audio-mismatches.json)`)
+
+// Gleich verknüpfen – derselbe Schritt wie am Ende von data:build. Hat sich nur Audio geändert, erspart das den
+// kompletten Neubau (der braucht ~8 GB Arbeitsspeicher).
+attachAudio(words, sentences, manifest)
+writeFileSync(join(ROOT, 'public/data/words.json'), JSON.stringify(words))
+writeFileSync(join(ROOT, 'public/data/sentences.json'), JSON.stringify(sentences))
+console.log(`Verknüpft: ${sentences.filter((s) => s.chunkAudio).length} Sätze mit Satzteil-Aufnahmen`)

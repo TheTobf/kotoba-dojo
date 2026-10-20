@@ -177,10 +177,15 @@ function Ordnen({ runde, settings, onDone }: { runde: Sentence[]; settings: Sett
   const [i, setI] = useState(0)
   const [right, setRight] = useState(0)
   const s = runde[i]
-  const kacheln = useMemo(() => mischen(s.chunks).map((text, k) => ({ text, k })), [s])
+  // Die Teile eines Satzes sind verschieden (ordnenSaetze) – der Text findet also seine Aufnahme.
+  const kacheln = useMemo(() => mischen(s.chunks).map((text, k) => ({ text, k, audio: s.chunkAudio?.[s.chunks.indexOf(text)] || undefined })), [s])
   const [gelegt, setGelegt] = useState<number[]>([])
   const [ok, setOk] = useState<boolean>()
   const sfx = { volume: settings.volume, muted: settings.muted }
+  const legen = (k: number) => {
+    setGelegt([...gelegt, k])
+    if (!settings.muted) void speak(kacheln[k].text, kacheln[k].audio, { volume: settings.volume })
+  }
 
   const pruefen = () => {
     const r = ordnungRichtig(gelegt.map((k) => kacheln[k].text), s)
@@ -211,7 +216,7 @@ function Ordnen({ runde, settings, onDone }: { runde: Sentence[]; settings: Sett
         </div>
         <div className="flex flex-wrap gap-2">
           {kacheln.map(({ text, k }) => (
-            <button key={k} lang="ja" disabled={gelegt.includes(k) || ok !== undefined} onClick={() => setGelegt([...gelegt, k])}
+            <button key={k} lang="ja" disabled={gelegt.includes(k) || ok !== undefined} onClick={() => legen(k)}
               className={`card px-3 py-2 text-xl transition active:scale-95 ${gelegt.includes(k) ? 'invisible' : ''}`}>{text}</button>
           ))}
         </div>
