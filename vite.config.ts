@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import { defineConfig } from 'vite'
+import { configDefaults } from 'vitest/config'
 
 // GitHub Pages liefert die App unter /kotoba-dojo/ aus.
 const base = process.env.GITHUB_PAGES ? '/kotoba-dojo/' : '/'
@@ -35,6 +36,8 @@ export default defineConfig({
       workbox: {
         // App + Wort-/Satzdaten sofort offline; Audio und Strichdaten beim ersten Gebrauch (sonst zu groß).
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}', 'data/*.json'],
+        // Die Lernzettel-App liegt unter /lernzettel/ und hat ihren eigenen Service Worker.
+        navigateFallbackDenylist: [/\/lernzettel(\/|$)/],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
         runtimeCaching: [
           {
@@ -53,6 +56,7 @@ export default defineConfig({
   ],
   test: {
     environment: 'node',
+    exclude: [...configDefaults.exclude, 'lernzettel/**'],
     setupFiles: ['fake-indexeddb/auto'],
   },
 })

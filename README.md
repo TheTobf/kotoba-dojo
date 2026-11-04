@@ -19,6 +19,12 @@ Motivation: XP, Level mit Rängen 見習い → 学生 → 先輩 → 先生 →
 Tagesziel-Ring, 21 Erfolge, 6 freischaltbare Farbthemen, Maskottchen, Konfetti, Combo-Töne mit steigender Tonhöhe.
 Alle Sounds werden live per Web Audio erzeugt (keine Dateien).
 
+## Lernzettel-App
+
+Im Ordner [`lernzettel/`](lernzettel/README.md) liegt eine zweite, unabhängige App für Studien-Lernzettel
+(Mathe, Externes Rechnungswesen, Internationales Management, Wirtschaftsinformatik). Sie wird mit veröffentlicht unter
+`https://<dein-name>.github.io/kotoba-dojo/lernzettel/`.
+
 ## Starten
 
 ```bash

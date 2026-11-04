@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f3ee" />
+    <meta name="description" content="Deine Lernzettel für alle Module – pro Übung, mit Klausur-Zusammenfassung und Wochen-Check" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Lernzettel" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <title>Lernzettel</title>
+    <script>
+      // Dunkles Design sofort setzen, damit nichts aufblitzt
+      try {
+        var d = JSON.parse(localStorage.getItem('lernzettel-v1') || '{}').design || 'auto'
+        if (d === 'dunkel' || (d === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Notfall: startet die App nicht, Fehler zeigen und Zwischenspeicher leeren können
+      (function () {
+        var fehler = []
+        window.addEventListener('error', function (e) { fehler.push(String(e.message || 'Ladefehler').slice(0, 300)) }, true)
+        window.addEventListener('unhandledrejection', function (e) { fehler.push(String((e.reason && (e.reason.stack || e.reason.message)) || e.reason).slice(0, 300)) })
+        window.lzReset = function () {
+          var sw = navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(function (r) { return Promise.all(r.map(function (x) { return x.unregister() })) }) : Promise.resolve()
+          var c = window.caches ? caches.keys().then(function (k) { return Promise.all(k.map(function (x) { return caches.delete(x) })) }) : Promise.resolve()
+          Promise.all([sw, c]).finally(function () { location.reload() })
+        }
+        setTimeout(function () {
+          var root = document.getElementById('root')
+          if (root && root.children.length) return
+          document.body.innerHTML = '<div style="font-family:system-ui,sans-serif;padding:24px;max-width:560px">' +
+            '<h2>Die Lernzettel-App startet nicht 😕</h2><p>Meist hilft es, den Zwischenspeicher zu leeren. Dein Wochen-Check bleibt erhalten.</p>' +
+            '<button onclick="lzReset()" style="font-size:17px;padding:12px 20px;border-radius:12px;border:0;background:#2563eb;color:#fff">🔄 Neu laden</button>' +
+            '<p style="margin-top:24px;opacity:.7;font-size:13px">Fehler (bitte an Claude schicken):</p><pre style="white-space:pre-wrap;font-size:12px;opacity:.8">' +
+            (fehler.join('\n\n') || 'keine Meldung') + '\n\n' + navigator.userAgent + '</pre></div>'
+        }, 8000)
+      })()
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

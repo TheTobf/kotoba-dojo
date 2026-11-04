@@ -1,4 +1,6 @@
-﻿# Baut die App und veröffentlicht sie auf GitHub Pages (https://<name>.github.io/kotoba-dojo/).
+﻿# Baut beide Apps und veröffentlicht sie auf GitHub Pages:
+#   Kotoba Dojo → https://<name>.github.io/kotoba-dojo/
+#   Lernzettel  → https://<name>.github.io/kotoba-dojo/lernzettel/
 # Einmalig im Repo: Settings → Pages → Source: „GitHub Actions“.
 name: Deploy
 
@@ -25,11 +27,24 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            lernzettel/package-lock.json
       - run: npm ci
       - run: npm test
       - run: npm run build
         env:
           GITHUB_PAGES: 'true'
+      # Lernzettel-App (prüft auch alle Lernzettel in lernzettel/inhalte/)
+      - run: npm ci
+        working-directory: lernzettel
+      - run: npm test
+        working-directory: lernzettel
+      - run: npm run build
+        working-directory: lernzettel
+        env:
+          GITHUB_PAGES: 'true'
+      - run: cp -r lernzettel/dist dist/lernzettel
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
