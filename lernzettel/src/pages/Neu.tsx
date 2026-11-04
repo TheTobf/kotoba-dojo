@@ -2,11 +2,12 @@ import { useMemo, useState } from 'react'
 import { zeigeHinweis } from '../hinweis'
 import Kopf from '../components/Kopf'
 import Markdown from '../components/Markdown'
-import { FAECHER, findeFach } from '../faecher'
+import { datumKey, FAECHER, fachById, findeFach } from '../faecher'
+import { leseFragen } from '../fragen'
 import { rendere } from '../markdown'
 import { geheZu, pfad } from '../router'
 import { speichereEigenen, useZustand } from '../speicher'
-import { alsMarkdown, entferneCodeRahmen, leseKopf, leseTyp, type Typ, type Zettel } from '../zettel'
+import { alsMarkdown, baueZettel, bezeichnung, gleicherPlatz, leseKopf, leseTyp, teileText, type Typ, type Zettel } from '../zettel'
 
 interface Felder {
   fach: string
@@ -22,8 +23,38 @@ function trenneTitel(inhalt: string): { titel?: string; rest: string } {
   return m ? { titel: m[1].trim(), rest: (inhalt + '\n').slice(m[0].length).trim() } : { rest: inhalt.trim() }
 }
 
+/** Eingefügte Lernzettel ersetzen eine ältere Version auf demselben Platz (gleiche Übung/Teil) – Wochen-Check bleibt erhalten. */
+function platzFuer(z: Zettel, eigene: Zettel[], neueId: string): { id: string; ersetzt: boolean } {
+  const alt = eigene.find((e) => e.id !== neueId && gleicherPlatz(e, z))
+  return alt ? { id: alt.id, ersetzt: true } : { id: neueId, ersetzt: false }
+}
+
+function neueId(fach: string, i = 0): string {
+  return `lokal/${fach}-${(Date.now() + i).toString(36)}`
+}
+
+interface Erkannt {
+  zettel: Zettel
+  fragen: number
+  hinweise: string[]
+  blockiert: string[]
+}
+
+function erkenne(text: string, i: number, standardFach: string): Erkannt {
+  const r = baueZettel(`neu-${i}`, text, { standardFach, lokal: true })
+  const { titel, rest } = trenneTitel(r.zettel.inhalt)
+  const zettel = { ...r.zettel, inhalt: rest, titel: r.zettel.titel || titel || '', datum: r.zettel.datum ?? datumKey(new Date()) }
+  const f = leseFragen(rest)
+  return {
+    zettel,
+    fragen: f.fragen.length,
+    hinweise: [...r.fehler.filter((x) => x.startsWith('typ') || x.startsWith('datum')), ...f.fehler],
+    blockiert: r.fehler.filter((x) => x.startsWith('uebung') || x.startsWith('titel')),
+  }
+}
+
 function felderAus(text: string, alt: Felder): Felder {
-  const { kopf, inhalt } = leseKopf(entferneCodeRahmen(text))
+  const { kopf, inhalt } = leseKopf(text)
   const neu = { ...alt }
   const fach = kopf.fach ? findeFach(kopf.fach) : undefined
   if (fach) neu.fach = fach.id
@@ -49,13 +80,27 @@ export default function Neu({ bearbeiten }: { bearbeiten?: string }) {
   const [vorschau, setVorschau] = useState(false)
   const [fehler, setFehler] = useState('')
 
-  const inhalt = useMemo(() => trenneTitel(leseKopf(entferneCodeRahmen(text)).inhalt).rest, [text])
+  const teile = useMemo(() => teileText(text), [text])
+  const einzeln = teile[0] ?? ''
+  const mehrere = useMemo(() => (!vorhanden && teile.length > 1 ? teile.map((t, i) => erkenne(t, i, felder.fach)) : null), [vorhanden, teile, felder.fach])
+  const inhalt = useMemo(() => trenneTitel(leseKopf(einzeln).inhalt).rest, [einzeln])
+  const fragen = useMemo(() => leseFragen(inhalt), [inhalt])
   const gerendert = useMemo(() => (vorschau ? rendere(inhalt) : null), [vorschau, inhalt])
 
   function neuerText(t: string) {
     setText(t)
-    setFelder((alt) => felderAus(t, alt))
+    setFelder((alt) => felderAus(teileText(t)[0] ?? '', alt))
     setFehler('')
+  }
+
+  function alleSpeichern() {
+    if (!mehrere) return
+    const kaputt = mehrere.filter((m) => m.blockiert.length)
+    if (kaputt.length) return setFehler(`Bitte erst korrigieren: ${kaputt.map((k) => `„${k.zettel.titel || 'ohne Titel'}“ – ${k.blockiert.join(', ')}`).join('; ')}`)
+    const fertig = mehrere.map((m, i) => ({ ...m.zettel, id: platzFuer(m.zettel, z.eigene, neueId(m.zettel.fach, i)).id }))
+    speichereEigenen(...fertig)
+    zeigeHinweis(`${fertig.length} Lernzettel gespeichert ✓`)
+    geheZu(pfad.fach(fertig[0].fach))
   }
 
   async function ausZwischenablage() {
@@ -78,22 +123,23 @@ export default function Neu({ bearbeiten }: { bearbeiten?: string }) {
     if (!felder.titel.trim()) return setFehler('Bitte einen Titel eingeben.')
     if (felder.typ === 'uebung' && (uebung === undefined || !Number.isFinite(uebung))) return setFehler('Bitte die Nummer der Übung eingeben.')
     if (teil !== undefined && !Number.isFinite(teil)) return setFehler('Teil muss eine Zahl sein.')
-    const id = vorhanden?.id ?? `lokal/${felder.fach}-${Date.now().toString(36)}`
+    const kopf = leseKopf(einzeln).kopf
     const zettel: Zettel = {
-      id,
+      id: vorhanden?.id ?? neueId(felder.fach),
       fach: felder.fach,
       typ: felder.typ,
       titel: felder.titel.trim(),
       uebung: felder.typ === 'uebung' ? uebung : undefined,
       teil,
-      datum: vorhanden?.datum ?? leseKopf(entferneCodeRahmen(text)).kopf.datum ?? new Date().toISOString().slice(0, 10),
-      kurz: leseKopf(entferneCodeRahmen(text)).kopf.kurz || vorhanden?.kurz,
+      datum: kopf.datum || vorhanden?.datum || datumKey(new Date()),
+      kurz: kopf.kurz || vorhanden?.kurz,
       inhalt,
       lokal: true,
     }
-    speichereEigenen(zettel)
-    zeigeHinweis(vorhanden ? 'Gespeichert ✓' : 'Lernzettel hinzugefügt ✓')
-    geheZu(pfad.zettel(id))
+    const platz = vorhanden ? { id: zettel.id, ersetzt: false } : platzFuer(zettel, z.eigene, zettel.id)
+    speichereEigenen({ ...zettel, id: platz.id })
+    zeigeHinweis(vorhanden ? 'Gespeichert ✓' : platz.ersetzt ? 'Ältere Version ersetzt ✓' : 'Lernzettel hinzugefügt ✓')
+    geheZu(pfad.zettel(platz.id))
   }
 
   const feld = 'h-12 w-full rounded-xl bg-karte px-3 ring-1 ring-black/10 outline-none focus:ring-2 focus:ring-blue-500 dark:bg-nacht-2 dark:ring-white/10'
@@ -104,11 +150,11 @@ export default function Neu({ bearbeiten }: { bearbeiten?: string }) {
       <div className="mx-auto max-w-2xl space-y-4 px-4 pt-4">
         {!vorhanden && (
           <div className="karte p-4 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
-            Hier kannst du einen Lernzettel einfügen, den ich dir <b>im Chat</b> geschrieben habe (einfach den ganzen Text kopieren). Er wird
-            nur auf <b>diesem Gerät</b> gespeichert.
+            Hier fügst du Lernzettel ein, die ich dir in einem <b>Claude-Projekt</b> oder Chat geschrieben habe – einfach die ganze Antwort
+            kopieren, auch mehrere Lernzettel auf einmal. Eine neue Version ersetzt automatisch die alte. Gespeichert wird nur auf{' '}
+            <b>diesem Gerät</b>.
             <br />
-            Dauerhaft und auf allen Geräten landen Lernzettel in der App, wenn du mich in <b>Claude Code</b> darum bittest – dann lege ich sie
-            direkt ins Repo.
+            Dauerhaft und auf allen Geräten landen Lernzettel in der App, wenn du mich in <b>Claude Code</b> darum bittest.
           </div>
         )}
 
@@ -134,6 +180,51 @@ export default function Neu({ bearbeiten }: { bearbeiten?: string }) {
           />
         </div>
 
+        {mehrere ? (
+          <section className="space-y-3">
+            <div className="flex items-center gap-2 px-1">
+              <span className="font-bold">📚 {mehrere.length} Lernzettel erkannt</span>
+            </div>
+            <div className="karte divide-y divide-black/5 dark:divide-white/5">
+              {mehrere.map((m, i) => {
+                const f = fachById(m.zettel.fach)
+                const ersetzt = platzFuer(m.zettel, z.eigene, `neu-${i}`).ersetzt
+                return (
+                  <div key={i} className="px-4 py-3">
+                    <div className="text-xs font-semibold tracking-wide uppercase" style={{ color: f?.farbe }}>
+                      {f?.icon} {f?.kurz} · {bezeichnung(m.zettel)}
+                    </div>
+                    <div className="font-medium">{m.zettel.titel || 'Ohne Titel'}</div>
+                    <div className="mt-0.5 text-xs text-stone-500">
+                      {m.fragen ? `❓ ${m.fragen} Testfragen` : '⚠️ ohne Test'}
+                      {ersetzt ? ' · ersetzt deine ältere Version' : ''}
+                    </div>
+                    {[...m.blockiert, ...m.hinweise].map((h) => (
+                      <div key={h} className={`mt-0.5 text-xs ${m.blockiert.includes(h) ? 'text-red-600' : 'text-amber-600'}`}>
+                        {h}
+                      </div>
+                    ))}
+                  </div>
+                )
+              })}
+            </div>
+            <label className="block">
+              <span className="mb-1 block px-1 text-sm text-stone-500">Fach für Lernzettel ohne Fach-Angabe</span>
+              <select value={felder.fach} onChange={(e) => setFelder({ ...felder, fach: e.target.value })} className={feld}>
+                {FAECHER.map((f) => (
+                  <option key={f.id} value={f.id}>
+                    {f.icon} {f.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {fehler && <p className="rounded-xl bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950/50 dark:text-red-300">{fehler}</p>}
+            <button type="button" onClick={alleSpeichern} className="knopf min-h-13 w-full bg-blue-600 text-white shadow-md">
+              💾 Alle {mehrere.length} speichern
+            </button>
+          </section>
+        ) : (
+        <>
         <div className="grid grid-cols-2 gap-3">
           <label className="col-span-2 block">
             <span className="mb-1 block px-1 text-sm font-semibold">Titel</span>
@@ -169,6 +260,21 @@ export default function Neu({ bearbeiten }: { bearbeiten?: string }) {
           </label>
         </div>
 
+        {inhalt && (
+          <div className="px-1 text-sm">
+            {fragen.fragen.length ? (
+              <span className="text-stone-600 dark:text-stone-300">❓ {fragen.fragen.length} Testfragen erkannt</span>
+            ) : (
+              <span className="text-amber-600">⚠️ Keine Testfragen gefunden – der Lernzettel hat dann keinen Test.</span>
+            )}
+            {fragen.fehler.map((f) => (
+              <div key={f} className="text-xs text-amber-600">
+                {f}
+              </div>
+            ))}
+          </div>
+        )}
+
         {fehler && <p className="rounded-xl bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950/50 dark:text-red-300">{fehler}</p>}
 
         <div className="flex gap-3">
@@ -185,6 +291,8 @@ export default function Neu({ bearbeiten }: { bearbeiten?: string }) {
             <h1 className="mb-3 text-2xl font-extrabold">{felder.titel || 'Ohne Titel'}</h1>
             <Markdown html={gerendert.html} />
           </div>
+        )}
+        </>
         )}
       </div>
     </div>

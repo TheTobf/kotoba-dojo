@@ -5,6 +5,7 @@ import Leser from './pages/Leser'
 import Mehr from './pages/Mehr'
 import Neu from './pages/Neu'
 import Start from './pages/Start'
+import Test from './pages/Test'
 import Woche from './pages/Woche'
 import { aktualisiere, useUpdateBereit } from './pwa'
 import { pfad, useRoute } from './router'
@@ -46,12 +47,14 @@ export default function App() {
   let inhalt
   if (seite === 'fach' && param) inhalt = <FachSeite id={param} />
   else if (seite === 'zettel' && param) inhalt = <Leser id={param} />
+  else if (seite === 'test' && param) inhalt = <Test art="zettel" id={param} />
+  else if (seite === 'abschluss' && param) inhalt = <Test art="fach" id={param} />
   else if (seite === 'woche') inhalt = <Woche />
   else if (seite === 'neu') inhalt = <Neu bearbeiten={route.query.get('bearbeiten') ?? undefined} />
   else if (seite === 'mehr') inhalt = <Mehr />
   else inhalt = <Start />
 
-  const mitLeiste = seite !== 'zettel'
+  const mitLeiste = !['zettel', 'test', 'abschluss'].includes(seite)
   const aktiv = seite === 'fach' ? '' : seite
 
   return (

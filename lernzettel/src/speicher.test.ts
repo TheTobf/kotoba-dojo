@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { aufraeumen, bereinige, fuehreZusammen, leer } from './speicher'
+import { aufraeumen, bereinige, fuehreZusammen, leer, type TestStand } from './speicher'
 
 describe('Speicher', () => {
   it('übernimmt nur gültige Daten', () => {
@@ -38,5 +38,15 @@ describe('Speicher', () => {
     expect(z.gelesen).toEqual({ a: ['2026-W44', '2026-W45'], b: ['2026-W40'] })
     expect(z.klausur).toEqual({ mathe: '2027-02-10', 'externes-rechnungswesen': '2027-02-12' })
     expect(z.eigene).toHaveLength(1)
+  })
+  it('Test-Ergebnisse: bestes Ergebnis bleibt beim Zusammenführen erhalten', () => {
+    const t = (beste: number, datum: string): TestStand => ({ richtig: 1, anzahl: 2, beste, datum, laeufe: 1 })
+    const roh = bereinige({ tests: { a: t(0.5, '2026-11-04'), b: { kaputt: true } }, fragen: { 'a#1': { r: 1, f: 0, zuletzt: true }, x: 3 } })
+    expect(Object.keys(roh.tests)).toEqual(['a'])
+    expect(roh.fragen).toEqual({ 'a#1': { r: 1, f: 0, zuletzt: true } })
+    const z = fuehreZusammen({ ...leer(), tests: { a: t(0.5, '2026-11-05') } }, { ...leer(), tests: { a: t(0.9, '2026-11-01'), c: t(1, '2026-11-01') } })
+    expect(z.tests.a.beste).toBe(0.9)
+    expect(z.tests.a.datum).toBe('2026-11-05')
+    expect(z.tests.c.beste).toBe(1)
   })
 })

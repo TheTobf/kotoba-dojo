@@ -57,3 +57,20 @@ describe('Markdown', () => {
     expect(html).toContain('<a href="#h-a">')
   })
 })
+
+describe('Testfragen im Text', () => {
+  it('Fragen erscheinen nicht im Text, eine reine „Test“-Überschrift verschwindet', () => {
+    const r = rendere('## Inhalt\n\nText\n\n## Test\n\n> [!FRAGE]\n> Was?\n> - [x] a\n> - [ ] b\n\n> [!QUIZ]\n> Wer?\n> - [x] c\n> - [ ] d')
+    expect(r.html).not.toContain('Was?')
+    expect(r.html).not.toContain('Wer?')
+    expect(r.html).not.toContain('Test')
+    expect(r.haken).toBe(0)
+    expect(r.abschnitte.map((a) => a.text)).toEqual(['Inhalt'])
+  })
+
+  it('Überschriften mit weiterem Inhalt bleiben', () => {
+    const r = rendere('## Test\n\nErst lesen!\n\n> [!FRAGE]\n> Was?\n> - [x] a')
+    expect(r.html).toContain('<h2')
+    expect(r.html).toContain('Erst lesen!')
+  })
+})

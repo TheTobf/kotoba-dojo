@@ -31,6 +31,8 @@ export const pfad = {
   fach: (id: string) => `#/fach/${encodeURIComponent(id)}`,
   zettel: (id: string) => `#/zettel/${encodeURIComponent(id)}`,
   woche: () => '#/woche',
+  test: (zettelId: string) => `#/test/${encodeURIComponent(zettelId)}`,
+  abschluss: (fach: string) => `#/abschluss/${encodeURIComponent(fach)}`,
   neu: (bearbeiten?: string) => (bearbeiten ? `#/neu?bearbeiten=${encodeURIComponent(bearbeiten)}` : '#/neu'),
   mehr: () => '#/mehr',
 }

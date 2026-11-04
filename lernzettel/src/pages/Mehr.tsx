@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Kopf from '../components/Kopf'
-import { FAECHER } from '../faecher'
+import { FAECHER, type Fach } from '../faecher'
+import { zeigeHinweis } from '../hinweis'
+import { projektanweisung } from '../projektanweisung'
 import { APP_ZETTEL } from '../inhalte'
 import { neuLaden } from '../pwa'
 import { ladeSicherung, setzeDesign, setzeKlausur, setzeSchrift, sicherungAlsText, useZustand, type Design } from '../speicher'
@@ -15,6 +17,19 @@ const DESIGNS: { wert: Design; text: string }[] = [
 export default function Mehr() {
   const z = useZustand()
   const [meldung, setMeldung] = useState('')
+  const [anweisung, setAnweisung] = useState<{ fach: Fach; text: string } | null>(null)
+
+  async function kopiereAnweisung(fach: Fach) {
+    const text = projektanweisung(fach)
+    try {
+      await navigator.clipboard.writeText(text)
+      setAnweisung(null)
+      zeigeHinweis(`Anweisung für ${fach.kurz} kopiert ✓`)
+    } catch {
+      // Kein Zugriff auf die Zwischenablage: Text zum Markieren anzeigen
+      setAnweisung({ fach, text })
+    }
+  }
 
   function sichern() {
     const blob = new Blob([sicherungAlsText(z)], { type: 'application/json' })
@@ -89,6 +104,43 @@ export default function Mehr() {
         </section>
 
         <section>
+          <h2 className={ueberschrift}>🤖 Claude-Projekte verbinden</h2>
+          <div className="karte space-y-3 p-4 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+            <p>
+              Damit Claude in deinen Projekten bei jedem Upload automatisch Lernzettel mit Test im richtigen Format schreibt, kopierst du einmal
+              pro Projekt die passende Anweisung:
+            </p>
+            <ol className="list-decimal space-y-1 pl-5">
+              <li>Unten auf das Fach tippen – die Anweisung wird kopiert.</li>
+              <li>
+                In Claude das Projekt öffnen → <b>Anweisungen</b> (Project instructions) bearbeiten → einfügen → speichern.
+              </li>
+              <li>
+                Ab dann: Unterlagen hochladen, Claudes Antwort kopieren und hier unter <b>➕ Einfügen</b> einsetzen.
+              </li>
+            </ol>
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              {FAECHER.map((f) => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => void kopiereAnweisung(f)}
+                  className="knopf min-h-12 bg-stone-100 px-2 text-sm text-tinte dark:bg-nacht-3 dark:text-stone-100"
+                >
+                  📋 {f.icon} {f.kurz}
+                </button>
+              ))}
+            </div>
+            {anweisung && (
+              <div>
+                <p className="mb-1 text-xs">Kopieren hat nicht geklappt – Text markieren und kopieren ({anweisung.fach.name}):</p>
+                <textarea readOnly value={anweisung.text} className="h-48 w-full rounded-xl bg-stone-100 p-2 font-mono text-xs dark:bg-nacht-3" onFocus={(e) => e.target.select()} />
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section>
           <h2 className={ueberschrift}>So kommen neue Lernzettel rein</h2>
           <div className="karte space-y-3 p-4 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
             <p>
@@ -96,8 +148,8 @@ export default function Mehr() {
               für Mathe Übung 4“. Ich lege sie direkt in die App – sie sind dann auf allen Geräten da und offline verfügbar.
             </p>
             <p>
-              <b>2. Aus einem normalen Chat:</b> Den Lernzettel-Text kopieren und unter <b>➕ Einfügen</b> einsetzen. Er bleibt nur auf
-              diesem Gerät.
+              <b>2. Aus deinen Claude-Projekten:</b> Antwort kopieren und unter <b>➕ Einfügen</b> einsetzen (auch mehrere Lernzettel auf
+              einmal). Sie bleiben nur auf diesem Gerät – für alle Geräte schick sie mir in Claude Code.
             </p>
             <p>
               <b>Vor der Klausur:</b> Sag mir „Mach mir den Klausur-Lernzettel für Mathe“ – dann fasse ich alle Übungen zusammen. Ab dann

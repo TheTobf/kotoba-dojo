@@ -1,9 +1,21 @@
 import { useSyncExternalStore } from 'react'
 import { FAECHER } from './faecher'
+import type { FrageStat } from './fragen'
 import type { Zettel } from './zettel'
 import { leseTyp } from './zettel'
 
 export type Design = 'auto' | 'hell' | 'dunkel'
+
+/** Ergebnis eines Tests (Lernzettel-ID oder „fach:<id>“ für den Abschlusstest) */
+export interface TestStand {
+  /** letzter Durchgang */
+  richtig: number
+  anzahl: number
+  /** beste Quote 0…1 */
+  beste: number
+  datum: string
+  laeufe: number
+}
 
 /** Alles, was nur auf diesem Gerät gespeichert wird. */
 export interface Zustand {
@@ -16,6 +28,10 @@ export interface Zustand {
   klausur: Record<string, string>
   /** In der App eingefügte Lernzettel */
   eigene: Zettel[]
+  /** Test-Ergebnisse */
+  tests: Record<string, TestStand>
+  /** Statistik pro Testfrage (Schlüssel aus fragen.ts) */
+  fragen: Record<string, FrageStat>
   /** Schriftgröße der Lernzettel (1 = normal) */
   schrift: number
   design: Design
@@ -25,7 +41,7 @@ export interface Zustand {
 const KEY = 'lernzettel-v1'
 
 export function leer(): Zustand {
-  return { version: 1, gelesen: {}, haken: {}, klausur: {}, eigene: [], schrift: 1, design: 'auto' }
+  return { version: 1, gelesen: {}, haken: {}, klausur: {}, eigene: [], tests: {}, fragen: {}, schrift: 1, design: 'auto' }
 }
 
 function istObjekt(x: unknown): x is Record<string, unknown> {
@@ -64,6 +80,20 @@ export function bereinige(roh: unknown): Zustand {
   }
   if (Array.isArray(roh.eigene)) {
     z.eigene = roh.eigene.filter(istZettel).map((e) => ({ ...e, typ: leseTyp(e.typ)!, lokal: true }))
+  }
+  if (istObjekt(roh.tests)) {
+    for (const [id, t] of Object.entries(roh.tests)) {
+      if (istObjekt(t) && [t.richtig, t.anzahl, t.beste, t.laeufe].every((n) => typeof n === 'number') && typeof t.datum === 'string') {
+        z.tests[id] = { richtig: t.richtig as number, anzahl: t.anzahl as number, beste: t.beste as number, datum: t.datum, laeufe: t.laeufe as number }
+      }
+    }
+  }
+  if (istObjekt(roh.fragen)) {
+    for (const [k, f] of Object.entries(roh.fragen)) {
+      if (istObjekt(f) && typeof f.r === 'number' && typeof f.f === 'number' && typeof f.zuletzt === 'boolean') {
+        z.fragen[k] = { r: f.r, f: f.f, zuletzt: f.zuletzt }
+      }
+    }
   }
   if (typeof roh.schrift === 'number' && roh.schrift >= 0.8 && roh.schrift <= 1.6) z.schrift = roh.schrift
   if (roh.design === 'hell' || roh.design === 'dunkel' || roh.design === 'auto') z.design = roh.design
@@ -180,8 +210,11 @@ export function setzeKlausur(fach: string, datum: string): void {
   })
 }
 
-export function speichereEigenen(neu: Zettel): void {
-  aendere((z) => ({ ...z, eigene: [...z.eigene.filter((e) => e.id !== neu.id), { ...neu, lokal: true }] }))
+export function speichereEigenen(...neue: Zettel[]): void {
+  aendere((z) => {
+    const ids = new Set(neue.map((n) => n.id))
+    return { ...z, eigene: [...z.eigene.filter((e) => !ids.has(e.id)), ...neue.map((n) => ({ ...n, lokal: true }))] }
+  })
 }
 
 export function loescheEigenen(id: string): void {
@@ -204,6 +237,22 @@ export function setzeDesign(design: Design): void {
   aendere((z) => ({ ...z, design }))
 }
 
+export function beantworte(key: string, richtig: boolean): void {
+  aendere((z) => {
+    const alt = z.fragen[key] ?? { r: 0, f: 0, zuletzt: false }
+    return { ...z, fragen: { ...z.fragen, [key]: { r: alt.r + (richtig ? 1 : 0), f: alt.f + (richtig ? 0 : 1), zuletzt: richtig } } }
+  })
+}
+
+export function speichereTest(id: string, richtig: number, anzahl: number, datum: string): void {
+  aendere((z) => {
+    const alt = z.tests[id]
+    const quote = anzahl ? richtig / anzahl : 0
+    const stand: TestStand = { richtig, anzahl, beste: Math.max(alt?.beste ?? 0, quote), datum, laeufe: (alt?.laeufe ?? 0) + 1 }
+    return { ...z, tests: { ...z.tests, [id]: stand } }
+  })
+}
+
 // ---------- Sicherung ----------
 
 export function sicherungAlsText(z: Zustand): string {
@@ -218,7 +267,12 @@ export function fuehreZusammen(z: Zustand, sicherung: Zustand): Zustand {
   }
   const eigene = [...z.eigene]
   for (const e of sicherung.eigene) if (!eigene.some((x) => x.id === e.id)) eigene.push(e)
-  return { ...z, gelesen, eigene, klausur: { ...z.klausur, ...sicherung.klausur } }
+  const tests = { ...sicherung.tests }
+  for (const [id, t] of Object.entries(z.tests)) {
+    const s = tests[id]
+    tests[id] = s ? { ...(t.datum >= s.datum ? t : s), beste: Math.max(t.beste, s.beste), laeufe: Math.max(t.laeufe, s.laeufe) } : t
+  }
+  return { ...z, gelesen, eigene, klausur: { ...z.klausur, ...sicherung.klausur }, tests, fragen: { ...sicherung.fragen, ...z.fragen } }
 }
 
 export function ladeSicherung(text: string): { eigene: number; gelesen: number } {

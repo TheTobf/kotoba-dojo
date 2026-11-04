@@ -72,11 +72,16 @@ export interface Rohzettel {
  * Macht aus Text mit Kopfbereich einen Lernzettel.
  * `fach` aus dem Ordnernamen hat Vorrang vor `fach:` im Kopf.
  */
-export function baueZettel(id: string, text: string, opt: { fach?: string; lokal?: boolean } = {}): Rohzettel {
+export function baueZettel(
+  id: string,
+  text: string,
+  opt: { fach?: string; standardFach?: string; lokal?: boolean } = {},
+): Rohzettel {
   const fehler: string[] = []
   const { kopf, inhalt } = leseKopf(text)
-  const fach = opt.fach ? fachById(opt.fach) : findeFach(kopf.fach ?? '')
+  const fach = opt.fach ? fachById(opt.fach) : (findeFach(kopf.fach ?? '') ?? (opt.standardFach ? fachById(opt.standardFach) : undefined))
   if (!fach) fehler.push(opt.fach ? `Unbekanntes Fach „${opt.fach}“` : `Fach fehlt oder unbekannt („${kopf.fach ?? ''}“)`)
+  else if (opt.fach && kopf.fach && findeFach(kopf.fach)?.id !== opt.fach) fehler.push(`fach: „${kopf.fach}“ passt nicht zum Ordner „${opt.fach}“`)
   let typ = leseTyp(kopf.typ)
   if (!typ) {
     if (kopf.typ) fehler.push(`Unbekannter typ „${kopf.typ}“ (erlaubt: uebung, klausur, extra)`)
@@ -93,7 +98,7 @@ export function baueZettel(id: string, text: string, opt: { fach?: string; lokal
   return {
     zettel: {
       id,
-      fach: fach?.id ?? opt.fach ?? 'mathe',
+      fach: fach?.id ?? opt.fach ?? opt.standardFach ?? 'mathe',
       typ,
       titel: titel || id.split('/').pop() || id,
       uebung: typ === 'uebung' ? uebung : undefined,
@@ -105,6 +110,57 @@ export function baueZettel(id: string, text: string, opt: { fach?: string; lokal
     },
     fehler,
   }
+}
+
+const KOPF_START = /^---[ \t]*\n(?:[ \t]*[A-Za-zÄÖÜäöüß_-]+[ \t]*:[^\n]*\n)+---[ \t]*$/gm
+const ZAUN = /^(`{3,}|~{3,})(.*)$/
+
+/**
+ * Text mit einem oder mehreren Lernzetteln (z. B. aus einem Chat kopiert) in einzelne Lernzettel zerlegen.
+ * Einzelne ```markdown-Rahmen um die Lernzettel und Chat-Text dazwischen werden entfernt.
+ */
+export function teileText(text: string): string[] {
+  const t = text.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n')
+  const starts = [...t.matchAll(KOPF_START)].map((m) => m.index!)
+  if (!starts.length) {
+    const einzeln = entferneCodeRahmen(t)
+    return einzeln ? [einzeln] : []
+  }
+  const vorspann = t.slice(0, starts[0]).trimEnd().split('\n').at(-1) ?? ''
+  const rahmen = ZAUN.exec(vorspann.trim())?.[1] ?? ''
+  return starts.map((start, i) => {
+    let stueck = t.slice(start, starts[i + 1] ?? t.length)
+    if (rahmen) {
+      // bis zum schließenden Rahmen; Codeblöcke im Lernzettel (mit Sprache, z. B. ```sql) überspringen
+      const zeilen = stueck.split('\n')
+      let innen = '' // Zaun des Codeblocks im Lernzettel, z. B. „~~~“
+      let ende = zeilen.length
+      for (let j = 0; j < zeilen.length; j++) {
+        const m = ZAUN.exec(zeilen[j].trim())
+        if (!m) continue
+        const schliesst = (offen: string) => m[1][0] === offen[0] && m[1].length >= offen.length && !m[2].trim()
+        if (innen) {
+          if (schliesst(innen)) innen = ''
+        } else if (schliesst(rahmen)) {
+          ende = j
+          break
+        } else innen = m[1]
+      }
+      stueck = zeilen.slice(0, ende).join('\n')
+    }
+    return stueck.trim()
+  })
+}
+
+/** Gleicher Platz in der App (gleiches Fach, gleiche Übung/Teil) – dann ersetzt ein neuer Lernzettel den alten. */
+export function gleicherPlatz(a: Zettel, b: Zettel): boolean {
+  return (
+    a.fach === b.fach &&
+    a.typ === b.typ &&
+    (a.uebung ?? 0) === (b.uebung ?? 0) &&
+    (a.teil ?? 0) === (b.teil ?? 0) &&
+    (a.typ !== 'extra' || a.titel === b.titel)
+  )
 }
 
 /** Pfad „…/inhalte/mathe/uebung-01-1-mengen.md“ → Fach + ID */

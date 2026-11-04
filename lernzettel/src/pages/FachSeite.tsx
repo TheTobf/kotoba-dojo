@@ -2,11 +2,12 @@ import Kopf from '../components/Kopf'
 import Ring from '../components/Ring'
 import ZettelZeile from '../components/ZettelZeile'
 import { fachAktiv, fachById } from '../faecher'
+import { leseFragen } from '../fragen'
 import { useAlleZettel } from '../inhalte'
 import { pfad } from '../router'
 import { istGelesen, setzeKlausur, useZustand } from '../speicher'
 import { datumLang, klausurText, tageBis, wochenKey } from '../woche'
-import { gliedereFach, wochenListe } from '../zettel'
+import { gliedereFach, reihenfolge, wochenListe } from '../zettel'
 
 export default function FachSeite({ id }: { id: string }) {
   const fach = fachById(id)
@@ -28,6 +29,9 @@ export default function FachSeite({ id }: { id: string }) {
   const erledigt = liste.filter((x) => istGelesen(z, x.id, woche)).length
   const klausur = z.klausur[fach.id]
   const tage = klausur ? tageBis(heute, klausur) : undefined
+  const mitTest = reihenfolge(alle, fach.id).map((x) => leseFragen(x.inhalt).fragen.length).filter((n) => n > 0)
+  const anzahlFragen = mitTest.reduce((a, b) => a + b, 0)
+  const abschluss = z.tests[`fach:${fach.id}`]
 
   return (
     <div style={{ '--fach': fach.farbe } as React.CSSProperties} className="pb-28">
@@ -131,6 +135,28 @@ export default function FachSeite({ id }: { id: string }) {
             </div>
           </section>
         )}
+
+        {/* Abschlusstest ganz zum Schluss */}
+        <section className="mt-8">
+          <h2 className="mb-2 px-1 text-sm font-semibold tracking-wide text-stone-500 uppercase">🏁 Abschlusstest</h2>
+          {anzahlFragen > 0 ? (
+            <a href={pfad.abschluss(fach.id)} className="karte flex items-center gap-4 p-4 ring-2 ring-(--fach)/40 transition active:scale-[0.99]">
+              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-(--fach) text-2xl">🏁</span>
+              <div className="min-w-0 flex-1">
+                <div className="font-bold">Alles gemischt testen</div>
+                <div className="text-sm text-stone-500 dark:text-stone-400">
+                  {anzahlFragen} Fragen aus {mitTest.length} {mitTest.length === 1 ? 'Lernzettel' : 'Lernzetteln'}
+                  {abschluss ? ` · bestes Ergebnis ${Math.round(abschluss.beste * 100)} %` : ''}
+                </div>
+              </div>
+              <span className="text-stone-400">›</span>
+            </a>
+          ) : (
+            <div className="rounded-2xl border-2 border-dashed border-stone-300 p-4 text-sm text-stone-500 dark:border-stone-700 dark:text-stone-400">
+              Jeder Lernzettel bekommt einen eigenen Multiple-Choice-Test. Hier testest du dann alle Fragen des Fachs gemischt.
+            </div>
+          )}
+        </section>
       </div>
     </div>
   )

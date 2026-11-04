@@ -118,3 +118,59 @@ Die **Ableitung** $f'(x)$ gibt die Steigung von $f$ an der Stelle $x$ an – als
 - [ ] Ich erkenne, ob Produkt-, Quotienten- oder Kettenregel nötig ist.
 - [ ] Ich kann Grenzkosten berechnen und in einem Satz erklären.
 - [ ] Ich habe alle drei Selbsttest-Aufgaben ohne Lösung geschafft.
+
+## Test
+
+> [!FRAGE]
+> Was ist die Ableitung von $f(x) = (3x^2 + 1)^5$?
+> - [ ] $5\,(3x^2 + 1)^4$
+> - [x] $30x\,(3x^2 + 1)^4$
+> - [ ] $5\,(6x)^4$
+> - [ ] $(3x^2 + 1)^6$
+>
+> Kettenregel: äußere Ableitung $5\,(3x^2 + 1)^4$ **mal** innere Ableitung $6x$. Nur $5\,(3x^2 + 1)^4$ wäre der typische Fehler – die innere Ableitung fehlt.
+
+> [!FRAGE]
+> Welche Regel brauchst du für $f(x) = x^2 \cdot \ln x$?
+> - [x] Produktregel
+> - [ ] Quotientenregel
+> - [ ] Beide Faktoren einzeln ableiten und multiplizieren: $2x \cdot \frac{1}{x}$
+> - [ ] Gar keine – $\ln x$ ist eine Konstante
+>
+> Zwei Funktionen von $x$ werden multipliziert → Produktregel: $f'(x) = 2x \ln x + x^2 \cdot \frac{1}{x} = 2x \ln x + x$. Einzeln ableiten und multiplizieren ist genau der Fehler, vor dem die Regel schützt.
+
+> [!FRAGE]
+> Für $K(x) = 0{,}5x^2 + 20x + 100$ gilt $K'(10) = 30$. Was bedeutet das?
+> - [x] Die 11. Einheit kostet ungefähr 30 € zusätzlich.
+> - [ ] Die ersten 10 Einheiten kosten zusammen 30 €.
+> - [ ] Die Stückkosten bei 10 Einheiten betragen 30 €.
+> - [ ] Ab 30 Stück macht das Unternehmen Gewinn.
+>
+> $K'(x)$ sind die **Grenzkosten**: der Kostenzuwachs für eine zusätzliche Einheit (näherungsweise). Die Gesamtkosten für 10 Stück wären $K(10) = 350$ €, die Stückkosten $35$ €.
+
+> [!FRAGE]
+> Was ist die Ableitung von $f(x) = \frac{1}{x^2}$?
+> - [x] $-\frac{2}{x^3}$
+> - [ ] $\frac{2}{x^3}$
+> - [ ] $-\frac{2}{x}$
+> - [ ] $\ln(x^2)$
+>
+> Erst umschreiben: $\frac{1}{x^2} = x^{-2}$. Potenzregel: $-2 \cdot x^{-3} = -\frac{2}{x^3}$. Das Minus kommt vom Exponenten $-2$ – wer es vergisst, landet bei $\frac{2}{x^3}$.
+
+> [!FRAGE]
+> Die Ableitung von $f(x) = e^{2x}$ ist …
+> - [ ] $e^{2x}$
+> - [x] $2e^{2x}$
+> - [ ] $2x\,e^{2x - 1}$
+> - [ ] $\frac{1}{2x}$
+>
+> Die e-Funktion bleibt beim Ableiten erhalten, die Kettenregel liefert zusätzlich die innere Ableitung $2$. Die Potenzregel passt hier nicht, weil $x$ im Exponenten steht.
+
+> [!FRAGE]
+> Was bedeutet $f'(x_0) > 0$?
+> - [x] $f$ steigt an der Stelle $x_0$.
+> - [ ] $f$ fällt an der Stelle $x_0$.
+> - [ ] Der Funktionswert $f(x_0)$ ist positiv.
+> - [ ] $f$ ist bei $x_0$ nicht definiert.
+>
+> Die Ableitung ist die Steigung: positiv → $f$ steigt. Über den Funktionswert $f(x_0)$ selbst sagt sie nichts aus.

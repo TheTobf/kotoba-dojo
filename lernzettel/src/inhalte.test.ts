@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { FAECHER } from './faecher'
+import { leseFragen } from './fragen'
 import { APP_ZETTEL, ROH } from './inhalte'
 import { rendere } from './markdown'
 import { bezeichnung } from './zettel'
@@ -29,6 +30,12 @@ describe('Lernzettel in inhalte/', () => {
         const { html } = rendere(zettel.inhalt)
         const fehlerhaft = [...html.matchAll(/class="katex-error"[^>]*title="([^"]*)"/g)].map((m) => m[1])
         expect(fehlerhaft).toEqual([])
+      })
+
+      it('hat einen Test mit mindestens 5 korrekten Multiple-Choice-Fragen', () => {
+        const { fragen, fehler: f } = leseFragen(zettel.inhalt)
+        expect(f).toEqual([])
+        expect(fragen.length).toBeGreaterThanOrEqual(5)
       })
 
       it('übrig gebliebene $-Zeichen deuten auf kaputte Formeln hin', () => {

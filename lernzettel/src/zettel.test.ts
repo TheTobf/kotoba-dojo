@@ -7,10 +7,12 @@ import {
   bezeichnung,
   dateiname,
   entferneCodeRahmen,
+  gleicherPlatz,
   gliedereFach,
   leseKopf,
   reihenfolge,
   suche,
+  teileText,
   wochenListe,
   type Zettel,
 } from './zettel'
@@ -128,5 +130,47 @@ describe('Suche', () => {
     expect(suche(alle, 'aktiva rechnungswesen').map((t) => t.zettel.id)).toEqual(['c'])
     expect(suche(alle, 'aktiva mathe')).toEqual([])
     expect(suche(alle, '   ')).toEqual([])
+  })
+})
+
+describe('Einfügen aus dem Chat', () => {
+  const a = '---\ntitel: A\nfach: mathe\ntyp: uebung\nuebung: 1\n---\n\n## Eins\n\n---\n\nText nach Trennlinie'
+  const b = '---\ntitel: B\nfach: rewe\ntyp: uebung\nuebung: 2\n---\n\n```sql\nSELECT 1;\n```\n\nEnde'
+
+  it('trennt mehrere Lernzettel, Trennlinien im Text stören nicht', () => {
+    expect(teileText(`${a}\n\n${b}`)).toEqual([a, b])
+  })
+
+  it('entfernt Codeblock-Rahmen und Chat-Text dazwischen, Codeblöcke im Zettel bleiben', () => {
+    const chat = `Hier sind deine Lernzettel:\n\n\`\`\`markdown\n${a}\n\`\`\`\n\nUnd Teil zwei:\n\n\`\`\`markdown\n${b}\n\`\`\`\n\nViel Erfolg!`
+    expect(teileText(chat)).toEqual([a, b])
+  })
+
+  it('~~~-Codeblöcke im Zettel beenden den ```-Rahmen nicht', () => {
+    const c = '---\ntitel: C\nfach: winfo\ntyp: uebung\nuebung: 1\n---\n\n~~~sql\nSELECT 1;\n~~~\n\n~~~\nohne Sprache\n~~~\n\nEnde'
+    expect(teileText(`\`\`\`markdown\n${c}\n\`\`\`\nTschüss`)).toEqual([c])
+  })
+
+  it('Text ohne Kopfbereich bleibt ein Lernzettel', () => {
+    expect(teileText('```md\n## Nur Text\n```')).toEqual(['## Nur Text'])
+    expect(teileText('   ')).toEqual([])
+  })
+
+  it('Standard-Fach greift nur, wenn keins angegeben ist', () => {
+    expect(baueZettel('x', '---\ntitel: T\ntyp: extra\n---\nI', { standardFach: 'internationales-management' }).zettel.fach).toBe('internationales-management')
+    expect(baueZettel('x', '---\ntitel: T\nfach: Mathe\ntyp: extra\n---\nI', { standardFach: 'internationales-management' }).zettel.fach).toBe('mathe')
+  })
+
+  it('Ordner und fach: im Kopf müssen zusammenpassen', () => {
+    expect(baueZettel('x', '---\ntitel: T\nfach: mathe\ntyp: extra\n---\nI', { fach: 'externes-rechnungswesen' }).fehler).toEqual([
+      'fach: „mathe“ passt nicht zum Ordner „externes-rechnungswesen“',
+    ])
+  })
+
+  it('gleicher Platz = gleiche Übung und gleicher Teil im selben Fach', () => {
+    expect(gleicherPlatz(z({ id: 'a', uebung: 3, teil: 1 }), z({ id: 'b', uebung: 3, teil: 1, titel: 'neu' }))).toBe(true)
+    expect(gleicherPlatz(z({ id: 'a', uebung: 3, teil: 1 }), z({ id: 'b', uebung: 3, teil: 2 }))).toBe(false)
+    expect(gleicherPlatz(z({ id: 'a', uebung: 3 }), z({ id: 'b', uebung: 3, fach: 'externes-rechnungswesen' }))).toBe(false)
+    expect(gleicherPlatz(z({ id: 'a', typ: 'extra', titel: 'X' }), z({ id: 'b', typ: 'extra', titel: 'Y' }))).toBe(false)
   })
 })

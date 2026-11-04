@@ -3,6 +3,7 @@ import { zeigeHinweis } from '../hinweis'
 import Kopf from '../components/Kopf'
 import Markdown from '../components/Markdown'
 import { fachById } from '../faecher'
+import { leseFragen } from '../fragen'
 import { useAlleZettel } from '../inhalte'
 import { rendere } from '../markdown'
 import { geheZu, pfad } from '../router'
@@ -25,6 +26,7 @@ export default function Leser({ id }: { id: string }) {
   const z = useZustand()
   const zettel = alle.find((x) => x.id === id)
   const gerendert = useMemo(() => (zettel ? rendere(zettel.inhalt) : null), [zettel])
+  const anzahlFragen = useMemo(() => (zettel ? leseFragen(zettel.inhalt).fragen.length : 0), [zettel])
   const fortschritt = useLeseFortschritt()
 
   useEffect(() => {
@@ -48,6 +50,7 @@ export default function Leser({ id }: { id: string }) {
   const fertig = istGelesen(z, zettel.id, woche)
   const zuletzt = zuletztGelesen(z, zettel.id)
   const haken = z.haken[hakenKey(woche, zettel.id)] ?? []
+  const test = z.tests[zettel.id]
   const imWochenCheck = wochenListe(alle, zettel.fach, heute).some((x) => x.id === zettel.id)
   const folge = reihenfolge(alle, zettel.fach)
   const pos = folge.findIndex((x) => x.id === zettel.id)
@@ -147,7 +150,21 @@ export default function Leser({ id }: { id: string }) {
 
         <Markdown html={gerendert.html} haken={haken} onHaken={hake} />
 
-        <section className="karte mt-10 p-4 text-center">
+        {anzahlFragen > 0 && (
+          <a href={pfad.test(zettel.id)} className="karte mt-10 flex items-center gap-4 p-4 ring-2 ring-(--fach)/40 transition active:scale-[0.99]">
+            <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-(--fach)/12 text-2xl">📝</span>
+            <div className="min-w-0 flex-1">
+              <div className="font-bold">Test zu diesem Lernzettel</div>
+              <div className="text-sm text-stone-500 dark:text-stone-400">
+                {anzahlFragen} Multiple-Choice-Fragen
+                {test ? ` · bestes Ergebnis ${Math.round(test.beste * 100)} %` : ' · noch nicht gemacht'}
+              </div>
+            </div>
+            <span className="knopf min-h-10 bg-(--fach) px-3 text-sm text-white">{test ? 'Nochmal' : 'Starten'}</span>
+          </a>
+        )}
+
+        <section className={`karte p-4 text-center ${anzahlFragen > 0 ? 'mt-4' : 'mt-10'}`}>
           <button
             type="button"
             onClick={() => {

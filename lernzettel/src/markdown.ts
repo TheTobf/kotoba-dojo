@@ -32,6 +32,8 @@ const ARTEN: Record<string, CalloutArt> = {
   AUFGABE: { titel: 'Aufgabe', icon: '📝', klasse: 'aufgabe' },
   LOESUNG: { titel: 'Lösung anzeigen', icon: '✅', klasse: 'loesung', zu: true },
   ZUSAMMENFASSUNG: { titel: 'Kurz & knapp', icon: '📌', klasse: 'zusammenfassung' },
+  /** Testfrage (Multiple Choice) – erscheint nicht im Text, sondern im Test am Ende */
+  FRAGE: { titel: 'Frage', icon: '❓', klasse: 'frage' },
 }
 
 const ALIAS: Record<string, string> = {
@@ -53,6 +55,9 @@ const ALIAS: Record<string, string> = {
   ÜBUNG: 'AUFGABE',
   SELBSTTEST: 'AUFGABE',
   FAZIT: 'ZUSAMMENFASSUNG',
+  QUIZ: 'FRAGE',
+  MC: 'FRAGE',
+  TESTFRAGE: 'FRAGE',
 }
 
 function calloutArt(name: string): string | undefined {
@@ -64,6 +69,8 @@ function calloutArt(name: string): string | undefined {
 interface CalloutToken extends Tokens.Generic {
   type: 'callout'
   art: string
+  /** Text im Kasten ohne „>“ (für Testfragen) */
+  koerper: string
   titelTokens: Tokens.Generic[]
   tokens: Tokens.Generic[]
 }
@@ -85,6 +92,7 @@ const callout: TokenizerAndRendererExtension = {
       type: 'callout',
       raw: m[0],
       art,
+      koerper,
       titelTokens: this.lexer.inline(m[2].trim()),
       tokens: [],
     }
@@ -93,6 +101,7 @@ const callout: TokenizerAndRendererExtension = {
   },
   renderer(t) {
     const token = t as CalloutToken
+    if (token.art === 'FRAGE') return ''
     const art = ARTEN[token.art]
     const eigenerTitel = this.parser.parseInline(token.titelTokens)
     const titel = eigenerTitel || art.titel
@@ -126,6 +135,47 @@ function klar(raw: string): string {
 
 const basis = new Renderer()
 
+const KATEX = { throwOnError: false, nonStandard: true, strict: 'ignore', output: 'htmlAndMathml' } as const
+
+function istFrage(t: Tokens.Generic): boolean {
+  return t.type === 'callout' && (t as CalloutToken).art === 'FRAGE'
+}
+
+/** Überschriften entfernen, unter denen nur Testfragen stehen (z. B. „## Test“) – die Fragen kommen in den Test. */
+export function ohneLeereFragenAbschnitte(tokens: Tokens.Generic[]): Tokens.Generic[] {
+  const weg = new Set<number>()
+  tokens.forEach((t, i) => {
+    if (t.type !== 'heading') return
+    let fragen = 0
+    for (let j = i + 1; j < tokens.length; j++) {
+      const u = tokens[j]
+      if (u.type === 'heading' && (u as Tokens.Heading).depth <= (t as Tokens.Heading).depth) break
+      if (istFrage(u)) fragen++
+      else if (u.type !== 'space' && u.type !== 'hr') return
+    }
+    if (fragen) weg.add(i)
+  })
+  return tokens.filter((_, i) => !weg.has(i))
+}
+
+const lexerOnly = new Marked({ gfm: true }, markedKatex(KATEX), { extensions: [callout] })
+
+/** Rohtexte aller „> [!FRAGE]“-Kästen (für den Test) */
+export function frageBloecke(md: string): string[] {
+  const bloecke: string[] = []
+  lexerOnly.walkTokens(lexerOnly.lexer(md), (t) => {
+    if (istFrage(t)) bloecke.push((t as CalloutToken).koerper)
+  })
+  return bloecke
+}
+
+const inlineMarked = new Marked({ gfm: true }, markedKatex(KATEX))
+
+/** Eine Zeile Markdown (z. B. Antwort im Test) → HTML ohne <p> */
+export function rendereInline(md: string): string {
+  return inlineMarked.parseInline(md, { async: false })
+}
+
 /** Markdown (mit Formeln, Kästen und Checklisten) → HTML */
 export function rendere(md: string): Gerendert {
   const abschnitte: Abschnitt[] = []
@@ -134,8 +184,8 @@ export function rendere(md: string): Gerendert {
 
   const marked = new Marked(
     { gfm: true, breaks: false },
-    markedKatex({ throwOnError: false, nonStandard: true, strict: 'ignore', output: 'htmlAndMathml' }),
-    { extensions: [callout] },
+    markedKatex(KATEX),
+    { extensions: [callout], hooks: { processAllTokens: (tokens) => ohneLeereFragenAbschnitte(tokens as Tokens.Generic[]) as typeof tokens } },
     {
       renderer: {
         heading(token) {
