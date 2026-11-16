@@ -12,12 +12,7 @@ const COOKIE = 'kd_session'
 export const SESSION_DAYS = 30
 const SESSION_SECONDS = SESSION_DAYS * 86_400
 
-export async function createSession(c: AppContext, userId: string): Promise<void> {
-  const token = randomToken()
-  const now = nowSeconds(c)
-  await c.env.DB.prepare('INSERT INTO sessions (token_hash, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)')
-    .bind(await sha256Hex(token), userId, now, now + SESSION_SECONDS)
-    .run()
+function writeCookie(c: AppContext, token: string) {
   setCookie(c, COOKIE, token, {
     httpOnly: true,
     sameSite: 'Lax',
@@ -27,17 +22,35 @@ export async function createSession(c: AppContext, userId: string): Promise<void
   })
 }
 
+export async function createSession(c: AppContext, userId: string): Promise<void> {
+  const token = randomToken()
+  const now = nowSeconds(c)
+  await c.env.DB.prepare('INSERT INTO sessions (token_hash, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)')
+    .bind(await sha256Hex(token), userId, now, now + SESSION_SECONDS)
+    .run()
+  writeCookie(c, token)
+}
+
 export async function loadUser(c: AppContext): Promise<User | null> {
   const token = getCookie(c, COOKIE)
   if (!token || token.length > 128) return null
+  const now = nowSeconds(c)
+  const tokenHash = await sha256Hex(token)
   const row = await c.env.DB.prepare(
-    `SELECT users.id AS id, users.email AS email FROM sessions
+    `SELECT users.id AS id, users.email AS email, sessions.expires_at AS expiresAt FROM sessions
      JOIN users ON users.id = sessions.user_id
      WHERE sessions.token_hash = ? AND sessions.expires_at > ?`,
   )
-    .bind(await sha256Hex(token), nowSeconds(c))
-    .first<User>()
-  return row ?? null
+    .bind(tokenHash, now)
+    .first<User & { expiresAt: number }>()
+  if (!row) return null
+
+  // Wer die App regelmäßig nutzt, bleibt angemeldet: Ist die Hälfte der Laufzeit um, wird die Sitzung verlängert.
+  if (row.expiresAt - now < SESSION_SECONDS / 2) {
+    await c.env.DB.prepare('UPDATE sessions SET expires_at = ? WHERE token_hash = ?').bind(now + SESSION_SECONDS, tokenHash).run()
+    writeCookie(c, token)
+  }
+  return { id: row.id, email: row.email }
 }
 
 export async function destroySession(c: AppContext): Promise<void> {
