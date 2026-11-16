@@ -7,8 +7,6 @@
  * Aufruf:  npm run stripe:setup        (liest STRIPE_SECRET_KEY aus .env)
  * Das Skript kann beliebig oft laufen: Was schon passt, bleibt unverändert. Ändert sich ein Preis in
  * shared/plans.ts, entsteht ein neuer Stripe-Preis und übernimmt den lookup_key (bestehende Abos behalten den alten).
- *
- * ⚠ Noch nicht gegen ein echtes Stripe-Konto ausgeführt (in der Aufbau-Sitzung gab es keinen Testschlüssel).
  */
 import Stripe from 'stripe'
 import { CURRENCY, PLANS, PRODUCT_NAME, formatPrice } from '../shared/plans'
@@ -29,7 +27,8 @@ if (!key.startsWith('sk_test_') && !key.startsWith('rk_test_')) {
   process.exit(1)
 }
 
-const stripe = new Stripe(key)
+// fetch statt Nodes http-Modul: funktioniert auch hinter einem Proxy (NODE_USE_ENV_PROXY=1).
+const stripe = new Stripe(key, { httpClient: Stripe.createFetchHttpClient() })
 const PRODUCT_MARKER = 'kotoba_dojo_pro'
 
 async function ensureProduct(): Promise<Stripe.Product> {

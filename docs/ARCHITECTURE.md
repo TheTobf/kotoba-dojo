@@ -65,8 +65,8 @@ Ohne Stripe-Konto führt der Checkout auf lokale Ersatzseiten (`/api/dev/stripe/
 Datenbank, sondern bauen Stripe-Meldungen, signieren sie wie Stripe und schicken sie durch dieselbe
 Signaturprüfung und Verarbeitung wie der Webhook. So lässt sich der ganze Ablauf mit einem Befehl durchklicken.
 Aktiv nur bei `ENVIRONMENT=development` **und** leerem `STRIPE_SECRET_KEY`; sonst 404 (getestet).
-Grenze: Die Form der Meldungen ist Stripes Dokumentation (API 2026-10-28) nachgebaut, aber noch nicht mit echten
-Stripe-Meldungen abgeglichen – siehe HANDOFF.
+Die Meldungen des Simulators sind Stripe nachgebaut. Dass der Webhook auch die echten Meldungen richtig verarbeitet,
+prüft `npm run stripe:verify` gegen Stripe im Testmodus (am 16.11.2026 bestanden).
 
 ### Anmeldung: E-Mail-Einmalcode, Sitzungs-Cookie
 Kein Passwort (nichts zu stehlen, nichts zu vergessen). Code: 6 Ziffern, 10 Minuten, 5 Versuche, 5 Codes pro

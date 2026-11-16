@@ -28,14 +28,15 @@ Korrekturen auf Deutsch, Fehler werden automatisch zu Karteikarten.
 ## Aktueller Stand (16.11.2026)
 - Grundgerüst fertig: alle Hauptseiten mit Design, Paywall, Kündigungsbutton, KI-Endpunkt, Rechtsseiten als Entwurf
 - 96 Tests grün; ganzer Ablauf (Kauf → Pro → Kündigung → Pro endet) lokal im Browser durchgeklickt
-- Bezahlung läuft lokal über einen Stripe-Simulator; **echtes Stripe im Testmodus ist noch nicht geprüft**
+- Echtes Stripe im Testmodus geprüft: Produkt und Preise angelegt; Kauf, Verlängerung, Kündigung und Ende mit
+  echten Stripe-Meldungen bestanden. Offen: einmal von Hand im Browser mit Testkarte bezahlen
 - Noch nichts veröffentlicht; es werden noch keine E-Mails verschickt
 - Story-Folgen, Missionen und Figuren sind Platzhalter
 - Alte Stimmen entfernt (Lizenz), Vorlesen über die Gerätestimme
 
 ## Nächste Schritte
 1. Stimmen durch eigene, lizenzierte Aufnahmen ersetzen
-2. Echten Stripe-Testlauf machen (gültiger Testschlüssel nötig; Prüfskript `npm run stripe:verify` liegt bereit)
+2. Stripe-Bezahlseite einmal von Hand im Browser durchklicken (Testkarte)
 3. E-Mail-Versand anschließen
 4. Echte Story-Inhalte einpflegen
 5. Echte KI anschließen

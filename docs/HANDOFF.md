@@ -12,6 +12,14 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
   Anmeldung → Kaufseite mit Pflicht-Häkchen → Bezahlseite → Pro aktiv → Pro-Mission gelöst → KI-Gespräch mit
   Korrektur und Hilfe → Fehlerkarte unter „Lernen“ → Kündigung mit Bestätigung → Abo beendet → wieder gesperrt
   (Server antwortet 402). Keine Fehler in der Browser-Konsole.
+- **Echtes Stripe im Testmodus geprüft (16.11.2026):**
+  - `npm run stripe:setup` hat Produkt, beide Preise (4,99 € / 39 €) und das Kundenportal angelegt; ein zweiter Lauf
+    ändert nichts.
+  - `npm run stripe:verify` ist bestanden: Stripe erzeugt an einer Testuhr Kauf, Verlängerung, Kündigung und Ende;
+    die echten Meldungen wurden signiert an den Webhook geschickt, und der Server hat jedes Mal richtig entschieden
+    (Pro an → weiter an, Zeitraum verlängert → „gekündigt, läuft noch“ → Pro aus, Inhalt 402).
+  - Die Stripe-Anbindung (`worker/payments/stripe-gateway.ts`) wurde direkt aufgerufen: Checkout-Seite für beide
+    Tarife (richtiger Betrag, Deutsch, Konto-ID, Zustimmungstext), Kundenportal-Link und Kündigung zum Laufzeitende.
 - **Seiten mit Design:** Landingpage mit Warteliste, Preise, Anmeldung, Kündigung, Impressum, Datenschutz, AGB,
   Widerruf, Quellen; App: Start, Lernen (+ Lernsitzung), Story (+ Folge, Mission), Sprechen (+ Probe-Mission,
   KI-Gespräch), Profil, Kaufseite. Hell und dunkel, Handy und PC.
@@ -20,11 +28,10 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
 
 ## Was NICHT geprüft ist (ehrlich)
 
-- **Echtes Stripe (Testmodus) ist noch nicht geprüft.** In der Aufbau-Sitzung wurde ein Schlüssel hinterlegt, Stripe
-  hat ihn aber als ungültig abgelehnt („Invalid API Key“) – es wurde nichts bei Stripe angelegt.
-  `worker/payments/stripe-gateway.ts`, `scripts/stripe-setup.ts` und `scripts/stripe-verify.ts` sind nach
-  Dokumentation geschrieben, aber noch nie gegen Stripe gelaufen. Die Stripe-Meldungen in Tests und Simulator sind
-  nachgebaut (API 2026-10-28).
+- **Bei Stripe noch offen:** Niemand hat die Stripe-Bezahlseite im Browser mit der Testkarte ausgefüllt, das
+  Kundenportal von Hand bedient oder `stripe listen` benutzt. Außerdem lief die Stripe-Anbindung nur unter Node, nicht
+  im lokalen Worker selbst – die Aufbau-Umgebung ließ den Worker nicht ins Internet (dort endete der Checkout mit
+  einem Verbindungsfehler). Auf einem normalen Rechner sollte das gehen; bitte einmal von Hand durchklicken.
 - **Es wird keine E-Mail verschickt** (Platzhalter). In Produktion kann sich deshalb noch niemand anmelden.
 - **Nichts ist veröffentlicht.** Kein Deployment, keine echte D1-Datenbank.
 - Kein Test auf echten Handys, kein Screenreader-Test.
@@ -36,13 +43,10 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
    als bevorzugte Quelle, Gerätestimme als Rückfall. Zuerst nur Story-Sätze und Missionen (wenige Dutzend Dateien),
    erst danach der Grundwortschatz. Lizenz vor dem Erzeugen schriftlich klären und in `LICENSES.md` eintragen.
    Die alten Dateien auf `main` nicht verwenden. Dateien wegen der Menge nicht vorab cachen (Laufzeit-Cache).
-2. **Echten Stripe-Testlauf machen.** Schnellster Weg: `sk_test_…` in `.env` → `npm run stripe:setup` →
-   `npm run dev` → in einem zweiten Fenster `npm run stripe:verify`. Das Skript legt bei Stripe ein Test-Abo an,
-   spult mit einer Stripe-Testuhr vor und prüft Kauf → Verlängerung → Kündigung → Ende mit echten Stripe-Meldungen
-   (ohne Browser, ohne `stripe listen`). Schlägt ein Schritt fehl, die echte Meldung mit
-   `worker/payments/simulator.ts` vergleichen und Abweichungen in Webhook, Simulator **und** Tests nachziehen.
-   Danach einmal von Hand: `stripe listen --forward-to localhost:5173/api/stripe/webhook`, `whsec_…` in `.env`,
-   Kauf mit Testkarte 4242 4242 4242 4242, Kundenportal, kündigen.
+2. **Stripe einmal von Hand im Browser durchklicken** (der automatische Testlauf ist bestanden, siehe oben):
+   `sk_test_…` in `.env` → `stripe listen --forward-to localhost:5173/api/stripe/webhook` → `whsec_…` in `.env` →
+   `npm run dev` → Kauf mit Testkarte 4242 4242 4242 4242 → Kundenportal → kündigen.
+   `npm run stripe:verify` nach jeder Änderung an Webhook oder Abo-Logik erneut laufen lassen.
    Im Stripe-Dashboard prüfen: Text am Bezahlknopf (Button-Lösung § 312j BGB), Rechnungs-/Belegversand.
 3. **E-Mail-Versand anschließen** (`worker/lib/mailer.ts`): Anmeldecodes, Wartelisten-Bestätigung,
    Kündigungsbestätigung. Vorschlag: Brevo (EU, Gratis-Kontingent). Schlüssel als Secret, Dienst in die
@@ -83,5 +87,6 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
 - Die zwei Lerndateien (zusammen ca. 2 MB) werden vorab gecacht. Wächst der Inhalt, auf Laden nach Bedarf umstellen.
 - `wrangler`/`miniflare` laufen in einer Beta-Version (von `@cloudflare/vite-plugin` vorgegeben). Bei Updates
   zuerst `npm test` und `npm run dev` prüfen.
+- Hinter einem Proxy brauchen die Stripe-Skripte `NODE_USE_ENV_PROXY=1` (so lief es in der Aufbau-Umgebung).
 - Im Startprotokoll von `npm run dev` kann eine Netzwerk-Fehlermeldung von wrangler stehen (Versionsprüfung ohne
   Internet). Sie ist harmlos.

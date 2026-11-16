@@ -37,7 +37,8 @@ Der Simulator schickt dabei signierte Meldungen durch den echten Webhook – sie
 Automatische Prüfung ohne Browser: Schritte 1 und 2, dann `npm run dev` und in einem zweiten Fenster
 `npm run stripe:verify` (Kauf → Verlängerung → Kündigung → Ende mit echten Stripe-Meldungen und Testuhr).
 
-Live-Schlüssel lehnt der Server ab. Dieser Weg ist noch nicht erprobt – siehe `docs/HANDOFF.md`.
+Live-Schlüssel lehnt der Server ab. Einrichtung und automatische Prüfung sind erprobt; der Kauf von Hand im Browser
+noch nicht – siehe `docs/HANDOFF.md`.
 
 ## Befehle
 
