@@ -32,8 +32,16 @@ wiederverwendet werden**:
 - 3.830 Dateien der VOICEVOX-Stimme 青山龍星 (geschäftliche Nutzung nur mit vorheriger Genehmigung),
 - 3.730 Dateien der VOICEVOX-Stimme 四国めたん (eigene Nutzungsbedingungen, nicht für diesen Zweck geprüft).
 
-Vorgelesen wird derzeit mit der Sprachausgabe des Geräts (Web Speech API). Der Austausch gegen eigene, lizenzierte
-Aufnahmen ist der erste Punkt in `docs/HANDOFF.md`.
+Vorgelesen wird derzeit mit der Sprachausgabe des Geräts (Web Speech API); es gibt noch keine eigenen Aufnahmen.
+
+**Geplante Quelle für neue Aufnahmen** (Stand 16.11.2026, siehe `docs/HANDOFF.md` Punkt 1):
+
+1. VOICEVOX 四国めたん / ずんだもん – nur wenn der Rechteinhaber (SSS合同会社) die Nutzung in einer bezahlten App
+   bestätigt. Anfrage: `docs/anfragen/voicevox-anfrage.md`. Pflicht wäre die Nennung „VOICEVOX:四国めたん“.
+2. Sonst Microsoft Azure Speech in der **bezahlten** Stufe (Standard S0). Laut Microsofts Produktbedingungen darf nur
+   die Ausgabe der bezahlten Stufe kommerziell genutzt werden, nicht die der Gratis-Stufe F0.
+
+Sobald Aufnahmen erzeugt sind: Quelle, Stimme, Datum und Lizenzgrundlage hier eintragen.
 
 ## Schriften (selbst gehostet über npm-Pakete)
 

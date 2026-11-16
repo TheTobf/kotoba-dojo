@@ -38,6 +38,12 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
+            // Sprachaufnahmen: beim ersten Abspielen merken, danach auch offline.
+            urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith('/audio/') && url.pathname.endsWith('.mp3'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'aufnahmen', expiration: { maxEntries: 6000 } },
+          },
+          {
             urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.endsWith('.woff2'),
             handler: 'CacheFirst',
             options: { cacheName: 'schriften', expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 365 } },

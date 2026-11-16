@@ -12,7 +12,8 @@
     "typecheck": "tsc -b",
     "db:migrate": "wrangler d1 migrations apply kotoba-dojo --local",
     "stripe:setup": "tsx scripts/stripe-setup.ts",
-    "stripe:verify": "tsx scripts/stripe-verify.ts"
+    "stripe:verify": "tsx scripts/stripe-verify.ts",
+    "audio:gen": "tsx scripts/audio-gen.ts"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-jp": "^5.3.1",

@@ -47,10 +47,10 @@ export function SpeakButton({ text, className }: { text: string; className?: str
   if (!canSpeak()) return null
   return (
     <span className={cx('inline-flex gap-2', className)}>
-      <IconButton label="Vorlesen" onClick={(e) => { e.stopPropagation(); speak(text) }}>
+      <IconButton label="Vorlesen" onClick={(e) => { e.stopPropagation(); void speak(text) }}>
         <Icon name="sound" />
       </IconButton>
-      <IconButton label="Langsam vorlesen" onClick={(e) => { e.stopPropagation(); speak(text, { slow: true }) }}>
+      <IconButton label="Langsam vorlesen" onClick={(e) => { e.stopPropagation(); void speak(text, { slow: true }) }}>
         <Icon name="slow" />
       </IconButton>
     </span>

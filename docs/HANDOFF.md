@@ -5,7 +5,7 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
 ## Was fertig ist (geprüft)
 
 - **Start mit einem Befehl:** `npm run dev` richtet `.env` und lokale Datenbank ein und startet Oberfläche + Server.
-- **Tests:** 96 Tests grün (`npm test`), Typprüfung und Build sauber.
+- **Tests:** 100 Tests grün (`npm test`), Typprüfung und Build sauber.
   Abgedeckt: Pro-Regel, Kauf, Verlängerung, Kündigung, abgelaufenes Abo, Webhook-Signatur, Reihenfolge/Dubletten,
   Anmeldung, CSRF, Kündigungsbutton, KI-Kontingent und Monatsbudget, Simulator-Sperre in Produktion, Missionen, FSRS.
 - **Ablauf im Browser durchgeklickt** (Playwright, Handy-Größe, mit Stripe-Simulator): Gast sieht Upgrade-Screen →
@@ -24,7 +24,8 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
   Widerruf, Quellen; App: Start, Lernen (+ Lernsitzung), Story (+ Folge, Mission), Sprechen (+ Probe-Mission,
   KI-Gespräch), Profil, Kaufseite. Hell und dunkel, Handy und PC.
 - **KI-Endpunkt** mit Tageskontingent pro Nutzer und globalem Monatsbudget, Platzhalter-Antworten.
-- **Alte Audiodateien entfernt**, Vorlesen über die Sprachausgabe des Geräts.
+- **Alte Audiodateien entfernt.** Vorlesen: eigene Aufnahme, falls vorhanden, sonst Sprachausgabe des Geräts.
+  Es gibt noch keine einzige Aufnahme.
 
 ## Was NICHT geprüft ist (ehrlich)
 
@@ -38,11 +39,18 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
 
 ## TODO – in dieser Reihenfolge
 
-1. **Stimmen austauschen.** Jetzt: Sprachausgabe des Geräts (`src/lib/speech.ts`) – Qualität schwankt je nach Gerät,
-   manche haben keine japanische Stimme (die App warnt dann). Ziel: eigene Aufnahmen mit klarer kommerzieller Lizenz
-   als bevorzugte Quelle, Gerätestimme als Rückfall. Zuerst nur Story-Sätze und Missionen (wenige Dutzend Dateien),
-   erst danach der Grundwortschatz. Lizenz vor dem Erzeugen schriftlich klären und in `LICENSES.md` eintragen.
-   Die alten Dateien auf `main` nicht verwenden. Dateien wegen der Menge nicht vorab cachen (Laufzeit-Cache).
+1. **Stimmen austauschen – Technik fertig, Quelle wartet auf Antwort.**
+   - Fertig: Die App spielt zu einem Text die eigene Aufnahme ab, wenn es eine gibt, sonst die Gerätestimme
+     (`src/lib/speech.ts`, `shared/audio.ts`). `npm run audio:gen` erzeugt die Aufnahmen und die Liste
+     `public/audio/index.json`; die Namensnennung erscheint automatisch unter `/quellen`. Im Browser geprüft.
+   - Entscheidung von Tobias (16.11.2026): zuerst beim Rechteinhaber der VOICEVOX-Stimmen nachfragen
+     (Text liegt in `docs/anfragen/voicevox-anfrage.md`, muss er selbst über das Formular abschicken).
+     Bei Nein oder ohne Antwort: Microsoft Azure Speech, bezahlte Stufe (Standard S0 – die Gratis-Stufe erlaubt
+     keine kommerzielle Nutzung). Dafür ist `audio:gen` schon gebaut, aber noch nie gegen Azure gelaufen.
+   - Bei Ja zu VOICEVOX: in `scripts/audio-gen.ts` eine zweite Quelle neben `azure()` ergänzen (VOICEVOX-Engine
+     liefert WAV → nach MP3 umwandeln), Namensnennung „VOICEVOX:四国めたん“.
+   - Reihenfolge: erst Stufe 1 (59 Texte: Story, Missionen, Figuren), Probe hören lassen, dann `--alles`
+     (4.068 Texte, rund 32.000 Zeichen). Lizenz in `LICENSES.md` eintragen. Alte Dateien von `main` nicht verwenden.
 2. **Stripe einmal von Hand im Browser durchklicken** (der automatische Testlauf ist bestanden, siehe oben):
    `sk_test_…` in `.env` → `stripe listen --forward-to localhost:5173/api/stripe/webhook` → `whsec_…` in `.env` →
    `npm run dev` → Kauf mit Testkarte 4242 4242 4242 4242 → Kundenportal → kündigen.

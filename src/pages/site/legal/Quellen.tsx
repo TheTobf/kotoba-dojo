@@ -1,3 +1,16 @@
+import { useEffect, useState } from 'react'
+import { loadAudioIndex } from '../../../lib/speech'
+
+/** Namensnennung der Stimmen – kommt aus public/audio/index.json, damit sie immer zu den Aufnahmen passt. */
+function AudioCredit() {
+  const [credit, setCredit] = useState<string>()
+  useEffect(() => {
+    void loadAudioIndex().then((index) => setCredit(index.keys.size > 0 ? index.credit : ''))
+  }, [])
+  if (credit) return <p>{credit} Wo es noch keine Aufnahme gibt, liest die Sprachausgabe deines Geräts vor.</p>
+  return <p>Vorgelesen wird mit der Sprachausgabe deines Geräts. Kotoba Dojo liefert derzeit keine eigenen Sprachaufnahmen aus.</p>
+}
+
 /** Quellen und Lizenzen der Lerndaten. Namensnennung ist bei diesen Lizenzen Pflicht – deshalb steht sie in der App. */
 export function Component() {
   return (
@@ -34,7 +47,7 @@ export function Component() {
         <p>Noto Sans JP und Noto Serif JP (Google), SIL Open Font License 1.1. Die Schriften liegen auf unserem eigenen Server.</p>
 
         <h2>Vorlesen</h2>
-        <p>Vorgelesen wird mit der Sprachausgabe deines Geräts. Kotoba Dojo liefert derzeit keine eigenen Sprachaufnahmen aus.</p>
+        <AudioCredit />
 
         <h2>Software</h2>
         <p>

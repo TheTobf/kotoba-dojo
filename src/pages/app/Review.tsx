@@ -132,7 +132,7 @@ export function Component() {
         front={
           <>
             <JaText phrase={item} tokens={item.tokens} size={item.kind === 'wort' ? 'xl' : 'lg'} align="center" />
-            <SpeakButton text={item.ja} className="mt-6" />
+            <SpeakButton text={item.kind === 'wort' ? item.kana : item.ja} className="mt-6" />
           </>
         }
         back={
@@ -182,6 +182,6 @@ export function Component() {
 
 /** Liest einen Satz beim Aufdecken einmal vor (nach einer Nutzeraktion, deshalb erlaubt der Browser den Ton). */
 function AutoSpeak({ text }: { text: string }) {
-  useEffect(() => { speak(text) }, [text])
+  useEffect(() => { void speak(text) }, [text])
   return null
 }

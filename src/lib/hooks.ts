@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import type { MistakeCard } from '../../shared/api'
 import { loadData, type LearnData } from './data'
 import { db, type CardState, type MissionProgress } from './db'
-import { hasJapaneseVoice, canSpeak } from './speech'
+import { hasJapaneseVoice } from './speech'
 import { startOfDay } from './srs'
 
 /** Wörter und Sätze (werden einmal geladen und dann wiederverwendet). */
@@ -33,7 +33,7 @@ export const useReviewedToday = (): number | undefined =>
 export function useMissingJapaneseVoice(): boolean {
   const [missing, setMissing] = useState(false)
   useEffect(() => {
-    if (!canSpeak()) return
+    if (!('speechSynthesis' in window)) return
     const check = () => setMissing(speechSynthesis.getVoices().length > 0 && !hasJapaneseVoice())
     check()
     speechSynthesis.addEventListener('voiceschanged', check)

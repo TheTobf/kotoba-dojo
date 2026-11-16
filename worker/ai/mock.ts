@@ -6,7 +6,7 @@
 import type { Correction, Phrase } from '../../shared/api'
 import type { AiChatInput, AiChatOutput, AiProvider } from './provider'
 
-const REPLIES: Record<string, Phrase[]> = {
+export const REPLIES: Record<string, Phrase[]> = {
   haru: [
     { ja: 'はい、かしこまりました。', kana: 'はい、かしこまりました。', romaji: 'Hai, kashikomarimashita.', de: 'Ja, sehr gern.' },
     { ja: 'ホットとアイス、どちらにしますか。', kana: 'ホットとアイス、どちらにしますか。', romaji: 'Hotto to aisu, dochira ni shimasu ka.', de: 'Heiß oder kalt – was möchten Sie?' },
@@ -20,7 +20,7 @@ const REPLIES: Record<string, Phrase[]> = {
 }
 
 /** Typische Anfängerfehler, an denen die Platzhalter-KI eine Korrektur vorführt. */
-const KNOWN_MISTAKES: { pattern: RegExp; better: Phrase; explanation: string }[] = [
+export const KNOWN_MISTAKES: { pattern: RegExp; better: Phrase; explanation: string }[] = [
   {
     pattern: /を好き|wo suki|o suki/i,
     better: { ja: 'コーヒーが好きです。', kana: 'コーヒーがすきです。', romaji: 'Kōhī ga suki desu.', de: 'Ich mag Kaffee.' },

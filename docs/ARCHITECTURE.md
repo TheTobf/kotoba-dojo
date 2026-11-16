@@ -104,7 +104,11 @@ außerordentliche werden als „offen“ gespeichert. Jede Kündigung liegt als 
 ### Lernen
 FSRS (`ts-fsrs`) aus der privaten App übernommen. Drei Kartenarten teilen sich eine Logik: Wort, Satz einer
 Story-Folge, Fehlerkarte. `StudyItem` ist die einheitliche Anzeigeform (`src/lib/srs.ts`).
-Vorlesen: Web Speech API des Geräts (keine Audiodateien).
+Vorlesen: Zu jedem Text kann es eine Aufnahme geben. Ihr Dateiname ist ein Fingerabdruck des Textes
+(`shared/audio.ts`), deshalb braucht es keine Zuordnungsliste: `speak(text)` rechnet den Fingerabdruck aus, schaut in
+`public/audio/index.json` nach und spielt die Datei – sonst spricht die Gerätestimme (Web Speech API).
+`npm run audio:gen` erzeugt fehlende Aufnahmen aus allen Texten, die die App vorlesen kann (`scripts/audio-texts.ts`).
+Aufnahmen werden nicht vorab gecacht, sondern beim ersten Abspielen gemerkt.
 
 ### Tests
 Vitest in Node. `tests/helpers.ts` startet die echte Hono-App mit einer D1-Datenbank im Arbeitsspeicher

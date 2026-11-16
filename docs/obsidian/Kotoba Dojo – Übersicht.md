@@ -27,15 +27,15 @@ Korrekturen auf Deutsch, Fehler werden automatisch zu Karteikarten.
 
 ## Aktueller Stand (16.11.2026)
 - Grundgerüst fertig: alle Hauptseiten mit Design, Paywall, Kündigungsbutton, KI-Endpunkt, Rechtsseiten als Entwurf
-- 96 Tests grün; ganzer Ablauf (Kauf → Pro → Kündigung → Pro endet) lokal im Browser durchgeklickt
+- 100 Tests grün; ganzer Ablauf (Kauf → Pro → Kündigung → Pro endet) lokal im Browser durchgeklickt
 - Echtes Stripe im Testmodus geprüft: Produkt und Preise angelegt; Kauf, Verlängerung, Kündigung und Ende mit
   echten Stripe-Meldungen bestanden. Offen: einmal von Hand im Browser mit Testkarte bezahlen
 - Noch nichts veröffentlicht; es werden noch keine E-Mails verschickt
 - Story-Folgen, Missionen und Figuren sind Platzhalter
-- Alte Stimmen entfernt (Lizenz), Vorlesen über die Gerätestimme
+- Alte Stimmen entfernt (Lizenz). Die App kann eigene Aufnahmen abspielen, es gibt aber noch keine – bis dahin liest die Gerätestimme
 
 ## Nächste Schritte
-1. Stimmen durch eigene, lizenzierte Aufnahmen ersetzen
+1. Stimmen: Anfrage an den VOICEVOX-Rechteinhaber abschicken (`docs/anfragen/voicevox-anfrage.md`); bei Nein oder ohne Antwort Azure Speech (bezahlte Stufe). Technik dafür ist fertig
 2. Stripe-Bezahlseite einmal von Hand im Browser durchklicken (Testkarte)
 3. E-Mail-Versand anschließen
 4. Echte Story-Inhalte einpflegen
