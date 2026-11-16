@@ -2,39 +2,19 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#1a1026" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-    <title>Kotoba Dojo</title>
+    <meta name="description" content="Kotoba Dojo: Japanisch lernen mit ganzen Sätzen, einer fortlaufenden Story und Gesprächen zum Üben." />
+    <meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141311" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>Kotoba Dojo – Japanisch lernen</title>
+    <!-- Setzt hell/dunkel, bevor die Seite gezeichnet wird (kein Aufblitzen). Eigene Datei statt Inline-Skript wegen CSP. -->
+    <script src="/theme.js"></script>
   </head>
   <body>
     <div id="root"></div>
-    <!-- Notfall: startet die App nicht, Fehler zeigen und Zwischenspeicher leeren können -->
-    <script>
-      (function () {
-        var fehler = []
-        var merk = function (m) { fehler.push(String(m).slice(0, 300)) }
-        window.addEventListener('error', function (e) { merk(e.message || (e.target && e.target.src) || 'Ladefehler') }, true)
-        window.addEventListener('unhandledrejection', function (e) { merk(e.reason && (e.reason.stack || e.reason.message) || e.reason) })
-        window.kotobaReset = function () {
-          var sw = navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(function (r) { return Promise.all(r.map(function (x) { return x.unregister() })) }) : Promise.resolve()
-          var c = window.caches ? caches.keys().then(function (k) { return Promise.all(k.map(function (x) { return caches.delete(x) })) }) : Promise.resolve()
-          Promise.all([sw, c]).finally(function () { location.reload() })
-        }
-        setTimeout(function () {
-          var root = document.getElementById('root')
-          if (root && root.children.length) return
-          document.body.innerHTML = '<div style="font-family:sans-serif;color:#eee;background:#1a1026;min-height:100vh;padding:24px">' +
-            '<h2>Kotoba Dojo startet nicht 😿</h2><p>Meist hilft es, den Zwischenspeicher zu leeren. Dein Lernfortschritt bleibt erhalten.</p>' +
-            '<button onclick="kotobaReset()" style="font-size:18px;padding:12px 20px;border-radius:12px;border:0;background:#ff5d8f;color:#fff">🔄 Neu laden</button>' +
-            '<p style="margin-top:24px;opacity:.7;font-size:13px">Fehler (bitte an Claude schicken):</p><pre style="white-space:pre-wrap;font-size:12px;opacity:.8">' +
-            (fehler.join('\n\n') || 'keine Meldung') + '\n\n' + navigator.userAgent + '</pre></div>'
-        }, 8000)
-      })()
-    </script>
+    <noscript>Kotoba Dojo braucht JavaScript. Bitte aktiviere es in deinem Browser.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

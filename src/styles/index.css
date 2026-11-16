@@ -1,0 +1,136 @@
+/* Schriften liegen im Projekt (über npm-Pakete) und werden von der eigenen Adresse geladen – nichts kommt von Google. */
+@import '@fontsource-variable/noto-sans-jp';
+@import '@fontsource/noto-serif-jp/600.css';
+
+@import 'tailwindcss';
+@import './tokens.css';
+
+@layer base {
+  html {
+    height: 100%;
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+  html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+  body {
+    min-height: 100%;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'palt';
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #root {
+    min-height: 100dvh;
+  }
+
+  /* Tastaturbedienung: deutlich sichtbarer Fokus in der Akzentfarbe. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+  }
+
+  rt {
+    font-family: var(--font-sans);
+    font-weight: 400;
+  }
+}
+
+@layer components {
+  /* Lesetext der Rechtsseiten und langen Erklärungen. */
+  .prose-kd {
+    max-width: var(--container-text);
+  }
+  .prose-kd h2 {
+    font-size: 1.25rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-kd h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose-kd p, .prose-kd ul, .prose-kd ol, .prose-kd address {
+    margin-bottom: 1rem;
+    font-style: normal;
+  }
+  .prose-kd ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .prose-kd ol {
+    list-style: decimal;
+    padding-left: 1.25rem;
+  }
+  .prose-kd li {
+    margin-bottom: 0.35rem;
+  }
+  .prose-kd a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* Karteikarte: Umdrehen in 3D. Beide Seiten liegen in derselben Zelle → Höhe = größere Seite. */
+.flip-scene {
+  perspective: 1600px;
+}
+.flip-card {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.5s var(--ease-soft);
+}
+.flip-card[data-flipped='true'] {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise 0.4s var(--ease-soft) both;
+}
+
+/* Wer Bewegung reduziert haben möchte, bekommt keine Animationen. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

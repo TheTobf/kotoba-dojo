@@ -1,58 +1,49 @@
-/// <reference types="vitest/config" />
-import react from '@vitejs/plugin-react'
+import { cloudflare } from '@cloudflare/vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
-import { VitePWA } from 'vite-plugin-pwa'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
-// GitHub Pages liefert die App unter /kotoba-dojo/ aus.
-const base = process.env.GITHUB_PAGES ? '/kotoba-dojo/' : '/'
-
+// `npm run dev` startet hiermit alles zusammen: Oberfläche (Vite), Server (Cloudflare Worker) und lokale Datenbank (D1).
 export default defineConfig({
-  base,
-  // Rohdaten (hunderte MB) und Arbeitsdateien nicht beobachten/scannen.
-  server: { watch: { ignored: ['**/scripts/raw/**', '**/scripts/work/**'] } },
-  optimizeDeps: { entries: ['index.html'] },
   plugins: [
     react(),
     tailwindcss(),
+    cloudflare(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
         name: 'Kotoba Dojo – Japanisch lernen',
         short_name: 'Kotoba Dojo',
-        description: 'Japanisch lernen mit Sätzen, Spaced Repetition und Spielen',
+        description: 'Japanisch lernen mit Sätzen, Story und Gesprächen',
         lang: 'de',
-        theme_color: '#1a1026',
-        background_color: '#1a1026',
+        start_url: '/app',
+        scope: '/',
+        theme_color: '#f6f3ec',
+        background_color: '#f6f3ec',
         display: 'standalone',
-        orientation: 'portrait',
         icons: [
-          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
-          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' },
+          { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icon-512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml' },
         ],
       },
       workbox: {
-        // App + Wort-/Satzdaten sofort offline; Audio und Strichdaten beim ersten Gebrauch (sonst zu groß).
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}', 'data/*.json'],
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+        // App und Lerndaten sofort offline. Schriften (viele kleine Teil-Dateien) erst beim ersten Gebrauch.
+        globPatterns: ['**/*.{js,css,html,svg,png}', 'data/*.json'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        // Die API wird nie zwischengespeichert – Abo-Stand und Konto kommen immer frisch vom Server.
+        navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.includes('/audio/') || url.pathname.includes('/data/strokes/') || url.pathname.includes('/data/kana-strokes/'),
+            urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.endsWith('.woff2'),
             handler: 'CacheFirst',
-            options: { cacheName: 'lernmedien', expiration: { maxEntries: 20000 } },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
-            handler: 'CacheFirst',
-            options: { cacheName: 'fonts', expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 } },
+            options: { cacheName: 'schriften', expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 365 } },
           },
         ],
       },
     }),
   ],
-  test: {
-    environment: 'node',
-    setupFiles: ['fake-indexeddb/auto'],
-  },
 })

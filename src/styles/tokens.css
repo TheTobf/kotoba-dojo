@@ -1,0 +1,67 @@
+/*
+ * DESIGN-TOKENS – die eine Stelle für Farben, Schriften, Rundungen und Schatten.
+ *
+ * Idee: Papier und Tusche. Warmes Papierweiß, tuscheschwarzer Text, viel Weißraum und GENAU EIN Akzentton:
+ * Zinnoberrot (朱色, die Farbe von Stempeln und Torii). Grün und Ocker gibt es nur für Rückmeldungen
+ * (richtig / Hinweis), nie als Schmuck.
+ *
+ * Tailwind macht aus jedem Token Klassen: --color-paper → bg-paper, text-paper, border-paper usw.
+ * Der Dark Mode überschreibt unten nur die Werte; Komponenten brauchen deshalb keine dark:-Klassen.
+ * Alle Text/Hintergrund-Paare erfüllen mindestens WCAG AA (Kontrast ≥ 4,5:1).
+ */
+@theme {
+  /* Tailwinds Standardfarben abschalten, damit nur Tokens benutzt werden können. */
+  --color-*: initial;
+
+  --color-paper: #f6f3ec;      /* Seitenhintergrund */
+  --color-surface: #fffdf8;    /* Karten, Eingabefelder */
+  --color-sunken: #ece7dc;     /* vertiefte Flächen, Fortschrittsbalken-Spur */
+  --color-line: #d9d2c3;       /* Trennlinien, Rahmen */
+  --color-ink: #1d1b18;        /* Text */
+  --color-ink-soft: #57524a;   /* Nebentext */
+  --color-accent: #b23a22;     /* der Akzent: Knöpfe, Links, Hervorhebung */
+  --color-accent-strong: #94301c;
+  --color-accent-soft: #f3e0d8;
+  --color-on-accent: #fffaf5;  /* Text auf Akzentflächen */
+  --color-ok: #2a6646;
+  --color-ok-soft: #dfeee4;
+  --color-warn: #7d5200;
+  --color-warn-soft: #f6ead0;
+
+  --font-sans: 'Noto Sans JP Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Für Überschriften und große japanische Schrift. */
+  --font-display: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+
+  --radius-control: 0.625rem;  /* Knöpfe, Eingabefelder */
+  --radius-card: 1rem;         /* Karten */
+
+  --shadow-card: 0 1px 2px rgb(29 27 24 / 0.04), 0 8px 24px -12px rgb(29 27 24 / 0.12);
+  --shadow-raised: 0 2px 4px rgb(29 27 24 / 0.06), 0 18px 40px -16px rgb(29 27 24 / 0.22);
+
+  /* Breiten für Inhalte: Lesetext schmal, App-Bereich mittel, Landingpage breit. */
+  --container-text: 40rem;
+  --container-app: 44rem;
+  --container-site: 68rem;
+
+  --ease-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:root[data-theme='dark'] {
+  --color-paper: #141311;
+  --color-surface: #1e1c19;
+  --color-sunken: #0f0e0c;
+  --color-line: #38342d;
+  --color-ink: #ede8de;
+  --color-ink-soft: #b0a99b;
+  --color-accent: #ee7c62;
+  --color-accent-strong: #f4957f;
+  --color-accent-soft: #38201a;
+  --color-on-accent: #1c0e0a;
+  --color-ok: #7cc79c;
+  --color-ok-soft: #1a3024;
+  --color-warn: #e3b455;
+  --color-warn-soft: #362c13;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+  --shadow-raised: 0 2px 4px rgb(0 0 0 / 0.35), 0 18px 40px -16px rgb(0 0 0 / 0.7);
+}

@@ -1,0 +1,8 @@
+# Sicherheits-Kopfzeilen für alle ausgelieferten Seiten (Cloudflare liest diese Datei automatisch).
+# Die Content-Security-Policy erlaubt nur eigene Skripte, Stile, Schriften und Daten – nichts von fremden Servern.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), geolocation=(), microphone=(), payment=()
