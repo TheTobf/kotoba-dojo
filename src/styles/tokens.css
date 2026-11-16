@@ -28,7 +28,7 @@
   --color-warn: #7d5200;
   --color-warn-soft: #f6ead0;
 
-  --font-sans: 'Noto Sans JP Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'KD Paragraf', 'Noto Sans JP Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   /* Für Überschriften und große japanische Schrift. */
   --font-display: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
 

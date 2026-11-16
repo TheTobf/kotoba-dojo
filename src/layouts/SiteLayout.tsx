@@ -40,7 +40,7 @@ export default function SiteLayout() {
         <Link to="/" aria-label="Kotoba Dojo – Startseite"><Logo /></Link>
         <nav aria-label="Hauptnavigation" className="flex items-center gap-1 sm:gap-2">
           <Button to="/preise" variant="ghost" size="sm">Preise</Button>
-          {!signedIn && <Button to="/anmelden" variant="ghost" size="sm" className="hidden sm:inline-flex">Anmelden</Button>}
+          {!signedIn && <span className="hidden sm:block"><Button to="/anmelden" variant="ghost" size="sm">Anmelden</Button></span>}
           <Button to="/app" variant="primary" size="sm">App öffnen</Button>
         </nav>
       </header>

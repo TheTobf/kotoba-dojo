@@ -2,6 +2,7 @@
 import { afterAll, describe, expect, it } from 'vitest'
 import { checkAnswer, normalizeAnswer, toTeaser } from '../shared/mission'
 import { formatPrice, PLANS, yearlySavingsPercent } from '../shared/plans'
+import { TRIAL_MISSIONS } from '../src/content/trialMissions'
 import { PRO_MISSIONS } from '../worker/content/missions'
 import { disposeDatabase, json, TestApp } from './helpers'
 
@@ -48,8 +49,8 @@ describe('Missionen: Antworten prüfen', () => {
     expect(JSON.stringify(toTeaser(PRO_MISSIONS[0]))).not.toContain('accepted')
   })
 
-  it('jede Musterlösung der Pro-Missionen besteht ihre eigene Prüfung', () => {
-    for (const mission of PRO_MISSIONS) {
+  it('jede Musterlösung aller Missionen (Probe und Pro) besteht ihre eigene Prüfung', () => {
+    for (const mission of [...PRO_MISSIONS, ...TRIAL_MISSIONS]) {
       for (const s of mission.steps) {
         for (const option of s.accepted) {
           for (const form of [option.ja, option.kana, option.romaji]) expect(checkAnswer(form, s).correct, form).toBe(true)

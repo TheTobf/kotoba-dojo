@@ -36,7 +36,7 @@ function describeAccess(access: Access): { title: string; text: string; tone: 'o
 }
 
 const THEMES: { id: Settings['theme']; label: string }[] = [
-  { id: 'system', label: 'Wie das Gerät' },
+  { id: 'system', label: 'System' },
   { id: 'hell', label: 'Hell' },
   { id: 'dunkel', label: 'Dunkel' },
 ]

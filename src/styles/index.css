@@ -3,6 +3,16 @@
 @import '@fontsource/noto-serif-jp/600.css';
 
 @import 'tailwindcss';
+
+/*
+ * In japanischen Schriften ist das Paragrafzeichen (§) doppelt so breit wie in lateinischen. Für dieses eine
+ * Zeichen wird deshalb eine auf dem Gerät vorhandene lateinische Schrift bevorzugt (es wird nichts nachgeladen).
+ */
+@font-face {
+  font-family: 'KD Paragraf';
+  src: local('Helvetica Neue'), local('Segoe UI'), local('Roboto'), local('Arial'), local('Noto Sans'), local('Liberation Sans'), local('DejaVu Sans');
+  unicode-range: U+00A7;
+}
 @import './tokens.css';
 
 @layer base {
@@ -19,7 +29,6 @@
     background: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-feature-settings: 'palt';
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;

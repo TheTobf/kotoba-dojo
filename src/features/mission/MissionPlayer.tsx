@@ -96,7 +96,7 @@ export function MissionPlayer({ mission, onComplete, afterComplete }: { mission:
           <div className="mt-4 flex gap-2">
             <input
               id="mission-answer" lang="ja" autoComplete="off" autoCapitalize="off" autoCorrect="off" spellCheck={false}
-              placeholder="Auf Japanisch oder in Romaji" value={input} disabled={solved}
+              placeholder="Japanisch oder Romaji" value={input} disabled={solved}
               onChange={(e) => { setInput(e.target.value); if (feedback?.type === 'falsch') setFeedback(undefined) }}
               className="min-h-12 w-full min-w-0 rounded-control border border-line bg-surface px-4 transition-colors hover:border-ink-soft focus:border-accent focus:ring-2 focus:ring-accent/25 focus:outline-none disabled:opacity-70"
             />

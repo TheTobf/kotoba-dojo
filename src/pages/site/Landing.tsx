@@ -95,11 +95,11 @@ export default function Landing() {
 
         {/* Beispielkarte – zeigt, wie eine Karteikarte in der App aussieht */}
         <div className="rise mx-auto w-full max-w-sm [animation-delay:120ms]" aria-hidden="true">
-          <div className="rotate-2 rounded-card border border-line bg-surface p-8 shadow-raised">
+          <div className="rotate-2 rounded-card border border-line bg-surface p-7 shadow-raised sm:p-8">
             <p className="text-xs tracking-widest text-ink-soft uppercase">Folge 2</p>
-            <p lang="ja" className="mt-8 font-display text-3xl leading-snug">コーヒーを一つください。</p>
+            <p lang="ja" className="mt-8 font-display text-2xl leading-snug whitespace-nowrap">コーヒーを一つください。</p>
             <p lang="ja" className="mt-2 text-ink-soft">コーヒーをひとつください。</p>
-            <p className="text-sm text-ink-soft italic">Kōhī o hitotsu kudasai.</p>
+            <p className="text-sm text-ink-soft">Kōhī o hitotsu kudasai.</p>
             <div className="my-6 border-t border-line" />
             <p className="text-lg">Einen Kaffee, bitte.</p>
             <p className="mt-2 text-sm text-ink-soft">Muster zum Bestellen: ○○をください。</p>

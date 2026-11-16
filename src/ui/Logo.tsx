@@ -17,7 +17,7 @@ export function Logo({ className }: { className?: string }) {
   return (
     <span className={cx('inline-flex items-center gap-2.5', className)}>
       <Seal />
-      <span className="font-display text-lg leading-none tracking-tight">Kotoba Dojo</span>
+      <span className="font-display text-lg leading-none tracking-tight whitespace-nowrap">Kotoba Dojo</span>
     </span>
   )
 }

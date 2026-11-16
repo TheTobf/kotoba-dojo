@@ -1,23 +1,9 @@
 # Kotoba Dojo 言葉道場
 
-Japanisch-Lern-App als PWA: Sätze statt Einzelwörter, Spaced Repetition (FSRS), Spiele und Motivation.
-2034 Wörter in 339 Lektionen à 6 Wörtern, zuerst ein Reise-Block für die Japan-Reise (Sept. 2027).
+Japanisch lernen mit den Sätzen aus der Story: Karteikarten mit Spaced Repetition, Lektionen zu jeder Folge,
+Missionen und Gespräche zum Anwenden. Dieser Branch ist das Grundgerüst der kommerziellen Version.
 
-## Bereiche
-
-| Bereich | Inhalt |
-|---|---|
-| 🃏 Vokabeln | Karteikarten wie Anki mit 3D-Drehung, Schreibmaschinen-Text, Sounds, FSRS, „Kenn ich schon“ (→ 7 Tage), Wortliste, YouGlish-Link |
-| ❓ Quiz | Lückentext: Auswahl, Eintippen (Romaji → Kana), Hören, Gemischt – eigene FSRS-Karten |
-| 🧩 Satzbau | Sätze aus Kacheln bauen, Partikel-Lücken, 15 Grammatik-Lektionen mit Rollenfarben |
-| ✍️ Schrift | Hiragana → Katakana → Kanji (Freischaltung ab 80 %), Blitz-Erkennen, Hören, Memory, Nachzeichnen mit Strichprüfung |
-| 🗾 Ziele | 16 Japan-Situationen mit Fortschritt, freischaltbare Podcasts/Anime/Manga, Reise-Countdown |
-| 📊 Statistik | Level/Rang, Trefferquote, Heatmap, Prognose fälliger Karten, Erfolge |
-| ⚙️ Einstellungen | Farbthemen, Tageslimits, Ton, Furigana, Sicherung speichern/laden |
-
-Motivation: XP, Level mit Rängen 見習い → 学生 → 先輩 → 先生 → 達人, Streak (Lerntag beginnt um 4 Uhr),
-Tagesziel-Ring, 21 Erfolge, 6 freischaltbare Farbthemen, Maskottchen, Konfetti, Combo-Töne mit steigender Tonhöhe.
-Alle Sounds werden live per Web Audio erzeugt (keine Dateien).
+> Die private Lern-App liegt weiterhin unverändert auf dem Branch `main`.
 
 ## Starten
 
@@ -26,84 +12,43 @@ npm install
 npm run dev
 ```
 
-Dann die angezeigte Adresse öffnen (Standard <http://localhost:5173>).
+Dann <http://localhost:5173> öffnen. Beim ersten Start werden automatisch eine `.env` mit Test-Geheimnissen und die
+lokale Datenbank angelegt. Es wird kein Konto bei Cloudflare oder Stripe gebraucht.
 
-## Tests
+## Den ganzen Ablauf ausprobieren (ohne Stripe-Konto)
 
-```bash
-npm test
-```
+1. `/app/sprechen` → eine KI-Figur antippen → Upgrade-Screen → Tarif wählen.
+2. Anmelden: E-Mail eingeben. Lokal wird keine Mail verschickt, der Code steht direkt auf der Seite.
+3. Beide Häkchen setzen → „Weiter zur Zahlung“ → auf der Simulator-Seite „Testzahlung erfolgreich abschließen“.
+4. Profil zeigt „Pro ist aktiv“. Missionen und Gespräche sind offen.
+5. „Verträge hier kündigen“ → Bestätigung. Profil zeigt „Pro ist gekündigt“.
+6. Profil → „Abo und Zahlungsart verwalten“ → „Zeit vorspulen: Abo ist beendet“ → Pro ist wieder gesperrt.
 
-## Build
+Der Simulator schickt dabei signierte Meldungen durch den echten Webhook – siehe `docs/ARCHITECTURE.md`.
 
-```bash
-npm run build
-npm run preview
-```
+## Mit echtem Stripe im Testmodus
 
-## Deployment auf GitHub Pages
+1. Testschlüssel (`sk_test_…`) in `.env` bei `STRIPE_SECRET_KEY` eintragen.
+2. `npm run stripe:setup` – legt Produkt, beide Preise und das Kundenportal an.
+3. `stripe listen --forward-to localhost:5173/api/stripe/webhook` starten und das angezeigte `whsec_…` in `.env`
+   bei `STRIPE_WEBHOOK_SECRET` eintragen.
+4. `npm run dev` neu starten und mit der Testkarte `4242 4242 4242 4242` kaufen.
 
-Der Workflow `.github/workflows/deploy.yml` testet, baut (`GITHUB_PAGES=true` → Pfad `/kotoba-dojo/`) und veröffentlicht
-bei jedem Push auf `main`. Einmalig nötig:
+Live-Schlüssel lehnt der Server ab. Dieser Weg ist noch nicht erprobt – siehe `docs/HANDOFF.md`.
 
-1. Auf GitHub ein Repository `kotoba-dojo` anlegen (öffentlich – Pages ist für private Repos kostenpflichtig).
-2. Lokal verbinden und hochladen:
-   ```bash
-   git remote add origin https://github.com/<dein-name>/kotoba-dojo.git
-   git push -u origin main
-   ```
-3. Im Repo: **Settings → Pages → Source: „GitHub Actions“**.
+## Befehle
 
-Danach läuft die App unter `https://<dein-name>.github.io/kotoba-dojo/`. Auf dem Handy im Browser öffnen →
-„Zum Startbildschirm hinzufügen“ – dann funktioniert sie wie eine App, auch offline.
+| Befehl | Wirkung |
+|---|---|
+| `npm run dev` | Oberfläche, Server und lokale Datenbank starten |
+| `npm test` | alle Tests |
+| `npm run typecheck` | TypeScript prüfen |
+| `npm run build` | Produktions-Build |
+| `npm run stripe:setup` | Stripe-Testmodus einrichten |
 
-**Fortschritt übertragen:** Der Lernstand liegt lokal im Browser. Einstellungen → „Sicherung speichern“ auf Gerät A,
-„Sicherung laden“ auf Gerät B.
+## Weiterlesen
 
-## Lerndaten erzeugen
-
-Die fertigen Daten liegen im Repo (`public/data/`, `public/audio/`). Neu erzeugen nur, wenn sich Wortanzahl,
-manuelle Ergänzungen oder Quellen ändern:
-
-```bash
-npm run data:download
-```
-
-Lädt Rohdaten (~600 MB entpackt) nach `scripts/raw/`.
-
-```bash
-npm run data:build -- 2000
-```
-
-Baut Wörter/Sätze/Kanji (Zahl = Anzahl Wörter; Lektionsgröße `LESSON_SIZE` in `scripts/build-data.ts`, aktuell 6 –
-anpassen, wenn sich das Reisedatum ändert). Braucht viel RAM: vorher in PowerShell
-`$env:NODE_OPTIONS="--max-old-space-size=8192"` setzen. Offene Punkte stehen danach in `scripts/work/review.json`.
-
-```bash
-npm run audio:gen
-```
-
-Erzeugt Audio. Vorher die VOICEVOX-Engine starten
-(`C:\Users\tobia\Tools\voicevox_engine\windows-cpu\run.exe --host 127.0.0.1 --port 50021`),
-danach `npm run data:build` erneut ausführen, damit das Audio verknüpft wird.
-
-```bash
-npm run kana:build -- --audio
-```
-
-Kana-Daten mit Strichen und Aussprache für den Schrift-Bereich (VOICEVOX muss laufen; ohne `--audio` nur die Striche).
-
-Handarbeit (Bedeutungen, Grammatik-Notizen, eigene Sätze, Korrekturen) steht in `scripts/manual/`:
-`words*.json` (pro Wort-ID), `kanji*.json`, `lemmas.json` (Wortauswahl, Lesungen, Reise-Block). Quellen und Lizenzen: `SOURCES.md`.
-
-## Aufbau
-
-- `src/types.ts` – Datenmodell (Wörter, Sätze, Kanji, Kana, Karten, Profil, Einstellungen)
-- `src/db.ts` – IndexedDB (Dexie) nur für Nutzerdaten + Export/Import
-- `src/srs.ts` – FSRS-Planung (Karten je Bereich: vokabel/quiz/zeichen), Warteschlangen
-- `src/quiz.ts`, `src/satzbau.ts`, `src/schrift.ts` – Übungslogik (getestet)
-- `src/motivation.ts` – XP, Level, Streak, Erfolge, Themen; `src/sfx.ts` – Sounds
-- `src/progress.ts`, `src/content/ziele.ts` – Japan-Situationen und Medien
-- `src/content/grammatik.ts` – Grammatik-Lektionen
-- `src/pages/` – die Bereiche; `scripts/` – Daten-Pipeline
-- Lerninhalte werden als statisches JSON ausgeliefert und vom Service Worker offline gecacht.
+- `CLAUDE.md` – Regeln und wichtigste Dateien
+- `docs/ARCHITECTURE.md` – Aufbau und Entscheidungen
+- `docs/HANDOFF.md` – Stand, TODO-Liste, bekannte Probleme
+- `LICENSES.md` – Quellen und Lizenzen

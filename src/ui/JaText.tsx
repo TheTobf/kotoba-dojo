@@ -77,7 +77,7 @@ export function JaText({
         {tokens?.length ? <Furigana tokens={tokens} showReading={showKana} /> : phrase.ja}
       </p>
       {kanaLine && <p lang="ja" className="mt-1 text-ink-soft">{phrase.kana}</p>}
-      {showRomaji && <p lang="ja-Latn" className="mt-0.5 text-sm text-ink-soft italic">{phrase.romaji}</p>}
+      {showRomaji && <p lang="ja-Latn" className="mt-0.5 text-sm text-ink-soft">{phrase.romaji}</p>}
       {showTranslation && <p className="mt-2">{phrase.de}</p>}
     </div>
   )
