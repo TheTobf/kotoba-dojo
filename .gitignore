@@ -1,29 +1,18 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 node_modules
 dist
-dist-ssr
 *.local
-
-# Editor directories and files
+*.log
+.DS_Store
+.idea
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
 
-scripts/raw/
+# Geheimnisse – niemals einchecken
 .env
+.env.*
+!.env.example
+.dev.vars
 
-scripts/work/
+# Lokale Cloudflare-Daten (lokale Datenbank, Zwischenspeicher)
+.wrangler
+worker-configuration.d.ts

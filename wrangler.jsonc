@@ -1,0 +1,34 @@
+// Cloudflare-Konfiguration: ein Worker liefert die Oberfläche (statische Dateien) UND die API (/api/*).
+// Geheimnisse stehen NICHT hier, sondern lokal in .env und online als "wrangler secret".
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kotoba-dojo",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kotoba-dojo",
+      // Platzhalter – vor dem ersten Deployment ersetzen:
+      //   npx wrangler d1 create kotoba-dojo --jurisdiction eu   (Speicherort EU)
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    // Sicherer Standard: "production". Lokal setzt .env den Wert auf "development"
+    // (nur dann sind Stripe-Simulator und sichtbare Anmeldecodes erlaubt).
+    "ENVIRONMENT": "production",
+    "AI_PROVIDER": "mock",
+    "AI_DAILY_LIMIT": "40",
+    "AI_MONTHLY_BUDGET_CENTS": "2000",
+    "MAIL_PROVIDER": "console"
+  },
+  "observability": { "enabled": true }
+}
