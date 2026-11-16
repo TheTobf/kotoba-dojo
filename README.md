@@ -34,6 +34,9 @@ Der Simulator schickt dabei signierte Meldungen durch den echten Webhook – sie
    bei `STRIPE_WEBHOOK_SECRET` eintragen.
 4. `npm run dev` neu starten und mit der Testkarte `4242 4242 4242 4242` kaufen.
 
+Automatische Prüfung ohne Browser: Schritte 1 und 2, dann `npm run dev` und in einem zweiten Fenster
+`npm run stripe:verify` (Kauf → Verlängerung → Kündigung → Ende mit echten Stripe-Meldungen und Testuhr).
+
 Live-Schlüssel lehnt der Server ab. Dieser Weg ist noch nicht erprobt – siehe `docs/HANDOFF.md`.
 
 ## Befehle
@@ -45,6 +48,7 @@ Live-Schlüssel lehnt der Server ab. Dieser Weg ist noch nicht erprobt – siehe
 | `npm run typecheck` | TypeScript prüfen |
 | `npm run build` | Produktions-Build |
 | `npm run stripe:setup` | Stripe-Testmodus einrichten |
+| `npm run stripe:verify` | Paywall gegen echtes Stripe (Testmodus) prüfen |
 
 ## Weiterlesen
 

@@ -20,9 +20,11 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
 
 ## Was NICHT geprüft ist (ehrlich)
 
-- **Echtes Stripe (Testmodus) wurde nie angesprochen.** In der Aufbau-Sitzung gab es keinen Testschlüssel und keinen
-  Netzzugang zu Stripe. `worker/payments/stripe-gateway.ts` und `scripts/stripe-setup.ts` sind nach Dokumentation
-  geschrieben, aber ungetestet. Die Stripe-Meldungen in Tests und Simulator sind nachgebaut (API 2026-10-28).
+- **Echtes Stripe (Testmodus) ist noch nicht geprüft.** In der Aufbau-Sitzung wurde ein Schlüssel hinterlegt, Stripe
+  hat ihn aber als ungültig abgelehnt („Invalid API Key“) – es wurde nichts bei Stripe angelegt.
+  `worker/payments/stripe-gateway.ts`, `scripts/stripe-setup.ts` und `scripts/stripe-verify.ts` sind nach
+  Dokumentation geschrieben, aber noch nie gegen Stripe gelaufen. Die Stripe-Meldungen in Tests und Simulator sind
+  nachgebaut (API 2026-10-28).
 - **Es wird keine E-Mail verschickt** (Platzhalter). In Produktion kann sich deshalb noch niemand anmelden.
 - **Nichts ist veröffentlicht.** Kein Deployment, keine echte D1-Datenbank.
 - Kein Test auf echten Handys, kein Screenreader-Test.
@@ -34,10 +36,13 @@ Stand: 16.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
    als bevorzugte Quelle, Gerätestimme als Rückfall. Zuerst nur Story-Sätze und Missionen (wenige Dutzend Dateien),
    erst danach der Grundwortschatz. Lizenz vor dem Erzeugen schriftlich klären und in `LICENSES.md` eintragen.
    Die alten Dateien auf `main` nicht verwenden. Dateien wegen der Menge nicht vorab cachen (Laufzeit-Cache).
-2. **Echten Stripe-Testlauf machen.** `sk_test_…` in `.env` → `npm run stripe:setup` → `stripe listen --forward-to
-   localhost:5173/api/stripe/webhook` → `whsec_…` in `.env` → Kauf mit Testkarte 4242 4242 4242 4242 → Portal →
-   kündigen. Mit Stripe-Testuhren Verlängerung und Ablauf prüfen. Dabei die echten Meldungen mit
-   `worker/payments/simulator.ts` vergleichen und Abweichungen in Simulator **und** Tests nachziehen.
+2. **Echten Stripe-Testlauf machen.** Schnellster Weg: `sk_test_…` in `.env` → `npm run stripe:setup` →
+   `npm run dev` → in einem zweiten Fenster `npm run stripe:verify`. Das Skript legt bei Stripe ein Test-Abo an,
+   spult mit einer Stripe-Testuhr vor und prüft Kauf → Verlängerung → Kündigung → Ende mit echten Stripe-Meldungen
+   (ohne Browser, ohne `stripe listen`). Schlägt ein Schritt fehl, die echte Meldung mit
+   `worker/payments/simulator.ts` vergleichen und Abweichungen in Webhook, Simulator **und** Tests nachziehen.
+   Danach einmal von Hand: `stripe listen --forward-to localhost:5173/api/stripe/webhook`, `whsec_…` in `.env`,
+   Kauf mit Testkarte 4242 4242 4242 4242, Kundenportal, kündigen.
    Im Stripe-Dashboard prüfen: Text am Bezahlknopf (Button-Lösung § 312j BGB), Rechnungs-/Belegversand.
 3. **E-Mail-Versand anschließen** (`worker/lib/mailer.ts`): Anmeldecodes, Wartelisten-Bestätigung,
    Kündigungsbestätigung. Vorschlag: Brevo (EU, Gratis-Kontingent). Schlüssel als Secret, Dienst in die

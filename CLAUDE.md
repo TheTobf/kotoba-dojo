@@ -17,6 +17,7 @@ Korrekturen, Fehler-Karteikarten. Dieser Branch ist das **Grundgerüst** für di
 | `npm run typecheck` | TypeScript prüfen |
 | `npm run build` | Produktions-Build nach `dist/` |
 | `npm run stripe:setup` | Produkt und Preise im Stripe-Testmodus anlegen (braucht `sk_test_…` in `.env`) |
+| `npm run stripe:verify` | Paywall gegen echtes Stripe im Testmodus prüfen (braucht laufendes `npm run dev`) |
 
 `npm run dev` legt beim ersten Start `.env` mit Test-Geheimnissen an und richtet die lokale Datenbank ein.
 Ohne Stripe-Schlüssel läuft lokal der Stripe-Simulator (siehe ARCHITECTURE.md).

@@ -35,7 +35,7 @@ Korrekturen auf Deutsch, Fehler werden automatisch zu Karteikarten.
 
 ## Nächste Schritte
 1. Stimmen durch eigene, lizenzierte Aufnahmen ersetzen
-2. Echten Stripe-Testlauf machen (Testschlüssel nötig)
+2. Echten Stripe-Testlauf machen (gültiger Testschlüssel nötig; Prüfskript `npm run stripe:verify` liegt bereit)
 3. E-Mail-Versand anschließen
 4. Echte Story-Inhalte einpflegen
 5. Echte KI anschließen
