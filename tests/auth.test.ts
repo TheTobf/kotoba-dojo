@@ -24,7 +24,7 @@ describe('Anmeldung', () => {
     expect(setCookie).toMatch(/SameSite=Lax/i)
     const cookie = setCookie.split(';')[0]
 
-    expect((await json(await t.get('/api/me', cookie))).user).toEqual({ email: 'mika@example.com' })
+    expect((await json(await t.get('/api/me', cookie))).user).toMatchObject({ email: 'mika@example.com' })
     await t.post('/api/auth/logout', {}, cookie)
     expect((await json(await t.get('/api/me', cookie))).user).toBeNull()
   })

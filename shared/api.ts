@@ -10,7 +10,8 @@ export interface Phrase {
 }
 
 export interface MeResponse {
-  user: { email: string } | null
+  /** `id` ist die zufällige Konto-ID (dieselbe, die Stripe beim Kauf als Zuordnung mitbekommt). */
+  user: { id: string; email: string } | null
   access: Access
   plan: PlanId | null
   ai: { usedToday: number; dailyLimit: number } | null

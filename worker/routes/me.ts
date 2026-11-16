@@ -17,7 +17,7 @@ me.get('/me', async (c) => {
   }
   const { access, subscription } = await getAccess(c, user.id)
   const body: MeResponse = {
-    user: { email: user.email },
+    user: { id: user.id, email: user.email },
     access,
     plan: subscription?.plan ?? null,
     ai: access.pro
