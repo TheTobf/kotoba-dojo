@@ -180,6 +180,7 @@ export async function rate(
 /** Punkte für eine Bewertung: Zeichen-Spiele zählen etwas weniger als Karteikarten. */
 export function xpForGrade(kind: CardKind, grade: Grade): number {
   if (kind === 'zeichen') return grade === Rating.Again ? XP.glyphWrong : XP.glyphRight
+  if (kind === 'quiz') return grade === Rating.Again ? XP.exerciseWrong : XP.exerciseRight
   return grade === Rating.Easy ? XP.cardEasy : grade === Rating.Good ? XP.cardGood : grade === Rating.Hard ? XP.cardHard : XP.cardAgain
 }
 

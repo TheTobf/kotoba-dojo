@@ -69,6 +69,15 @@ export function Component() {
               </span>
             </div>
           </LinkCard>
+          <LinkCard to="/app/lernen/quiz">
+            <div className="flex items-start gap-4">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-soft font-display text-lg text-accent" lang="ja" aria-hidden="true">問</span>
+              <span>
+                <span className="block font-display text-lg">Quiz</span>
+                <span className="block text-sm text-ink-soft">Lückentext mit deinen gelernten Wörtern: auswählen, tippen, hören</span>
+              </span>
+            </div>
+          </LinkCard>
         </div>
       </div>
 

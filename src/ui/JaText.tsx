@@ -20,10 +20,12 @@ const SIZES: Record<Size, string> = {
 }
 
 /** Satz mit Furigana (kleine Lesung über den Kanji). Das Zielwort ist dezent markiert. */
-export function Furigana({ tokens, showReading }: { tokens: Token[]; showReading: boolean }) {
+export function Furigana({ tokens, showReading, hideTarget = false }: { tokens: Token[]; showReading: boolean; hideTarget?: boolean }) {
   return (
     <>
-      {tokens.map((token, i) => (
+      {tokens.map((token, i) => token.target && hideTarget ? (
+        <span key={i} aria-label="Lücke" className="mx-1 inline-block min-w-14 border-b-2 border-accent align-baseline">&nbsp;</span>
+      ) : (
         <span key={i} className={cx(token.target && 'text-accent')}>
           {token.f
             ? token.f.map((part, j) =>
@@ -58,10 +60,12 @@ export function SpeakButton({ text, className }: { text: string; className?: str
 }
 
 export function JaText({
-  phrase, tokens, size = 'md', showTranslation = false, align = 'left', className,
+  phrase, tokens, size = 'md', showTranslation = false, align = 'left', className, hideTarget = false,
 }: {
   phrase: Phrase
   tokens?: Token[]
+  /** Zielwort als Lücke zeigen (Quiz). Blendet auch Kana und Romaji aus, damit nichts verraten wird. */
+  hideTarget?: boolean
   size?: Size
   showTranslation?: boolean
   align?: 'left' | 'center'
@@ -74,10 +78,10 @@ export function JaText({
   return (
     <div className={cx(align === 'center' && 'text-center', className)}>
       <p lang="ja" className={cx('font-display leading-snug', hasFurigana && 'leading-[2.1]', SIZES[size])}>
-        {tokens?.length ? <Furigana tokens={tokens} showReading={showKana} /> : phrase.ja}
+        {tokens?.length ? <Furigana tokens={tokens} showReading={showKana} hideTarget={hideTarget} /> : phrase.ja}
       </p>
-      {kanaLine && <p lang="ja" className="mt-1 text-ink-soft">{phrase.kana}</p>}
-      {showRomaji && <p lang="ja-Latn" className="mt-0.5 text-sm text-ink-soft">{phrase.romaji}</p>}
+      {kanaLine && !hideTarget && <p lang="ja" className="mt-1 text-ink-soft">{phrase.kana}</p>}
+      {showRomaji && !hideTarget && <p lang="ja-Latn" className="mt-0.5 text-sm text-ink-soft">{phrase.romaji}</p>}
       {showTranslation && <p className="mt-2">{phrase.de}</p>}
     </div>
   )

@@ -13,8 +13,9 @@ import type { Profile } from './progress'
  *   satz    Satz aus einer Story-Folge (Karteikarte)
  *   fehler  Korrektur aus einem KI-Gespräch (Karteikarte)
  *   zeichen Kana oder Kanji im Schrift-Bereich
+ *   quiz    Wort im Lückentext-Quiz
  */
-export type CardKind = 'wort' | 'satz' | 'fehler' | 'zeichen'
+export type CardKind = 'wort' | 'satz' | 'fehler' | 'zeichen' | 'quiz'
 
 /** Karten, die in der normalen Lernsitzung (Karteikarten) vorkommen. */
 export const FLASHCARD_KINDS: CardKind[] = ['wort', 'satz', 'fehler']
