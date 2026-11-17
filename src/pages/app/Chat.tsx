@@ -13,6 +13,7 @@ import { syncMistakes } from '../../lib/srs'
 import { PageHeader } from '../../layouts/AppLayout'
 import { AiBadge } from '../../ui/Badge'
 import { Button } from '../../ui/Button'
+import { MicButton } from '../../ui/MicButton'
 import { cx } from '../../ui/cx'
 import { Icon } from '../../ui/Icon'
 import { JaText, SpeakButton } from '../../ui/JaText'
@@ -144,9 +145,10 @@ function Conversation({ character }: { character: Character }) {
         <div className="flex gap-2">
           <input
             id="chat-input" lang="ja" autoComplete="off" spellCheck={false} maxLength={300} value={input} onChange={(e) => setInput(e.target.value)}
-            placeholder="Schreib auf Japanisch …"
+            placeholder="Schreib oder sprich Japanisch …"
             className="min-h-12 w-full min-w-0 rounded-control border border-line bg-surface px-4 transition-colors hover:border-ink-soft focus:border-accent focus:ring-2 focus:ring-accent/25 focus:outline-none"
           />
+          <MicButton disabled={busy} onPartial={setInput} onResult={(text) => { setInput(text); void send(text, false) }} />
           <Button type="submit" variant="primary" loading={busy} disabled={!input.trim()}>Senden</Button>
         </div>
         <div className="mt-2 flex items-center justify-between gap-3">

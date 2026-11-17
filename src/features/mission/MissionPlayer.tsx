@@ -7,6 +7,7 @@ import { checkAnswer, type Mission } from '../../../shared/mission'
 import type { Phrase } from '../../../shared/api'
 import { recordActivity, XP } from '../../lib/progress'
 import { Button } from '../../ui/Button'
+import { MicButton } from '../../ui/MicButton'
 import { Card } from '../../ui/Card'
 import { Icon } from '../../ui/Icon'
 import { JaText, SpeakButton } from '../../ui/JaText'
@@ -30,10 +31,11 @@ export function MissionPlayer({ mission, onComplete, afterComplete }: { mission:
   const step = mission.steps[stepIndex]
   const solved = feedback?.type === 'richtig' || feedback?.type === 'loesung'
 
-  function submit(event: FormEvent) {
-    event.preventDefault()
-    if (solved || !input.trim()) return
-    const result = checkAnswer(input, step)
+  function submit(event?: FormEvent, spoken?: string) {
+    event?.preventDefault()
+    const answer = spoken ?? input
+    if (solved || !answer.trim()) return
+    const result = checkAnswer(answer, step)
     if (result.correct) {
       setFeedback({ type: 'richtig', model: result.model })
       void recordActivity(attempts === 0 ? XP.missionStep : XP.exerciseRight)
@@ -95,13 +97,14 @@ export function MissionPlayer({ mission, onComplete, afterComplete }: { mission:
             <span className="text-xs tracking-widest text-accent uppercase">Deine Aufgabe</span>
             <span className="mt-1 block font-display text-xl">{step.task}</span>
           </label>
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             <input
               id="mission-answer" lang="ja" autoComplete="off" autoCapitalize="off" autoCorrect="off" spellCheck={false}
-              placeholder="Japanisch oder Romaji" value={input} disabled={solved}
+              placeholder="Tippen oder sprechen" value={input} disabled={solved}
               onChange={(e) => { setInput(e.target.value); if (feedback?.type === 'falsch') setFeedback(undefined) }}
-              className="min-h-12 w-full min-w-0 rounded-control border border-line bg-surface px-4 transition-colors hover:border-ink-soft focus:border-accent focus:ring-2 focus:ring-accent/25 focus:outline-none disabled:opacity-70"
+              className="min-h-12 w-0 min-w-0 flex-1 rounded-control border border-line bg-surface px-4 transition-colors hover:border-ink-soft focus:border-accent focus:ring-2 focus:ring-accent/25 focus:outline-none disabled:opacity-70"
             />
+            {!solved && <MicButton onPartial={setInput} onResult={(text) => { setInput(text); submit(undefined, text) }} />}
             {!solved && <Button type="submit" variant="primary" disabled={!input.trim()}>Prüfen</Button>}
           </div>
         </form>

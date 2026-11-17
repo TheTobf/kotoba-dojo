@@ -50,6 +50,14 @@ export function Component() {
         <Fill>KI-Anbieter, Sitz, Speicherdauer und Rechtsgrundlage ergänzen, sobald die echte KI angeschlossen ist (derzeit nur Platzhalter-Antworten ohne externen Dienst)</Fill>
       </p>
 
+      <h3>Spracheingabe</h3>
+      <p>
+        Wenn du Antworten ins Mikrofon sprichst, erkennt dein Browser die Sprache. Dazu sendet er den Ton an seinen Hersteller,
+        bei Chrome an Google, bei Safari an Apple (teilweise auf dem Gerät). Kotoba Dojo erhält nur den erkannten Text und
+        speichert keine Aufnahmen. Die Spracheingabe startet erst, nachdem du zugestimmt hast; du kannst sie im Profil ausschalten.{' '}
+        <Fill>Rechtsgrundlage (Einwilligung, Art. 6 Abs. 1 lit. a DSGVO) und Drittlandübermittlung prüfen</Fill>
+      </p>
+
       <h2>8. Warteliste</h2>
       <p>
         Wenn du dich für die Warteliste einträgst, speichern wir deine E-Mail-Adresse und den Zeitpunkt deiner Bestätigung, um dich einmalig über

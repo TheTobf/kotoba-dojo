@@ -169,6 +169,7 @@ export function Component() {
             </div>
           </div>
           <Toggle label="Kana-Lesung zeigen" hint="Lesung in Hiragana über oder unter japanischem Text" checked={settings.showKana} onChange={(showKana) => updateSettings({ showKana })} />
+          <Toggle label="Mit dem Mikrofon antworten" hint="Der Browser schickt den Ton zur Erkennung an seinen Hersteller (Google bzw. Apple)" checked={settings.micConsent} onChange={(micConsent) => updateSettings({ micConsent })} />
           <Toggle label="Romaji zeigen" hint="Umschrift in lateinischen Buchstaben" checked={settings.showRomaji} onChange={(showRomaji) => updateSettings({ showRomaji })} />
           <div className="flex items-center justify-between gap-4 py-3">
             <label htmlFor="daily-goal">
