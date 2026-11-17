@@ -6,7 +6,7 @@ import { MissionPlayer } from '../../features/mission/MissionPlayer'
 import { ProGate } from '../../features/ProGate'
 import { api, ApiError, errorMessage } from '../../lib/api'
 import { useAccount } from '../../lib/account'
-import { db } from '../../lib/db'
+import { completeMission } from '../../lib/progress'
 import { PageHeader } from '../../layouts/AppLayout'
 import { Button } from '../../ui/Button'
 import { Notice } from '../../ui/Notice'
@@ -37,7 +37,7 @@ function LoadedMission({ missionId }: { missionId: string }) {
       <PageHeader title={mission.title} lead={`${mission.place} – ${mission.summary}`} back={{ to: '/app/story', label: 'Story' }} />
       <MissionPlayer
         mission={mission}
-        onComplete={() => void db.missions.put({ missionId: mission.id, completedAt: Date.now() })}
+        onComplete={() => void completeMission(mission.id)}
         afterComplete={<Button to="/app/story" variant="primary">Zurück zur Story</Button>}
       />
     </>

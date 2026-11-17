@@ -5,6 +5,7 @@
  */
 import Dexie, { type EntityTable } from 'dexie'
 import type { MistakeCard } from '../../shared/api'
+import type { Profile } from './progress'
 
 /**
  * Welche Übung eine Karte trainiert – jede hat ihren eigenen Wiederholungs-Zustand.
@@ -55,6 +56,7 @@ export class KotobaDB extends Dexie {
   reviewLog!: EntityTable<ReviewLogEntry, 'id'>
   missions!: EntityTable<MissionProgress, 'missionId'>
   mistakes!: EntityTable<MistakeCard, 'id'>
+  profile!: EntityTable<Profile, 'id'>
 
   constructor(name = 'kotoba-dojo-v2') {
     super(name)
@@ -64,6 +66,8 @@ export class KotobaDB extends Dexie {
       missions: 'missionId',
       mistakes: 'id, createdAt',
     })
+    // Version 2: Profil für Punkte, Lernserie und Erfolge
+    this.version(2).stores({ profile: 'id' })
   }
 }
 
@@ -79,5 +83,6 @@ export async function exportBackup(d: KotobaDB = db) {
     reviewLog: await d.reviewLog.toArray(),
     missions: await d.missions.toArray(),
     mistakes: await d.mistakes.toArray(),
+    profile: await d.profile.get('me'),
   }
 }

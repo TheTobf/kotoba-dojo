@@ -2,11 +2,11 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import { AccountProvider } from './lib/account'
-import { watchSystemTheme } from './lib/settings'
+import { watchTheme } from './lib/theme'
 import { router } from './router'
 import './styles/index.css'
 
-watchSystemTheme()
+watchTheme()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

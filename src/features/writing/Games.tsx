@@ -4,6 +4,7 @@
  */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CardState } from '../../lib/db'
+import { noteCombo } from '../../lib/progress'
 import { speak } from '../../lib/speech'
 import { rate, Rating, type Grade } from '../../lib/srs'
 import { glyphCardId, optionsFor, shuffle, type Glyph } from '../../lib/writing'
@@ -59,6 +60,7 @@ export function ChoiceGame({ round, pool, cards, onDone, mode }: GameProps & { m
     const ok = option?.char === glyph.char
     setPicked(option?.char ?? null)
     const streak = ok ? stats.streak + 1 : 0
+    noteCombo(streak)
     const next = { right: stats.right + (ok ? 1 : 0), streak, bestStreak: Math.max(stats.bestStreak, streak) }
     setStats(next)
     if (ok && mode === 'erkennen') void speak(glyph.char)

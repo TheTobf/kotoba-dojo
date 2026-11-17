@@ -5,6 +5,7 @@ import { useAccount } from '../../lib/account'
 import { useCards, useCompletedMissions, useReviewedToday } from '../../lib/hooks'
 import { useSettings } from '../../lib/settings'
 import { episodeProgress, overview, startOfDay } from '../../lib/srs'
+import { ProgressStrip } from '../../features/ProgressSummary'
 import { PageHeader } from '../../layouts/AppLayout'
 import { Button } from '../../ui/Button'
 import { Card, LinkCard, SectionTitle } from '../../ui/Card'
@@ -46,7 +47,9 @@ export function Component() {
     <>
       <PageHeader ja={hello.ja} title={`${hello.de}!`} lead={stats.dueNow > 0 ? 'Ein paar Karten warten auf dich.' : 'Bereit für ein paar neue Sätze?'} />
 
-      <Card className="sm:p-8">
+      <ProgressStrip />
+
+      <Card className="mt-3 sm:p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex gap-10">
             <Stat value={stats.dueNow} label="fällig" />

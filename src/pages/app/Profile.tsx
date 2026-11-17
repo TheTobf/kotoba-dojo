@@ -7,6 +7,7 @@ import { api, errorMessage } from '../../lib/api'
 import { useAccount } from '../../lib/account'
 import { exportBackup } from '../../lib/db'
 import { updateSettings, useSettings, type Settings } from '../../lib/settings'
+import { ProgressDetails } from '../../features/ProgressSummary'
 import { PageHeader } from '../../layouts/AppLayout'
 import { Badge } from '../../ui/Badge'
 import { Button } from '../../ui/Button'
@@ -143,6 +144,11 @@ export function Component() {
       </div>
 
       <div className="mt-10">
+        <SectionTitle ja="進歩">Fortschritt</SectionTitle>
+        <ProgressDetails />
+      </div>
+
+      <div className="mt-10">
         <SectionTitle>Einstellungen</SectionTitle>
         <Card className="divide-y divide-line py-2 sm:py-2">
           <div className="py-3">
@@ -164,6 +170,18 @@ export function Component() {
           </div>
           <Toggle label="Kana-Lesung zeigen" hint="Lesung in Hiragana über oder unter japanischem Text" checked={settings.showKana} onChange={(showKana) => updateSettings({ showKana })} />
           <Toggle label="Romaji zeigen" hint="Umschrift in lateinischen Buchstaben" checked={settings.showRomaji} onChange={(showRomaji) => updateSettings({ showRomaji })} />
+          <div className="flex items-center justify-between gap-4 py-3">
+            <label htmlFor="daily-goal">
+              <span className="block font-medium">Tagesziel</span>
+              <span className="block text-sm text-ink-soft">Übungen pro Tag (Karten, Zeichen, Missionsschritte)</span>
+            </label>
+            <select
+              id="daily-goal" value={settings.dailyGoal} onChange={(e) => updateSettings({ dailyGoal: Number(e.target.value) })}
+              className="min-h-11 rounded-control border border-line bg-surface px-3"
+            >
+              {[10, 20, 30, 50].map((n) => <option key={n} value={n}>{n}</option>)}
+            </select>
+          </div>
           <div className="flex items-center justify-between gap-4 py-3">
             <label htmlFor="new-per-day">
               <span className="block font-medium">Neue Wörter pro Tag</span>

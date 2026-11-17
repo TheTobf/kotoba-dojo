@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { MissionPlayer } from '../../features/mission/MissionPlayer'
 import { findTrialMission, TRIAL_MISSIONS } from '../../content/trialMissions'
 import { useAccount } from '../../lib/account'
-import { db } from '../../lib/db'
+import { completeMission } from '../../lib/progress'
 import { PageHeader } from '../../layouts/AppLayout'
 import { Button } from '../../ui/Button'
 import { Notice } from '../../ui/Notice'
@@ -21,7 +21,7 @@ export function Component() {
       <PageHeader title={mission.title} lead={`${mission.place} – ${mission.summary}`} back={back} />
       <MissionPlayer
         key={mission.id} mission={mission}
-        onComplete={() => void db.missions.put({ missionId: mission.id, completedAt: Date.now() })}
+        onComplete={() => void completeMission(mission.id)}
         afterComplete={
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
             {other && <Button to={`/app/sprechen/probe/${other.id}`} variant={pro ? 'primary' : 'secondary'}>Nächste Probe-Mission</Button>}

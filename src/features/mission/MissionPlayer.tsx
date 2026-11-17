@@ -5,6 +5,7 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { checkAnswer, type Mission } from '../../../shared/mission'
 import type { Phrase } from '../../../shared/api'
+import { recordActivity, XP } from '../../lib/progress'
 import { Button } from '../../ui/Button'
 import { Card } from '../../ui/Card'
 import { Icon } from '../../ui/Icon'
@@ -35,6 +36,7 @@ export function MissionPlayer({ mission, onComplete, afterComplete }: { mission:
     const result = checkAnswer(input, step)
     if (result.correct) {
       setFeedback({ type: 'richtig', model: result.model })
+      void recordActivity(attempts === 0 ? XP.missionStep : XP.exerciseRight)
     } else {
       setAttempts((n) => n + 1)
       setFeedback({ type: 'falsch' })

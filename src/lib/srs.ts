@@ -10,6 +10,8 @@ import type { MistakeCard, Phrase } from '../../shared/api'
 import { EPISODES, type Episode } from '../content/story'
 import { api } from './api'
 import type { LearnData, Token, Word } from './data'
+import { startOfDay } from './day'
+import { recordActivity, XP } from './progress'
 import { db, FLASHCARD_KINDS, type CardKind, type CardState, type KotobaDB } from './db'
 
 export { Rating }
@@ -89,13 +91,7 @@ export function resolveItem(card: Pick<CardState, 'kind' | 'refId'>, sources: So
 
 // ---------- Lernsitzung zusammenstellen ----------
 
-/** Ein neuer Lerntag beginnt um 4 Uhr morgens – wer nach Mitternacht lernt, zählt noch zum Vortag. */
-export function startOfDay(now = Date.now()): number {
-  const day = new Date(now)
-  day.setHours(4, 0, 0, 0)
-  if (day.getTime() > now) day.setTime(day.getTime() - DAY)
-  return day.getTime()
-}
+export { startOfDay } from './day'
 
 export interface SessionEntry {
   item: StudyItem
@@ -160,7 +156,10 @@ function toFsrs(state: CardState): Card {
 }
 
 /** Bewertet eine Karte (1 Nochmal … 4 Leicht), speichert den neuen Zustand und gibt ihn zurück. */
-export async function rate(item: Pick<StudyItem, 'cardId' | 'kind' | 'refId'>, previous: CardState | undefined, grade: Grade, d: KotobaDB = db, now = Date.now()): Promise<CardState> {
+export async function rate(
+  item: Pick<StudyItem, 'cardId' | 'kind' | 'refId'>, previous: CardState | undefined, grade: Grade, d: KotobaDB = db, now = Date.now(),
+  options: { dailyGoal?: number; kana?: { hiragana: string[]; katakana: string[] } } = {},
+): Promise<CardState> {
   const before = previous ? toFsrs(previous) : createEmptyCard(new Date(now))
   const next = scheduler.next(before, new Date(now), grade).card
   const state: CardState = {
@@ -174,7 +173,14 @@ export async function rate(item: Pick<StudyItem, 'cardId' | 'kind' | 'refId'>, p
     await d.cards.put(state)
     await d.reviewLog.add({ cardId: state.id, rating: grade, at: now })
   })
+  await recordActivity(xpForGrade(item.kind, grade), { d, now, dailyGoal: options.dailyGoal, kana: options.kana })
   return state
+}
+
+/** Punkte für eine Bewertung: Zeichen-Spiele zählen etwas weniger als Karteikarten. */
+export function xpForGrade(kind: CardKind, grade: Grade): number {
+  if (kind === 'zeichen') return grade === Rating.Again ? XP.glyphWrong : XP.glyphRight
+  return grade === Rating.Easy ? XP.cardEasy : grade === Rating.Good ? XP.cardGood : grade === Rating.Hard ? XP.cardHard : XP.cardAgain
 }
 
 export const GRADES: { grade: Grade; label: string }[] = [
