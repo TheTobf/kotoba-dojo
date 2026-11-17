@@ -100,7 +100,7 @@ Stand: 17.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
 12. **Kleineres:** Sicherung wieder einspielen (Export gibt es schon) · Automodus fürs Nachsprechen (freihändig mit
     Sprachbefehlen, gibt es in der privaten App) · Oberflächen-Tests ins Repo (die Prüfskripte dieser Sitzung lagen
     nur im Arbeitsordner) · Testlauf bei jedem Push (GitHub Actions) · ungenutzte `.woff`-Zweitdateien der
-    Serifenschrift einsparen · Rundgang-Seite mit neuen Screenshots auffrischen.
+    Serifenschrift einsparen. Der bebilderte Rundgang (claude.ai-Artefakt) ist auf dem Stand vom 17.11.2026.
 
 ## Bekannte Probleme und Stolperfallen
 
