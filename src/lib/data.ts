@@ -6,11 +6,15 @@ export interface Furi {
   r?: string
 }
 
+/** Rolle eines Satzteils (für die Markierung beim Satzbau). */
+export type Role = 'subjekt' | 'objekt' | 'verb' | 'partikel' | 'sonst'
+
 export interface Token {
   s: string
   f?: Furi[]
   /** Das Wort, um das es auf der Karte geht. */
   target?: boolean
+  role?: Role
 }
 
 export interface Word {
@@ -62,6 +66,8 @@ export interface Sentence {
   de: string
   /** Kurze Grammatik-Notiz auf Deutsch. */
   grammar: string
+  /** Satzteile für „Sätze bauen“ (aneinandergereiht ergeben sie den Satz). */
+  chunks?: string[]
   source: 'tatoeba' | 'claude'
   tatoebaId?: number
 }

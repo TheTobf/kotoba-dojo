@@ -19,14 +19,44 @@ const SIZES: Record<Size, string> = {
   xl: 'text-4xl sm:text-5xl',
 }
 
+/**
+ * Rollen im Satz, ohne zusätzliche Farben: Thema/Subjekt durchgezogen unterstrichen, Objekt gestrichelt,
+ * Verb in der Akzentfarbe, Partikeln blasser. Erklärt in <RoleLegend>.
+ */
+const ROLE_CLASS: Record<string, string> = {
+  subjekt: 'underline decoration-2 underline-offset-[6px] decoration-ink-soft',
+  objekt: 'underline decoration-dashed decoration-2 underline-offset-[6px] decoration-ink-soft',
+  verb: 'text-accent',
+  partikel: 'text-ink-soft',
+}
+
+export function RoleLegend() {
+  return (
+    <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-ink-soft">
+      <span><span className="underline decoration-2 underline-offset-4">Thema/Subjekt</span></span>
+      <span><span className="underline decoration-dashed decoration-2 underline-offset-4">Objekt</span></span>
+      <span><span className="text-accent">Verb/Adjektiv</span></span>
+      <span>Partikel (blass)</span>
+    </p>
+  )
+}
+
 /** Satz mit Furigana (kleine Lesung über den Kanji). Das Zielwort ist dezent markiert. */
-export function Furigana({ tokens, showReading, hideTarget = false }: { tokens: Token[]; showReading: boolean; hideTarget?: boolean }) {
+export function Furigana({ tokens, showReading, hideTarget = false, roles = false, gapAt }: {
+  tokens: Token[]
+  showReading: boolean
+  hideTarget?: boolean
+  /** Rollen markieren (Satzbau, Grammatik). */
+  roles?: boolean
+  /** Lücke an dieser Stelle (Partikel-Übung). */
+  gapAt?: number
+}) {
   return (
     <>
-      {tokens.map((token, i) => token.target && hideTarget ? (
-        <span key={i} aria-label="Lücke" className="mx-1 inline-block min-w-14 border-b-2 border-accent align-baseline">&nbsp;</span>
+      {tokens.map((token, i) => (token.target && hideTarget) || gapAt === i ? (
+        <span key={i} aria-label="Lücke" className="mx-1 inline-block min-w-12 border-b-2 border-accent align-baseline">&nbsp;</span>
       ) : (
-        <span key={i} className={cx(token.target && 'text-accent')}>
+        <span key={i} className={cx(roles ? token.role && ROLE_CLASS[token.role] : token.target && 'text-accent')}>
           {token.f
             ? token.f.map((part, j) =>
                 part.r ? (
@@ -60,8 +90,10 @@ export function SpeakButton({ text, className }: { text: string; className?: str
 }
 
 export function JaText({
-  phrase, tokens, size = 'md', showTranslation = false, align = 'left', className, hideTarget = false,
+  phrase, tokens, size = 'md', showTranslation = false, align = 'left', className, hideTarget = false, roles = false, gapAt,
 }: {
+  roles?: boolean
+  gapAt?: number
   phrase: Phrase
   tokens?: Token[]
   /** Zielwort als Lücke zeigen (Quiz). Blendet auch Kana und Romaji aus, damit nichts verraten wird. */
@@ -78,10 +110,10 @@ export function JaText({
   return (
     <div className={cx(align === 'center' && 'text-center', className)}>
       <p lang="ja" className={cx('font-display leading-snug', hasFurigana && 'leading-[2.1]', SIZES[size])}>
-        {tokens?.length ? <Furigana tokens={tokens} showReading={showKana} hideTarget={hideTarget} /> : phrase.ja}
+        {tokens?.length ? <Furigana tokens={tokens} showReading={showKana} hideTarget={hideTarget} roles={roles} gapAt={gapAt} /> : phrase.ja}
       </p>
-      {kanaLine && !hideTarget && <p lang="ja" className="mt-1 text-ink-soft">{phrase.kana}</p>}
-      {showRomaji && !hideTarget && <p lang="ja-Latn" className="mt-0.5 text-sm text-ink-soft">{phrase.romaji}</p>}
+      {kanaLine && !hideTarget && gapAt === undefined && <p lang="ja" className="mt-1 text-ink-soft">{phrase.kana}</p>}
+      {showRomaji && !hideTarget && gapAt === undefined && <p lang="ja-Latn" className="mt-0.5 text-sm text-ink-soft">{phrase.romaji}</p>}
       {showTranslation && <p className="mt-2">{phrase.de}</p>}
     </div>
   )

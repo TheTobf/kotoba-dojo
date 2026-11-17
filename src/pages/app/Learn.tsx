@@ -78,6 +78,15 @@ export function Component() {
               </span>
             </div>
           </LinkCard>
+          <LinkCard to="/app/lernen/satzbau">
+            <div className="flex items-start gap-4">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-soft font-display text-lg text-accent" lang="ja" aria-hidden="true">文</span>
+              <span>
+                <span className="block font-display text-lg">Satzbau und Grammatik</span>
+                <span className="block text-sm text-ink-soft">Sätze aus Teilen bauen, Partikeln einsetzen, 15 kurze Lektionen</span>
+              </span>
+            </div>
+          </LinkCard>
         </div>
       </div>
 

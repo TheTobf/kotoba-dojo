@@ -1,5 +1,5 @@
 /**
- * Ruhige Rückmeldungen am unteren Rand: Level erreicht, Lernserie, Tagesziel, neuer Erfolg.
+ * Ruhige Rückmeldungen am oberen Rand (unten lägen sie über den Knöpfen): Level erreicht, Lernserie, Tagesziel, neuer Erfolg.
  * Kommt aus recordActivity (src/lib/progress.ts). Für Screenreader über aria-live.
  */
 import { useEffect, useState } from 'react'
@@ -34,7 +34,7 @@ export function Toasts() {
     let next = 0
     const onEvent = (e: Event) => {
       const toast = toToast((e as CustomEvent<ProgressEvent>).detail, next++)
-      setToasts((list) => [...list.slice(-2), toast])
+      setToasts((list) => [...list.slice(-1), toast])
       setTimeout(() => setToasts((list) => list.filter((t) => t.id !== toast.id)), SHOW_MS)
     }
     window.addEventListener(PROGRESS_EVENT, onEvent)
@@ -44,7 +44,7 @@ export function Toasts() {
   return (
     <div
       aria-live="polite"
-      className="pointer-events-none fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-50 flex flex-col items-center gap-2 px-5 md:bottom-6"
+      className="pointer-events-none fixed inset-x-0 top-[calc(env(safe-area-inset-top)+0.75rem)] z-50 flex flex-col items-center gap-2 px-5 md:right-6 md:left-auto md:items-end"
     >
       {toasts.map((t) => (
         <div key={t.id} role="status" className="rise pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-card border border-line bg-surface px-4 py-3 shadow-raised">

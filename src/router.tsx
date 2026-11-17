@@ -37,6 +37,7 @@ export const router = createBrowserRouter([
       { path: 'lernen/sitzung', lazy: () => import('./pages/app/Review') },
       { path: 'lernen/schrift', lazy: () => import('./pages/app/Writing') },
       { path: 'lernen/quiz', lazy: () => import('./pages/app/Quiz') },
+      { path: 'lernen/satzbau', lazy: () => import('./pages/app/Grammar') },
       { path: 'story', lazy: () => import('./pages/app/Story') },
       { path: 'story/folge/:episodeId', lazy: () => import('./pages/app/Episode') },
       { path: 'story/mission/:missionId', lazy: () => import('./pages/app/StoryMission') },
