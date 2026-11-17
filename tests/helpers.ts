@@ -19,7 +19,7 @@ export const DAY = 86_400
 
 const TABLES = [
   'sessions', 'login_codes', 'subscriptions', 'stripe_events', 'checkout_consents', 'cancellations',
-  'ai_usage', 'ai_budget', 'mistake_cards', 'waitlist', 'users',
+  'ai_usage', 'ai_budget', 'mistake_cards', 'waitlist', 'progress_sync', 'users',
 ]
 
 let proxy: PlatformProxy<{ DB: D1Database }> | undefined

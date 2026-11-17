@@ -1,5 +1,6 @@
 /** Eine der beiden Gratis-Probe-Missionen (läuft komplett auf dem Gerät). */
 import { useParams } from 'react-router-dom'
+import { AccountNudge } from '../../features/AccountNudge'
 import { MissionPlayer } from '../../features/mission/MissionPlayer'
 import { findTrialMission, TRIAL_MISSIONS } from '../../content/trialMissions'
 import { useAccount } from '../../lib/account'
@@ -23,10 +24,13 @@ export function Component() {
         key={mission.id} mission={mission}
         onComplete={() => void completeMission(mission.id)}
         afterComplete={
+          <div className="space-y-4">
+          <div className="text-left empty:hidden"><AccountNudge /></div>
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
             {other && <Button to={`/app/sprechen/probe/${other.id}`} variant={pro ? 'primary' : 'secondary'}>Nächste Probe-Mission</Button>}
             {!pro && <Button to="/app/upgrade" variant="primary">Mehr Missionen mit Pro</Button>}
             {pro && <Button to="/app/story">Zu den Story-Missionen</Button>}
+          </div>
           </div>
         }
       />

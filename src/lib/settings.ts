@@ -14,11 +14,14 @@ export interface Settings {
   dailyGoal: number
   /** Zustimmung zur Spracheingabe (der Browser schickt den Ton zur Erkennung an seinen Hersteller). */
   micConsent: boolean
+  /** Hinweis „Sichere deinen Fortschritt“: wann zuletzt weggeklickt, wie oft. */
+  nudgeDismissedAt: number
+  nudgeDismissals: number
   /** Schrift-Stufen, die man selbst freigeschaltet hat („Kann ich schon“). */
   unlockedStages: WritingStage[]
 }
 
-export const DEFAULT_SETTINGS: Settings = { theme: 'system', showKana: true, showRomaji: true, newPerDay: 8, dailyGoal: 20, micConsent: false, unlockedStages: [] }
+export const DEFAULT_SETTINGS: Settings = { theme: 'system', showKana: true, showRomaji: true, newPerDay: 8, dailyGoal: 20, micConsent: false, nudgeDismissedAt: 0, nudgeDismissals: 0, unlockedStages: [] }
 
 const KEY = 'kd.settings' // derselbe Schlüssel wie in public/theme.js
 const listeners = new Set<() => void>()

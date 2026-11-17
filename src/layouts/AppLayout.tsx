@@ -7,6 +7,7 @@ import { cx } from '../ui/cx'
 import { Icon, type IconName } from '../ui/Icon'
 import { Logo } from '../ui/Logo'
 import { Toasts } from '../ui/Toasts'
+import { AutoSync } from '../features/AutoSync'
 
 const TABS: { to: string; label: string; ja: string; icon: IconName; end?: boolean }[] = [
   { to: '/app', label: 'Start', ja: '始め', icon: 'home', end: true },
@@ -78,6 +79,7 @@ export default function AppLayout() {
         ))}
       </nav>
       <Toasts />
+      <AutoSync />
       <ScrollRestoration />
     </div>
   )

@@ -5,10 +5,11 @@ export function Component() {
     <LegalPage title="Datenschutzerklärung" updated="[BITTE AUSFÜLLEN]">
       <h2>1. Kurz gesagt</h2>
       <ul>
-        <li>Zum Lernen brauchst du kein Konto. Dein Lernfortschritt liegt nur auf deinem Gerät.</li>
+        <li>Zum Lernen brauchst du kein Konto. Ohne Konto liegt dein Lernfortschritt nur auf deinem Gerät.</li>
+        <li>Mit einem kostenlosen Konto wird dein Lernstand zusätzlich auf unserem Server gesichert (Speicherort EU), damit er auf allen deinen Geräten gleich ist.</li>
         <li>Wir setzen kein Tracking, keine Werbe-Cookies und keine Analyse-Dienste ein. Deshalb gibt es keinen Cookie-Banner.</li>
         <li>Schriften und alle Dateien der App kommen von unserer eigenen Adresse, nicht von Dritten wie Google.</li>
-        <li>Für Pro speichern wir nur deine E-Mail-Adresse und den Stand deines Abos.</li>
+        <li>Für ein Konto speichern wir deine E-Mail-Adresse, für Pro zusätzlich den Stand deines Abos.</li>
       </ul>
 
       <h2>2. Verantwortlicher</h2>
@@ -30,9 +31,16 @@ export function Component() {
 
       <h2>5. Konto und Anmeldung</h2>
       <p>
-        Für Pro legst du ein Konto mit deiner E-Mail-Adresse an. Zur Anmeldung schicken wir dir einen Einmalcode. Nach der Anmeldung setzen wir
+        Ein Konto ist freiwillig und kostenlos; für Pro ist es nötig. Du legst es mit deiner E-Mail-Adresse an. Zur Anmeldung schicken wir dir einen Einmalcode. Nach der Anmeldung setzen wir
         ein technisch notwendiges Sitzungs-Cookie („kd_session“, Laufzeit 30 Tage), das dich angemeldet hält. Rechtsgrundlage ist
         Art. 6 Abs. 1 lit. b DSGVO; für das Cookie § 25 Abs. 2 Nr. 2 TDDDG.
+      </p>
+
+      <h3>Abgleich zwischen Geräten</h3>
+      <p>
+        Mit Konto speichern wir deinen Lernstand auf unserem Server: welche Karten du wann wiederholt hast, erledigte Missionen,
+        Punkte, Lernserie und Erfolge. Einstellungen und das Bewertungs-Protokoll bleiben auf dem Gerät. Der Abgleich ist der
+        Zweck des Kontos (Art. 6 Abs. 1 lit. b DSGVO). Du kannst dein Konto mit allen diesen Daten im Profil jederzeit selbst löschen.
       </p>
 
       <h2>6. Bezahlung</h2>

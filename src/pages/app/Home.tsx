@@ -5,6 +5,7 @@ import { useAccount } from '../../lib/account'
 import { useCards, useCompletedMissions, useReviewedToday } from '../../lib/hooks'
 import { useSettings } from '../../lib/settings'
 import { episodeProgress, overview, startOfDay } from '../../lib/srs'
+import { AccountNudge } from '../../features/AccountNudge'
 import { ProgressStrip } from '../../features/ProgressSummary'
 import { PageHeader } from '../../layouts/AppLayout'
 import { Button } from '../../ui/Button'
@@ -47,6 +48,7 @@ export function Component() {
     <>
       <PageHeader ja={hello.ja} title={`${hello.de}!`} lead={stats.dueNow > 0 ? 'Ein paar Karten warten auf dich.' : 'Bereit für ein paar neue Sätze?'} />
 
+      <div className="mb-6 empty:hidden"><AccountNudge /></div>
       <ProgressStrip />
 
       <Card className="mt-3 sm:p-8">

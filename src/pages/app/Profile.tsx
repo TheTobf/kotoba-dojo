@@ -8,6 +8,8 @@ import { useAccount } from '../../lib/account'
 import { exportBackup } from '../../lib/db'
 import { updateSettings, useSettings, type Settings } from '../../lib/settings'
 import { ProgressDetails } from '../../features/ProgressSummary'
+import { runSync, useSyncStatus } from '../../features/AutoSync'
+import { forgetSyncOwner } from '../../lib/sync'
 import { PageHeader } from '../../layouts/AppLayout'
 import { Badge } from '../../ui/Badge'
 import { Button } from '../../ui/Button'
@@ -108,17 +110,23 @@ export function Component() {
         {status === 'laden' ? (
           <p className="text-ink-soft">Einen Moment …</p>
         ) : signedIn ? (
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="min-w-0">
-              <p className="text-sm text-ink-soft">Angemeldet als</p>
-              <p className="truncate font-medium">{me!.user!.email}</p>
+          <div className="space-y-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <p className="text-sm text-ink-soft">Angemeldet als</p>
+                <p className="truncate font-medium">{me!.user!.email}</p>
+              </div>
+              <Button size="sm" onClick={() => void logout()}>Abmelden</Button>
             </div>
-            <Button size="sm" onClick={() => void logout()}>Abmelden</Button>
+            <SyncInfo userId={me!.user!.id} />
           </div>
         ) : (
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-ink-soft">Du lernst ohne Konto. Dein Fortschritt liegt auf diesem Gerät.</p>
-            <Button to="/anmelden" size="sm" className="shrink-0">Anmelden</Button>
+          <div className="space-y-3">
+            <p className="text-ink-soft">Du lernst ohne Konto. Dein Fortschritt liegt nur auf diesem Gerät.</p>
+            <p className="text-sm text-ink-soft">
+              Mit einem kostenlosen Konto wird er gesichert und auf allen deinen Geräten abgeglichen. Dafür reicht deine E-Mail-Adresse.
+            </p>
+            <Button to="/anmelden" size="sm">Kostenloses Konto anlegen oder anmelden</Button>
           </div>
         )}
       </Card>
@@ -201,8 +209,13 @@ export function Component() {
       <div className="mt-10">
         <SectionTitle>Deine Daten</SectionTitle>
         <Card>
-          <p className="text-ink-soft">Dein Lernfortschritt liegt nur auf diesem Gerät. Mit einer Sicherung nimmst du ihn auf ein anderes Gerät mit.</p>
+          <p className="text-ink-soft">
+            {signedIn
+              ? 'Dein Lernstand liegt auf diesem Gerät und wird mit deinem Konto abgeglichen (Speicherort EU). Zusätzlich kannst du eine Sicherung als Datei herunterladen.'
+              : 'Dein Lernfortschritt liegt nur auf diesem Gerät. Mit einer Sicherung als Datei bist du auf der sicheren Seite.'}
+          </p>
           <Button className="mt-4" size="sm" onClick={() => void downloadBackup()}>Sicherung herunterladen</Button>
+          {signedIn && <DeleteAccount onDeleted={() => void refresh()} />}
         </Card>
       </div>
 
@@ -212,5 +225,62 @@ export function Component() {
         ))}
       </nav>
     </>
+  )
+}
+
+/** Stand des Abgleichs mit dem Konto, mit Knopf zum sofortigen Abgleichen. */
+function SyncInfo({ userId }: { userId: string }) {
+  const status = useSyncStatus()
+  const when = status.at
+    ? new Date(status.at).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })
+    : undefined
+  return (
+    <div className="flex flex-col gap-3 border-t border-line pt-4 sm:flex-row sm:items-center sm:justify-between">
+      <div aria-live="polite">
+        <p className="font-medium">Abgleich zwischen Geräten</p>
+        <p className="text-sm text-ink-soft">
+          {status.state === 'laeuft' ? 'Wird gerade abgeglichen …' : status.state === 'fehler' ? status.error : when ? `Zuletzt abgeglichen: ${when}` : 'Läuft automatisch, sobald du gelernt hast.'}
+        </p>
+      </div>
+      <Button size="sm" loading={status.state === 'laeuft'} onClick={() => void runSync(userId)}>Jetzt abgleichen</Button>
+    </div>
+  )
+}
+
+/** Konto löschen – mit Bestätigung auf der Seite (kein Browser-Dialog). */
+function DeleteAccount({ onDeleted }: { onDeleted: () => void }) {
+  const [step, setStep] = useState<'zu' | 'frage' | 'laeuft'>('zu')
+  const [error, setError] = useState<string>()
+  async function remove() {
+    setStep('laeuft')
+    setError(undefined)
+    try {
+      await api.deleteAccount()
+      forgetSyncOwner()
+      onDeleted()
+    } catch (e) {
+      setError(errorMessage(e))
+      setStep('frage')
+    }
+  }
+  return (
+    <div className="mt-6 border-t border-line pt-4">
+      {step === 'zu' ? (
+        <button type="button" className="text-sm text-ink-soft underline hover:text-accent" onClick={() => setStep('frage')}>Konto löschen</button>
+      ) : (
+        <div className="space-y-3">
+          <p className="font-medium">Konto wirklich löschen?</p>
+          <p className="text-sm text-ink-soft">
+            Gelöscht werden deine E-Mail-Adresse, der gesicherte Lernstand und deine Fehlerkarten auf dem Server. Der Lernstand auf
+            diesem Gerät bleibt. Ein laufendes Pro-Abo musst du vorher kündigen.
+          </p>
+          {error && <Notice tone="error">{error}</Notice>}
+          <div className="flex flex-wrap gap-2">
+            <Button size="sm" variant="primary" loading={step === 'laeuft'} onClick={() => void remove()}>Ja, Konto löschen</Button>
+            <Button size="sm" variant="ghost" onClick={() => { setStep('zu'); setError(undefined) }}>Abbrechen</Button>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }

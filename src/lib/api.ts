@@ -15,7 +15,7 @@ export class ApiError extends Error {
   }
 }
 
-async function call<T>(method: 'GET' | 'POST', path: string, body?: unknown): Promise<T> {
+async function call<T>(method: 'GET' | 'POST' | 'DELETE', path: string, body?: unknown): Promise<T> {
   let response: Response
   try {
     response = await fetch(`/api${path}`, {
@@ -39,6 +39,7 @@ export const api = {
   startLogin: (email: string) => call<AuthStartResponse>('POST', '/auth/start', { email }),
   verifyLogin: (email: string, code: string) => call<{ ok: true }>('POST', '/auth/verify', { email, code }),
   logout: () => call<{ ok: true }>('POST', '/auth/logout'),
+  deleteAccount: () => call<{ ok: true }>('DELETE', '/account'),
   checkout: (request: CheckoutRequest) => call<UrlResponse>('POST', '/billing/checkout', request),
   portal: () => call<UrlResponse>('POST', '/billing/portal'),
   cancel: (request: CancelRequest) => call<CancelResponse>('POST', '/cancel', request),

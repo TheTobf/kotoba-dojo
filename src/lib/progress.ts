@@ -163,11 +163,14 @@ export type ProgressEvent =
   | { type: 'achievement'; mark: string; name: string; text: string }
 
 export const PROGRESS_EVENT = 'kotoba:progress'
+/** Wird bei jeder Übung ausgelöst (für den automatischen Abgleich). */
+export const ACTIVITY_EVENT = 'kotoba:activity'
 
 function emit(events: ProgressEvent[]) {
   const target = globalThis as unknown as { dispatchEvent?: (event: Event) => boolean }
   if (typeof target.dispatchEvent !== 'function') return // z. B. in Tests
   for (const detail of events) target.dispatchEvent(new CustomEvent(PROGRESS_EVENT, { detail }))
+  target.dispatchEvent(new CustomEvent(ACTIVITY_EVENT))
 }
 
 // ---------- Aktivität verbuchen ----------

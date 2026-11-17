@@ -33,8 +33,10 @@ Ohne Stripe-Schlüssel läuft lokal der Stripe-Simulator (siehe ARCHITECTURE.md)
    ausschließlich der verifizierte Stripe-Webhook (`worker/payments/webhook.ts`). Dem Browser wird nie vertraut.
    Pro-Inhalte liegen auf dem Server (`worker/content/`), nicht im App-Paket.
 5. **KI nur über `/api/ai/chat`**, mit Tageskontingent pro Nutzer und globalem Monatsbudget. KI-Schlüssel nie im Browser.
-6. **Datensparsam:** Lernfortschritt bleibt auf dem Gerät (IndexedDB). Auf dem Server nur E-Mail, Abo-Stand,
-   KI-Verbrauch, Fehlerkarten, Warteliste, Kündigungen. Datenbank mit Speicherort EU.
+6. **Datensparsam:** Ohne Konto bleibt der Lernfortschritt nur auf dem Gerät (IndexedDB). Mit (kostenlosem) Konto wird
+   er zusätzlich als ein komprimierter Lernstand pro Konto abgeglichen (`progress_sync`, Entscheidung des Nutzers vom
+   17.11.2026). Sonst auf dem Server nur E-Mail, Abo-Stand, KI-Verbrauch, Fehlerkarten, Warteliste, Kündigungen.
+   Datenbank mit Speicherort EU. Konto samt Daten lässt sich im Profil selbst löschen.
 7. **Kein Tracking, keine fremden Server im Browser:** Schriften selbst gehostet, keine Analyse-Dienste,
    kein Cookie-Banner nötig. Die CSP in `public/_headers` erlaubt nur die eigene Adresse.
 8. **Geheimnisse nur in `.env`** (lokal) bzw. als `wrangler secret` (online) – nie im Code, nie in Git, nie in Notizen.
