@@ -34,12 +34,20 @@ export function Component() {
           Grammatik-Notizen wurden mit KI-Unterstützung geschrieben.
         </p>
 
+        <h2>Kanji und Schreiben</h2>
+        <p>
+          Kanji-Lesungen und Strichzahlen stammen aus KANJIDIC2 der EDRDG (CC BY-SA 4.0). Die Strichpfade und die
+          Strichreihenfolge für Kana und Kanji stammen aus <a href="https://kanjivg.tagaini.net/" rel="noreferrer">KanjiVG</a> von
+          Ulrich Apel, Lizenz <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.de" rel="noreferrer">CC BY-SA 3.0</a>.
+        </p>
+
         <h2>Wortreihenfolge</h2>
         <p>Die Häufigkeitsliste stammt aus dem Japanese Internet Corpus von Serge Sharoff (University of Leeds), Lizenz CC BY.</p>
 
         <h2>Weitergabe der Daten</h2>
         <p>
-          Weil JMdict unter CC BY-SA steht, stehen auch die daraus abgeleiteten Lerndaten dieser App (Wort- und Satzlisten) unter{' '}
+          Weil JMdict, KANJIDIC2 und KanjiVG unter CC BY-SA stehen, stehen auch die daraus abgeleiteten Lerndaten dieser App (Wort-,
+          Satz- und Kanji-Listen, Strichdaten) unter{' '}
           <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de" rel="noreferrer">CC BY-SA 4.0</a>. Der Programmcode ist davon nicht betroffen.
         </p>
 

@@ -10,10 +10,14 @@ Bedingungen es genutzt werden darf. In der App steht die Kurzfassung unter `/que
 | Lesungen, Wortarten, Grundlage der Bedeutungen | JMdict, © Electronic Dictionary Research and Development Group (EDRDG) | [CC BY-SA 4.0](https://www.edrdg.org/edrdg/licence.html) | Ja, mit Namensnennung und Weitergabe unter gleicher Lizenz |
 | Beispielsätze und Übersetzungen (1908 von 2034) | [Tatoeba](https://tatoeba.org), jeder Satz mit `tatoebaId` | [CC BY 2.0 FR](https://creativecommons.org/licenses/by/2.0/fr/) | Ja, mit Namensnennung |
 | Wortreihenfolge (Häufigkeit) | Japanese Internet Corpus, Serge Sharoff, University of Leeds | CC BY | Ja, mit Namensnennung |
+| Kanji-Lesungen, Strichzahl, Häufigkeit (`kanji.json`) | KANJIDIC2, © EDRDG | CC BY-SA 4.0 | Ja, mit Namensnennung und Weitergabe unter gleicher Lizenz |
+| Strichpfade und Strichreihenfolge (`strokes/`, `kana-strokes/`) | [KanjiVG](https://kanjivg.tagaini.net/), © Ulrich Apel | CC BY-SA 3.0 | Ja, mit Namensnennung und Weitergabe unter gleicher Lizenz |
+| Kana-Liste (`kana.json`) | eigen, Striche aus KanjiVG | eigen / CC BY-SA 3.0 | Ja |
+| Grammatik-Lektionen (`src/content/grammar.ts`) | mit KI-Unterstützung geschrieben (aus der privaten App) | eigen | Ja |
 | Deutsche Kurzbedeutungen, 126 eigene Sätze, alle Grammatik-Notizen | mit KI-Unterstützung (Claude) geschrieben | eigen | Ja |
 
-**Folge von CC BY-SA:** Die abgeleiteten Dateien `words.json` und `sentences.json` stehen selbst unter CC BY-SA 4.0
-und müssen so weitergegeben werden dürfen. Der Programmcode ist davon nicht betroffen.
+**Folge von CC BY-SA:** Die abgeleiteten Dateien `words.json`, `sentences.json`, `kanji.json` und die Strichdaten stehen
+selbst unter CC BY-SA und müssen so weitergegeben werden dürfen. Der Programmcode ist davon nicht betroffen.
 
 Die Dateien wurden mit der Daten-Pipeline der privaten App erzeugt. Sie liegt auf dem Branch `main` unter `scripts/`
 (dort auch die Rohdaten-Quellen, kuromoji, WanaKana).

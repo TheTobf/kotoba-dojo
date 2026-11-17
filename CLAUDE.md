@@ -71,5 +71,10 @@ Ohne Stripe-Schlüssel läuft lokal der Stripe-Simulator (siehe ARCHITECTURE.md)
 | `src/router.tsx` | alle Seiten |
 | `src/lib/speech.ts`, `shared/audio.ts`, `scripts/audio-gen.ts` | Vorlesen: eigene Aufnahmen mit Rückfall auf die Gerätestimme |
 | `src/lib/srs.ts`, `src/lib/db.ts` | Wiederholungs-Logik (FSRS) und lokaler Lernfortschritt |
+| `src/lib/writing.ts`, `quiz.ts`, `sentences.ts`, `search.ts`, `shadowing.ts` | Logik der Übungen (Schrift, Quiz, Satzbau, Wörterbuch, Nachsprechen) |
+| `src/lib/progress.ts` | Punkte, Level, Lernserie, Tagesziel, Erfolge |
+| `src/lib/sync.ts`, `worker/routes/sync.ts` | Abgleich zwischen Geräten (Zusammenführen auf dem Gerät) |
+| `src/lib/listen.ts`, `src/ui/MicButton.tsx` | Spracheingabe mit Einwilligung |
+| `src/lib/reminders.ts`, `worker/routes/reminders.ts`, `public/push-sw.js` | tägliche Lern-Erinnerung (Web Push) |
 | `src/content/`, `worker/content/` | Story-Folgen, Probe-Missionen, Pro-Missionen (Platzhalter) |
 | `tests/` | Tests; `tests/paywall.test.ts` ist der wichtigste |

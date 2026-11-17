@@ -1,6 +1,6 @@
 ---
 tags: [projekt, kotoba-dojo]
-aktualisiert: 2026-11-16
+aktualisiert: 2026-11-17
 ---
 # Kotoba Dojo – Übersicht
 
@@ -12,31 +12,34 @@ Japanisch-Lern-App zur eigenen TikTok-Story. Lernen ist gratis, Sprechen und Mis
 0 € Fixkosten, so wenig Nutzerdaten wie möglich.
 
 ## Produkt
-**Gratis:** Sätze und Vokabeln mit Spaced Repetition (deutsche Oberfläche, Kana, Romaji, Vorlesen), Lektionen zu den
-Story-Folgen, 2 Probe-Missionen im Sprechmodus. Kein Konto nötig, Fortschritt bleibt auf dem Gerät.
+**Gratis:** Karteikarten mit Spaced Repetition (Wörter, Story-Sätze), Lektionen zu den Story-Folgen, Schrift lernen
+(Hiragana, Katakana, Kanji, Nachzeichnen), Quiz mit Lückentext, Satzbau und 15 Grammatik-Lektionen, Wörterbuch,
+Nachsprechen, 2 Probe-Missionen, Punkte/Lernserie/Erfolge, tägliche Erinnerung. Ohne Konto bleibt alles auf dem Gerät;
+mit kostenlosem Konto wird der Lernstand zwischen Geräten abgeglichen.
 
-**Pro (4,99 €/Monat oder 39 €/Jahr):** Story-Missionen, Gespräche mit KI-Figuren (Hilfe auf Deutsch),
-Korrekturen auf Deutsch, Fehler werden automatisch zu Karteikarten.
+**Pro (4,99 €/Monat oder 39 €/Jahr):** Story-Missionen, Gespräche mit KI-Figuren (Hilfe auf Deutsch, auch per
+Mikrofon), Korrekturen auf Deutsch, Fehler werden automatisch zu Karteikarten.
 
 ## Technik
 - Oberfläche: React, TypeScript, Tailwind, als PWA (Handy und PC)
-- Server: Cloudflare Worker (API) + Cloudflare D1 (Datenbank, EU)
+- Server: Cloudflare Worker (API, Zeitplan für Erinnerungen) + Cloudflare D1 (Datenbank, EU)
 - Bezahlung: Stripe Checkout und Kundenportal, nur Testmodus
 - KI: nur über den eigenen Server, mit Tageskontingent und Monatsbudget; derzeit Platzhalter-Antworten
 - Start lokal: `npm run dev`, Tests: `npm test`
 
-## Aktueller Stand (16.11.2026)
-- Grundgerüst fertig: alle Hauptseiten mit Design, Paywall, Kündigungsbutton, KI-Endpunkt, Rechtsseiten als Entwurf
-- 100 Tests grün; ganzer Ablauf (Kauf → Pro → Kündigung → Pro endet) lokal im Browser durchgeklickt
-- Echtes Stripe im Testmodus geprüft: Produkt und Preise angelegt; Kauf, Verlängerung, Kündigung und Ende mit
-  echten Stripe-Meldungen bestanden. Offen: einmal von Hand im Browser mit Testkarte bezahlen
+## Aktueller Stand (17.11.2026)
+- Grundgerüst fertig; alle Wünsche aus dem Rundgang umgesetzt (Kana, Kanji, Quiz, Satzbau, Grammatik, Motivation,
+  Mikrofon, Nachsprechen, Wortsuche, Abgleich zwischen Geräten, Lern-Erinnerung)
+- 155 Tests grün; jede neue Übung im Browser durchgespielt
+- Echtes Stripe im Testmodus geprüft (Kauf, Verlängerung, Kündigung, Ende); Bezahlen von Hand im Browser steht noch aus
 - Noch nichts veröffentlicht; es werden noch keine E-Mails verschickt
+- Lern-Erinnerung und Mikrofon noch nicht auf echten Handys getestet
 - Story-Folgen, Missionen und Figuren sind Platzhalter
-- Alte Stimmen entfernt (Lizenz). Die App kann eigene Aufnahmen abspielen, es gibt aber noch keine – bis dahin liest die Gerätestimme
+- Stimmen: Anfrage an den VOICEVOX-Rechteinhaber vorbereitet, muss noch abgeschickt werden; bei Nein Azure Speech
 
 ## Nächste Schritte
-1. Stimmen: Anfrage an den VOICEVOX-Rechteinhaber abschicken (`docs/anfragen/voicevox-anfrage.md`); bei Nein oder ohne Antwort Azure Speech (bezahlte Stufe). Technik dafür ist fertig
-2. Stripe-Bezahlseite einmal von Hand im Browser durchklicken (Testkarte)
+1. VOICEVOX-Anfrage abschicken (`docs/anfragen/voicevox-anfrage.md`); bei Nein oder ohne Antwort Azure Speech
+2. Stripe einmal von Hand im Browser durchklicken
 3. E-Mail-Versand anschließen
 4. Echte Story-Inhalte einpflegen
 5. Echte KI anschließen
