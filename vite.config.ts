@@ -38,6 +38,12 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
+            // Strichdaten für Kana und Kanji: erst beim ersten Ansehen laden, danach auch offline.
+            urlPattern: ({ url, sameOrigin }) => sameOrigin && (url.pathname.startsWith('/data/strokes/') || url.pathname.startsWith('/data/kana-strokes/')),
+            handler: 'CacheFirst',
+            options: { cacheName: 'striche', expiration: { maxEntries: 1500 } },
+          },
+          {
             // Sprachaufnahmen: beim ersten Abspielen merken, danach auch offline.
             urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith('/audio/') && url.pathname.endsWith('.mp3'),
             handler: 'CacheFirst',

@@ -7,7 +7,7 @@ import { KotobaDB } from '../src/lib/db'
 import { buildSession, cardId, episodeProgress, formatInterval, itemsForEpisode, rate, Rating, startOfDay } from '../src/lib/srs'
 
 const word = (n: number): Word => ({
-  id: `w${n}`, rank: n, lesson: 1, surface: `語${n}`, reading: `ご${n}`, romaji: `go${n}`, pos: 'Nomen', meaningsDe: [`Wort ${n}`], sentenceIds: [`s${n}`],
+  id: `w${n}`, rank: n, lesson: 1, surface: `語${n}`, reading: `ご${n}`, romaji: `go${n}`, pos: 'Nomen', meaningsDe: [`Wort ${n}`], kanji: [], sentenceIds: [`s${n}`],
 })
 const words = [1, 2, 3, 4, 5].map(word)
 const data: LearnData = {

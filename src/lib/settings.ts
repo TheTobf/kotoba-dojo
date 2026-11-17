@@ -1,5 +1,6 @@
 /** Einstellungen dieses Geräts (Design, Lesehilfen). Liegen nur lokal im Browser, nie auf dem Server. */
 import { useSyncExternalStore } from 'react'
+import type { WritingStage } from './data'
 
 export interface Settings {
   theme: 'system' | 'hell' | 'dunkel'
@@ -9,9 +10,11 @@ export interface Settings {
   showRomaji: boolean
   /** Neue Karten pro Tag. */
   newPerDay: number
+  /** Schrift-Stufen, die man selbst freigeschaltet hat („Kann ich schon“). */
+  unlockedStages: WritingStage[]
 }
 
-export const DEFAULT_SETTINGS: Settings = { theme: 'system', showKana: true, showRomaji: true, newPerDay: 8 }
+export const DEFAULT_SETTINGS: Settings = { theme: 'system', showKana: true, showRomaji: true, newPerDay: 8, unlockedStages: [] }
 
 const KEY = 'kd.settings' // derselbe Schlüssel wie in public/theme.js
 const listeners = new Set<() => void>()

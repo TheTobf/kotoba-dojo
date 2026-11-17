@@ -10,7 +10,7 @@ import type { MistakeCard, Phrase } from '../../shared/api'
 import { EPISODES, type Episode } from '../content/story'
 import { api } from './api'
 import type { LearnData, Token, Word } from './data'
-import { db, type CardKind, type CardState, type KotobaDB } from './db'
+import { db, FLASHCARD_KINDS, type CardKind, type CardState, type KotobaDB } from './db'
 
 export { Rating }
 export type { Grade }
@@ -125,7 +125,7 @@ export function buildSession({ cards, scope, newPerDay, data, mistakes, now = Da
     (scope.type === 'folge' && card.kind === 'satz' && card.refId.startsWith(`${scope.episodeId}:`))
 
   const due: SessionEntry[] = cards
-    .filter((card) => card.due <= now && inScope(card))
+    .filter((card) => FLASHCARD_KINDS.includes(card.kind) && card.due <= now && inScope(card))
     .sort((a, b) => a.due - b.due)
     .flatMap((state) => {
       const item = resolveItem(state, sources)
@@ -160,7 +160,7 @@ function toFsrs(state: CardState): Card {
 }
 
 /** Bewertet eine Karte (1 Nochmal … 4 Leicht), speichert den neuen Zustand und gibt ihn zurück. */
-export async function rate(item: StudyItem, previous: CardState | undefined, grade: Grade, d: KotobaDB = db, now = Date.now()): Promise<CardState> {
+export async function rate(item: Pick<StudyItem, 'cardId' | 'kind' | 'refId'>, previous: CardState | undefined, grade: Grade, d: KotobaDB = db, now = Date.now()): Promise<CardState> {
   const before = previous ? toFsrs(previous) : createEmptyCard(new Date(now))
   const next = scheduler.next(before, new Date(now), grade).card
   const state: CardState = {
@@ -212,8 +212,9 @@ export interface Overview {
 }
 
 export function overview(cards: CardState[], reviewedToday: number, now = Date.now()): Overview {
+  const flashcards = cards.filter((card) => FLASHCARD_KINDS.includes(card.kind))
   return {
-    dueNow: cards.filter((card) => card.due <= now).length,
+    dueNow: flashcards.filter((card) => card.due <= now).length,
     learnedWords: cards.filter((card) => card.kind === 'wort').length,
     learnedSentences: cards.filter((card) => card.kind === 'satz').length,
     reviewedToday,

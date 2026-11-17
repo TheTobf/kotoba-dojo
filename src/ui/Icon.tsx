@@ -20,6 +20,11 @@ const PATHS = {
   external: 'M13 5h6v6m0-6-8.5 8.5M17 14v5H5V7h5',
   download: 'M12 4.5v10m-4-4 4 4 4-4M5 19h14',
   robot: 'M12 4v2.5M7 6.5h10a2 2 0 0 1 2 2V16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8.5a2 2 0 0 1 2-2ZM9.5 11v1.5m5-1.5v1.5M9.5 15h5',
+  bolt: 'M13 3.5 6 13.5h5.5L10.5 20.5l7.5-10.5h-5.5L13 3.5Z',
+  grid: 'M5 5h5.5v5.5H5V5Zm8.5 0H19v5.5h-5.5V5ZM5 13.5h5.5V19H5v-5.5Zm8.5 0H19V19h-5.5v-5.5Z',
+  pen: 'M15.5 5.5l3 3L9 18l-4 1 1-4 9.5-9.5Zm-2 2 3 3',
+  writing: 'M6 5.5h12M12 5.5V19m-4.5-7.5h9M8 19h8',
+  replay: 'M5.5 12a6.5 6.5 0 1 0 2-4.7M5.5 4.5v3h3',
 } as const
 
 export type IconName = keyof typeof PATHS

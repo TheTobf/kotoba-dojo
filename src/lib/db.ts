@@ -6,8 +6,17 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type { MistakeCard } from '../../shared/api'
 
-/** wort = Vokabel aus dem Grundwortschatz · satz = Satz aus einer Story-Folge · fehler = Korrektur aus einem KI-Gespräch */
-export type CardKind = 'wort' | 'satz' | 'fehler'
+/**
+ * Welche Übung eine Karte trainiert – jede hat ihren eigenen Wiederholungs-Zustand.
+ *   wort    Vokabel aus dem Grundwortschatz (Karteikarte)
+ *   satz    Satz aus einer Story-Folge (Karteikarte)
+ *   fehler  Korrektur aus einem KI-Gespräch (Karteikarte)
+ *   zeichen Kana oder Kanji im Schrift-Bereich
+ */
+export type CardKind = 'wort' | 'satz' | 'fehler' | 'zeichen'
+
+/** Karten, die in der normalen Lernsitzung (Karteikarten) vorkommen. */
+export const FLASHCARD_KINDS: CardKind[] = ['wort', 'satz', 'fehler']
 
 /** Zustand einer Karte im Wiederholungs-System (FSRS). */
 export interface CardState {

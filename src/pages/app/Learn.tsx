@@ -58,6 +58,21 @@ export function Component() {
       </Card>
 
       <div className="mt-10">
+        <SectionTitle ja="練習">Üben</SectionTitle>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <LinkCard to="/app/lernen/schrift">
+            <div className="flex items-start gap-4">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-soft font-display text-lg text-accent" lang="ja" aria-hidden="true">あ</span>
+              <span>
+                <span className="block font-display text-lg">Schrift</span>
+                <span className="block text-sm text-ink-soft">Hiragana, Katakana und Kanji: erkennen, hören, nachzeichnen</span>
+              </span>
+            </div>
+          </LinkCard>
+        </div>
+      </div>
+
+      <div className="mt-10">
         <SectionTitle ja="物語">Story-Lektionen</SectionTitle>
         <div className="space-y-3">
           {EPISODES.map((episode) => {
