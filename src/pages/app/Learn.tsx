@@ -120,6 +120,7 @@ export function Component() {
           </div>
           <ProgressBar className="mt-4" value={totalWords ? stats.learnedWords / totalWords : 0} label="Fortschritt Grundwortschatz" />
           <p className="mt-4 text-sm text-ink-soft">Die häufigsten Wörter, jedes mit Beispielsatz. Sie sind in „Lernen starten“ enthalten.</p>
+          <Button to="/app/lernen/woerter" size="sm" className="mt-4"><Icon name="search" size={18} /> Wörterbuch öffnen</Button>
         </Card>
       </div>
 
