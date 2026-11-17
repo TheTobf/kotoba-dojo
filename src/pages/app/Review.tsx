@@ -13,6 +13,7 @@ import { buildSession, GRADES, previewIntervals, rate, type Grade, type Scope, t
 import { PageHeader } from '../../layouts/AppLayout'
 import { Button } from '../../ui/Button'
 import { Card } from '../../ui/Card'
+import { KanjiButtons } from '../../features/writing/KanjiPractice'
 import { Flashcard } from '../../ui/Flashcard'
 import { JaText, SpeakButton } from '../../ui/JaText'
 import { Notice } from '../../ui/Notice'
@@ -80,6 +81,7 @@ export function Component() {
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
+      if (document.querySelector('dialog[open]')) return
       if (event.target instanceof HTMLElement && /^(INPUT|TEXTAREA|BUTTON|A)$/.test(event.target.tagName) && event.key !== ' ') return
       if (!flipped && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault()
@@ -149,6 +151,7 @@ export function Component() {
               </div>
             )}
             {item.note && <p className="rounded-control bg-sunken px-4 py-3 text-sm">{item.note}</p>}
+            <KanjiButtons text={item.ja} />
           </div>
         }
       />
