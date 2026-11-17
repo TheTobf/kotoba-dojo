@@ -35,36 +35,56 @@ export function hasJapaneseVoice(): boolean {
 let playing: HTMLAudioElement | undefined
 let request = 0
 
-function speakWithDevice(text: string, slow: boolean) {
-  if (!hasDeviceSpeech()) return
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.lang = 'ja-JP'
-  utterance.rate = slow ? 0.65 : 0.95
-  const voice = japaneseVoice()
-  if (voice) utterance.voice = voice
-  speechSynthesis.speak(utterance)
+/** Spricht mit der Gerätestimme; das Ergebnis erfüllt sich, wenn die Stimme fertig ist. */
+function speakWithDevice(text: string, slow: boolean): Promise<void> {
+  if (!hasDeviceSpeech()) return Promise.resolve()
+  return new Promise((done) => {
+    const utterance = new SpeechSynthesisUtterance(text)
+    utterance.lang = 'ja-JP'
+    utterance.rate = slow ? 0.65 : 0.95
+    const voice = japaneseVoice()
+    if (voice) utterance.voice = voice
+    // Manche Browser melden das Ende nie – dann nach einer geschätzten Sprechdauer weitermachen.
+    const fallback = setTimeout(done, 1200 + text.length * (slow ? 320 : 220))
+    utterance.onend = utterance.onerror = () => { clearTimeout(fallback); done() }
+    speechSynthesis.speak(utterance)
+  })
 }
 
-export async function speak(text: string, { slow = false } = {}): Promise<void> {
+/** Gibt es zu diesem Text eine eigene Aufnahme? Dann ihre Adresse, sonst undefined. */
+export async function recordingFor(text: string): Promise<string | undefined> {
+  const [{ keys }, key] = await Promise.all([loadAudioIndex(), audioKey(text)])
+  return keys.has(key) ? audioPath(key) : undefined
+}
+
+/** Spielt eine Audiodatei ab; das Ergebnis erfüllt sich am Ende (oder sofort bei einem Fehler: `false`). */
+export function playFile(url: string, { slow = false } = {}): Promise<boolean> {
+  return new Promise((done) => {
+    const audio = new Audio(url)
+    audio.playbackRate = slow ? 0.7 : 1
+    audio.preservesPitch = true
+    playing = audio
+    audio.onended = () => done(true)
+    audio.onerror = () => done(false)
+    audio.play().catch(() => done(false))
+  })
+}
+
+/** Liest vor. Mit `wait` erfüllt sich das Ergebnis erst, wenn fertig gesprochen ist. */
+export async function speak(text: string, { slow = false, wait = false } = {}): Promise<void> {
   if (!canSpeak()) return
   const mine = ++request
   playing?.pause()
   if (hasDeviceSpeech()) speechSynthesis.cancel()
 
-  const [{ keys }, key] = await Promise.all([loadAudioIndex(), audioKey(text)])
+  const file = await recordingFor(text)
   if (mine !== request) return // inzwischen wurde etwas anderes angetippt
 
-  if (keys.has(key)) {
-    const audio = new Audio(audioPath(key))
-    audio.playbackRate = slow ? 0.7 : 1
-    audio.preservesPitch = true
-    playing = audio
-    try {
-      await audio.play()
-      return
-    } catch {
-      // Datei fehlt oder der Browser blockiert das Abspielen → Gerätestimme
-    }
+  if (file) {
+    const played = playFile(file, { slow })
+    if (!wait) return
+    if (await played) return
   }
-  speakWithDevice(text, slow)
+  const spoken = speakWithDevice(text, slow)
+  if (wait) await spoken
 }

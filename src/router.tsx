@@ -44,6 +44,7 @@ export const router = createBrowserRouter([
       { path: 'story/mission/:missionId', lazy: () => import('./pages/app/StoryMission') },
       { path: 'sprechen', lazy: () => import('./pages/app/Speak') },
       { path: 'sprechen/probe/:missionId', lazy: () => import('./pages/app/TrialMission') },
+      { path: 'sprechen/nachsprechen', lazy: () => import('./pages/app/Shadowing') },
       { path: 'sprechen/figur/:characterId', lazy: () => import('./pages/app/Chat') },
       { path: 'profil', lazy: () => import('./pages/app/Profile') },
       { path: 'upgrade', lazy: () => import('./pages/app/Upgrade') },

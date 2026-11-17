@@ -38,6 +38,19 @@ export function Component() {
       </div>
 
       <div className="mt-12">
+        <SectionTitle ja="シャドーイング" action={<Badge>gratis</Badge>}>Nachsprechen</SectionTitle>
+        <LinkCard to="/app/sprechen/nachsprechen">
+          <div className="flex items-start gap-4">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent"><Icon name="mic" /></span>
+            <span>
+              <span className="block font-display text-lg">Hören und nachsprechen</span>
+              <span className="block text-sm text-ink-soft">Satz anhören, sofort nachsprechen, Original und dich vergleichen</span>
+            </span>
+          </div>
+        </LinkCard>
+      </div>
+
+      <div className="mt-12">
         <SectionTitle ja="会話" action={<Badge tone="accent">Pro</Badge>}>Gespräche</SectionTitle>
         <p className="mb-4 text-ink-soft">
           Freie Gespräche mit erfundenen Figuren. Alle Figuren sind <strong className="text-ink">KI</strong>, keine echten Menschen. Sie korrigieren dich
