@@ -28,7 +28,11 @@
     "AI_PROVIDER": "mock",
     "AI_DAILY_LIMIT": "40",
     "AI_MONTHLY_BUDGET_CENTS": "2000",
-    "MAIL_PROVIDER": "console"
+    "MAIL_PROVIDER": "console",
+    // Kontakt für die Push-Dienste (Pflichtangabe bei Web Push). [BITTE AUSFÜLLEN] vor dem Start.
+    "VAPID_SUBJECT": "mailto:kontakt@example.com"
   },
+  // Alle 15 Minuten fällige Lern-Erinnerungen verschicken (kostenlos im Gratis-Tarif enthalten).
+  "triggers": { "crons": ["*/15 * * * *"] },
   "observability": { "enabled": true }
 }

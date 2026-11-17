@@ -18,6 +18,7 @@ import { story } from './routes/story'
 import { waitlist } from './routes/waitlist'
 import { sync } from './routes/sync'
 import { account } from './routes/account'
+import { reminders } from './routes/reminders'
 
 const WEBHOOK_PATH = '/api/stripe/webhook'
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS'])
@@ -62,6 +63,7 @@ export function createApp(overrides: Partial<Deps> = {}) {
   app.route('/', waitlist)
   app.route('/', sync)
   app.route('/', account)
+  app.route('/', reminders)
   app.route('/dev/stripe', devStripe)
 
   app.notFound((c) => c.json({ error: { code: 'nicht_gefunden', message: 'Nicht gefunden.' } } satisfies ApiErrorBody, 404))

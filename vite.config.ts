@@ -33,6 +33,8 @@ export default defineConfig({
       workbox: {
         // App und Lerndaten sofort offline. Schriften (viele kleine Teil-Dateien) erst beim ersten Gebrauch.
         globPatterns: ['**/*.{js,css,html,svg,png}', 'data/*.json'],
+        // Lern-Erinnerung: Benachrichtigung anzeigen, wenn der Server das tägliche Signal schickt.
+        importScripts: ['push-sw.js'],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         // Die API wird nie zwischengespeichert – Abo-Stand und Konto kommen immer frisch vom Server.
         navigateFallbackDenylist: [/^\/api\//],

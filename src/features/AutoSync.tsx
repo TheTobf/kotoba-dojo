@@ -1,10 +1,11 @@
 /**
- * Automatischer Abgleich für angemeldete Nutzer: beim Öffnen der App, kurz nach dem Lernen
+ * Läuft im Hintergrund der App. Meldet „heute gelernt“ für die Lern-Erinnerung und gleicht für angemeldete Nutzer ab: beim Öffnen der App, kurz nach dem Lernen
  * (20 Sekunden Ruhe) und wenn die App in den Hintergrund geht. Ohne Konto passiert nichts.
  */
 import { useEffect, useSyncExternalStore } from 'react'
 import { useAccount } from '../lib/account'
 import { ACTIVITY_EVENT } from '../lib/progress'
+import { markLearnedToday } from '../lib/reminders'
 import { lastSyncAt, syncNow } from '../lib/sync'
 
 const QUIET_MS = 20_000
@@ -32,6 +33,13 @@ export async function runSync(userId: string): Promise<void> {
 export function AutoSync() {
   const { me } = useAccount()
   const userId = me?.user?.id
+
+  // Lern-Erinnerung: wer heute schon geübt hat, bekommt heute keine (geht auch ohne Konto).
+  useEffect(() => {
+    const onActivity = () => void markLearnedToday()
+    window.addEventListener(ACTIVITY_EVENT, onActivity)
+    return () => window.removeEventListener(ACTIVITY_EVENT, onActivity)
+  }, [])
 
   useEffect(() => {
     if (!userId) return

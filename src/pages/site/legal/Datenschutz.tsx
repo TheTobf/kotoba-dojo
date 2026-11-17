@@ -66,6 +66,15 @@ export function Component() {
         <Fill>Rechtsgrundlage (Einwilligung, Art. 6 Abs. 1 lit. a DSGVO) und Drittlandübermittlung prüfen</Fill>
       </p>
 
+      <h3>Tägliche Lern-Erinnerung</h3>
+      <p>
+        Schaltest du die Erinnerung ein, speichern wir die Benachrichtigungs-Adresse, die dein Browser bei seinem Push-Dienst
+        anlegt (Google, Mozilla, Apple oder Microsoft), die gewünschte Uhrzeit, deine Zeitzone und an welchem Tag zuletzt
+        erinnert bzw. gelernt wurde. Die Benachrichtigung selbst hat keinen Inhalt; der Text kommt aus der App. Ein Konto ist
+        nicht nötig. Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO); beim Ausschalten löschen wir die Angaben.{' '}
+        <Fill>Drittlandübermittlung an die Push-Dienste prüfen</Fill>
+      </p>
+
       <h2>8. Warteliste</h2>
       <p>
         Wenn du dich für die Warteliste einträgst, speichern wir deine E-Mail-Adresse und den Zeitpunkt deiner Bestätigung, um dich einmalig über

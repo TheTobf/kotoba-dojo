@@ -14,6 +14,10 @@ export interface Env {
   SESSION_SECRET?: string
   STRIPE_SECRET_KEY?: string
   STRIPE_WEBHOOK_SECRET?: string
+  /** Lern-Erinnerung (Web Push): öffentlicher und privater VAPID-Schlüssel, Kontakt für die Push-Dienste. */
+  VAPID_PUBLIC_KEY?: string
+  VAPID_PRIVATE_JWK?: string
+  VAPID_SUBJECT?: string
   /** Nur wenn ausdrücklich "true": echte Zahlungen erlaubt. Standard ist ausschließlich der Stripe-Testmodus. */
   ALLOW_LIVE_PAYMENTS?: string
 }
