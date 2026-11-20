@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { SR, denoise, limit, loudness, normalize, shortenPauses, voicedRegions } from '../scripts/lib/dsp'
+import { SR, compress, denoise, limit, loudness, master, normalize, shortenPauses, voicedRegions } from '../scripts/lib/dsp'
 import { readWav, writeWav } from '../scripts/lib/wav'
 
 const sine = (sec: number, amp: number, f = 997) => Float32Array.from({ length: Math.round(sec * SR) }, (_, i) => amp * Math.sin((2 * Math.PI * f * i) / SR))
@@ -15,6 +15,21 @@ describe('Tonbearbeitung', () => {
 
   it('bringt auf Ziel-Lautheit', () => {
     expect(loudness(normalize(sine(3, 0.02), -16))).toBeCloseTo(-16, 0)
+  })
+
+  it('Kompressor gleicht laut und leise an', () => {
+    const x = cat(sine(0.5, 0.05, 300), sine(0.5, 0.5, 300))
+    const y = compress(x, { thresholdDb: -30 })
+    const ratioBefore = rmsDb(x.subarray(SR * 0.6)) - rmsDb(x.subarray(0, SR * 0.4))
+    const ratioAfter = rmsDb(y.subarray(SR * 0.6)) - rmsDb(y.subarray(0, SR * 0.4))
+    expect(ratioAfter).toBeLessThan(ratioBefore - 6)
+  })
+
+  it('Mastering erreicht die Ziel-Lautheit trotz Spitzen', () => {
+    const spiky = cat(sine(1, 0.02, 300), sine(0.05, 0.9, 300), sine(1, 0.02, 300))
+    const y = master(spiky, -14, -1.5)
+    expect(loudness(y)).toBeGreaterThan(-15)
+    expect(Math.max(...y.map(Math.abs))).toBeLessThanOrEqual(Math.pow(10, -1.5 / 20) + 1e-6)
   })
 
   it('Begrenzer hält Spitzen unter der Grenze', () => {

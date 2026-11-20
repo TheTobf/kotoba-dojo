@@ -12,7 +12,7 @@ import { join } from 'node:path'
 import type { Episode } from '../../src/episode/schema'
 import { buildTimeline, type AudioInfo, type JaAudio, type LineAudio, type Timeline } from '../../src/episode/timeline'
 import { evenWordTimes, matchScript, type LineMatch, type TWord } from './align'
-import { SR, concat, denoise, fade, highpass, limit, loudness, mixInto, normalize, sfx, shortenPauses, slice, voicedRegions, gain } from './dsp'
+import { SR, compress, concat, denoise, fade, highpass, loudness, master, mixInto, normalize, sfx, shortenPauses, slice, voicedRegions, gain } from './dsp'
 import { decodeAudio, ffmpeg } from './ffmpeg'
 import { APPVIDEOS_DIR, OUT_DIR, workDir } from './paths'
 import { previewGerman, previewJapanese, splitMoras } from './preview-voice'
@@ -101,7 +101,9 @@ export function cutTakes(matches: LineMatch[], clean: Float32Array, style: Style
     const flag = take.score < 0.85 ? ` ⚠ nur ${(take.score * 100).toFixed(0)} % Übereinstimmung – bitte anhören (Versprecher?)` : ''
     report.push(`Satz ${m.n}: ${versions > 1 ? `${versions} Fassungen, genommen: Nr. ${m.takes.indexOf(take) + 1}` : '1 Fassung'} · ${(take.score * 100).toFixed(0)} %${flag}`)
   }
-  // eine gemeinsame Verstärkung für alle Sätze (klingt wie aus einem Guss)
+  // Kompressor (Schwelle 8 dB unter der Lautheit der Aufnahme), dann eine gemeinsame Verstärkung (klingt wie aus einem Guss)
+  const before = loudness(concat(cut.map((c) => c.audio)))
+  for (const c of cut) c.audio = compress(c.audio, { thresholdDb: before - 8 })
   const level = loudness(concat(cut.map((c) => c.audio)))
   const g = style.audio.stimmeLufs - level
   report.push(`Stimme: ${level.toFixed(1)} LUFS → ${style.audio.stimmeLufs} LUFS (${g >= 0 ? '+' : ''}${g.toFixed(1)} dB)`)
@@ -122,14 +124,14 @@ function narrationPreview(ep: Episode, style: Style, work: string): Record<numbe
     if (b.kind !== 'erzaehler') continue
     for (const l of b.lines) {
       const file = join('lines', `${String(l.n).padStart(2, '0')}-vorschau.wav`)
-      const cache = join(OUT_DIR, '.cache', `de-${hash(l.text)}.wav`)
+      const cache = join(OUT_DIR, '.cache', `de2-${hash(l.text)}.wav`)
       let audio: Float32Array
       if (existsSync(cache)) audio = readWav(readFileSync(cache)).samples
       else {
         const a = previewGerman(l.text).samples
         const r = voicedRegions(a)
         audio = r.length ? slice(a, Math.max(0, r[0].start - 0.03), r[r.length - 1].end + 0.08) : a
-        audio = fade(normalize(audio, style.audio.stimmeLufs), 5, 25)
+        audio = fade(normalize(compress(audio, { thresholdDb: loudness(audio) - 8 }), style.audio.stimmeLufs), 5, 25)
         mkdirSync(join(OUT_DIR, '.cache'), { recursive: true })
         write(cache, audio)
       }
@@ -189,7 +191,7 @@ async function japaneseClips(ep: Episode, style: Style, work: string, report: st
         const kata = pron ?? entry.kana
         if (pron && key === String(index)) {
           const ok = voicevox.normalizePron(pron) === voicevox.expectedPron(entry.romaji)
-          report.push(`Abschnitt ${index + 1}: Zweitprüfung Lesung (OpenJTalk) ${ok ? 'stimmt' : `⚠ weicht ab: ${pron} ↔ ${entry.romaji}`}`)
+          report.push(`Abschnitt ${index + 1}: Zweitprüfung Lesung (OpenJTalk, nur Vorschau) ${ok ? 'stimmt' : `weicht ab: ${pron} ↔ ${entry.romaji} – OpenJTalk liest z. B. 何 oft als „nani“; VOICEVOX prüft beim fertigen Video erneut und spricht notfalls aus der Kana`}`)
         }
         const morasList = splitMoras(kata)
         const span = Math.max(0.2, d - 0.15)
@@ -223,9 +225,9 @@ export function mix(tl: Timeline, style: Style, work: string, report: string[]) 
     if (c.kind === 'voice') mixInto(voiceOnly, clip, c.start)
     if (c.kind === 'ja') mixInto(jaOnly, clip, c.start)
   }
-  const master = limit(normalize(track.subarray(0, Math.ceil(tl.duration * SR)), style.audio.gesamtLufs), style.audio.spitzeDb)
-  write(join(work, 'mix.wav'), master)
-  const lv = loudness(voiceOnly), lj = loudness(jaOnly), lt = loudness(master)
+  const final = master(track.subarray(0, Math.ceil(tl.duration * SR)), style.audio.gesamtLufs, style.audio.spitzeDb)
+  write(join(work, 'mix.wav'), final)
+  const lv = loudness(voiceOnly), lj = loudness(jaOnly), lt = loudness(final)
   const diff = Math.abs(lv - lj)
   report.push(`Mischung: gesamt ${lt.toFixed(1)} LUFS · Stimme ${lv.toFixed(1)} · Japanisch ${lj.toFixed(1)} · Unterschied ${diff.toFixed(1)} LU ${diff > 3 ? '⚠ unausgewogen' : '✓'}`)
   const [min, max] = tl.kind === 'app' ? [20, 60] : [style.format.laengeMin, style.format.laengeMax]

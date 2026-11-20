@@ -177,6 +177,36 @@ export function loudness(x: Float32Array): number {
   return lufs(rel.reduce((a, b) => a + b, 0) / Math.max(1, rel.length))
 }
 
+/**
+ * Sanfter Kompressor für Sprache: gleicht laute und leise Silben an (wie bei jedem Podcast/Voiceover).
+ * Schwelle relativ zur Lautheit der Aufnahme, Verhältnis 3:1, schneller Einsatz, weiches Loslassen.
+ */
+export function compress(x: Float32Array, { thresholdDb = -24, ratio = 3, attackMs = 4, releaseMs = 120 } = {}): Float32Array {
+  const a = Math.exp(-1 / ((attackMs / 1000) * SR)), r = Math.exp(-1 / ((releaseMs / 1000) * SR))
+  const out = new Float32Array(x.length)
+  let env = 0
+  for (let i = 0; i < x.length; i++) {
+    const v = Math.abs(x[i])
+    env = v > env ? a * env + (1 - a) * v : r * env + (1 - r) * v
+    const db = 20 * Math.log10(env + 1e-9)
+    const over = db - thresholdDb
+    const g = over > 0 ? Math.pow(10, (-over * (1 - 1 / ratio)) / 20) : 1
+    out[i] = x[i] * g
+  }
+  return out
+}
+
+/** Auf Ziel-Lautheit bringen und Spitzen begrenzen – zwei Runden, damit der Begrenzer die Lautheit nicht drückt */
+export function master(x: Float32Array, targetLufs: number, ceilingDb: number): Float32Array {
+  let y = limit(normalize(x, targetLufs), ceilingDb)
+  for (let round = 0; round < 3; round++) {
+    const miss = targetLufs - loudness(y)
+    if (miss <= 0.3) break
+    y = limit(gain(y, miss), ceilingDb)
+  }
+  return y
+}
+
 export const gain = (x: Float32Array, db: number) => { const g = Math.pow(10, db / 20); return x.map((v) => v * g) }
 
 /** Auf Ziel-Lautheit bringen */
@@ -188,7 +218,7 @@ export function normalize(x: Float32Array, targetLufs: number): Float32Array {
 /** Sanfter Begrenzer mit Vorausschau: keine Übersteuerung, Spitzen höchstens `ceilingDb` */
 export function limit(x: Float32Array, ceilingDb = -1.5): Float32Array {
   const ceil = Math.pow(10, ceilingDb / 20)
-  const look = Math.round(0.005 * SR), release = Math.exp(-1 / (0.08 * SR))
+  const look = Math.round(0.005 * SR), release = Math.exp(-1 / (0.04 * SR))
   const out = new Float32Array(x.length)
   let env = 1
   for (let i = 0; i < x.length; i++) {
