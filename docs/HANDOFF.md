@@ -1,6 +1,6 @@
 # Übergabe
 
-Stand: 17.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell und für Tobias
+Stand: 20.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell und für Tobias
 
 ## Was fertig ist (geprüft)
 
@@ -40,6 +40,55 @@ Stand: 17.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
 - **Alte Audiodateien entfernt.** Vorlesen: eigene Aufnahme, falls vorhanden, sonst Sprachausgabe des Geräts.
   Es gibt noch keine einzige Aufnahme.
 
+## Folgen-Generator „Gestrandet in Japan“ (Phase 2, Stand 20.11.2026)
+
+Ziel: täglich eine TikTok-Folge mit mindestens einer Woche Vorlauf. Tobias tippt einen Befehl, spricht das Skript als
+Sprachmemo ein und postet das fertige Video. Alles läuft lokal, ohne Zusatzkosten. Aufbau: `docs/ARCHITECTURE.md`
+(Abschnitt Folgen-Generator).
+
+**Entscheidungen von Tobias:** Stil B „Knete“ und Maskottchen Ole, der Seehund (20.11.2026). Die beiden
+[PRÜFEN]-Sätze c082/c147 sind in der einfacheren Form freigegeben, c162 (Erdbebenwarnung) bleibt gesperrt.
+
+**Fertig und geprüft (in der Cloud):**
+- Lehrplan `curriculum/curriculum.json`: 164 Einträge (110 SAGEN, 54 HÖREN). Doppelt geprüft: von Hand, mit
+  kuromoji/WanaKana und mit OpenJTalk. 150 von 164 Lesungen stimmen direkt. Die übrigen 14 sind Fehler von OpenJTalk
+  (何 als „nani“, 五分, 風邪薬, SIM); über den Kana-Rückfall der Pipeline stimmen alle.
+- Serienbibel `story/series.md`, Stilvorlage `style/stilvorlage.json`, Staffel 1 geplant: `episodes/ep01`–`ep07`
+  (Post Mo 30.11.–So 06.12.2026), Sprechskripte `recordings/epXX/script.md`, Sammelblatt `recordings/AUFNAHME.md`.
+- Studio `studio/`: Remotion + Three.js. Datenmodell und Prüfung der Folgen, Schnitt-Rechner (Schnitt alle 2–3 s,
+  Kamera immer in Bewegung, Hook, Quiz mit 3-s-Countdown, Zähler „Ole kann X Sätze“, Endkarte), Ole mit 14 festen
+  Bewegungen und Lippenbewegung nach VOICEVOX-Moren, Personen-Vorlagen, Szenen Passkontrolle, Gepäckband,
+  Handy- und Postkarten-Nahaufnahme, Bahnsteig, App-Handy. Lernkasten mit mitlaufender Hervorhebung.
+  Die Selbstkontrolle rendert Standbilder mit Sicherheitszone und Figuren-Umrissen und meldet angeschnittene Figuren
+  oder verdeckte Gesichter.
+- Ton-Pipeline in reinem TypeScript: Hochpass, Rauschminderung, Lautheit nach EBU R128, Begrenzer, Pausen kürzen,
+  Skript-Abgleich mit Versprecher-Erkennung (letzte gute Fassung gewinnt), VOICEVOX-Client mit dreistufiger
+  Lesungs-Prüfung (Kanji → Kana → Hiragana aus der Umschrift), selbst erzeugte Effekte, keine Musik.
+- Befehle `.claude/commands/`: `/staffel`, `/skripte`, `/folge`, `/appvideo`, `/fertig`, `/status`.
+  npm-Skripte in `studio/`: `pruefen`, `skripte`, `vorschau`, `kontrolle`, `final`, `fertig`, `status`, `stimmen`,
+  `app:bilder`.
+- 28 Tests grün (`cd studio && npm test`): Abgleich/Versprecher, Tonbearbeitung, Lesungs-Prüfung, Schnitt, Folgen-Prüfung.
+- **Folge 1 als Vorschau gerendert:** `out/ep01/preview.mp4` (Ersatzstimmen: espeak-ng deutsch, OpenJTalk japanisch,
+  roter Hinweis „VORSCHAU“ im Bild). Die Standbilder der Selbstkontrolle sind durchgesehen und die Fehler behoben (Kameras im
+  Hochformat, Statisten, Rückwand). Renderzeit in der Cloud ohne Grafikkarte ≈ 0,4 s pro Bild (~15 min).
+
+**Nicht geprüft (ehrlich) – nur auf Tobias' Laptop möglich:**
+- VOICEVOX und whisper.cpp liefen nie (aus der Cloud nicht ladbar). Code und Abgleich sind mit Testdaten geprüft.
+  Erster echter Lauf: `/fertig` mit einer echten Aufnahme.
+- Die Nutzungsbedingungen der Stimmen (白上虎太郎, 玄野武宏, 冥鳴ひまり, 九州そら, 四国めたん) sind noch nicht gelesen.
+  Die VOICEVOX-Webseite war aus der Cloud nicht erreichbar. `npm run stimmen` holt sie aus der Engine, dann
+  `licenses/voicevox/geprueft.json` füllen. Ohne den Eintrag verweigert `npm run final` die Ausgabe.
+- Rendern mit Grafikkarte (`KOTOBA_GL` Standard `angle`) unter Windows ist ungetestet. Notfalls `KOTOBA_GL=swangle`.
+- Windows-Ersatzstimme (SAPI) für Vorschauen ist ungetestet.
+
+**Als Nächstes (Folgen-Generator):**
+1. Auf dem Laptop: `cd studio && npm install`, VOICEVOX starten, `npm run stimmen` → Bedingungen prüfen.
+2. Tobias spricht ep01 ein (`recordings/ep01/script.md`) → `/fertig`. Dabei whisper.cpp + Modell einmalig laden.
+3. Szenen für ep02–ep07 bauen (`gepaeck-schalter`, `bahnhof-automat`, `zug-innen`, `konbini`, `strasse`,
+   `hotel-lobby`; Plätze stehen in `studio/src/scenes/registry.ts`, `built: false`). Danach je `npm run vorschau`.
+4. Erstes App-Video mit `/appvideo`, sobald die App öffentlich ist (vorher gibt es keinen Link für die Bio).
+5. Lektionen aus `out/epXX/learned.json` in `src/content/story.ts` übernehmen (ersetzt die Platzhalter-Folgen).
+
 ## Was NICHT geprüft ist (ehrlich)
 
 - **Bei Stripe noch offen:** Niemand hat die Stripe-Bezahlseite im Browser mit der Testkarte ausgefüllt, das
@@ -78,7 +127,7 @@ Stand: 17.11.2026 · Branch `ccr-deda4e3a-13riog` · für das nächste Modell un
 3. **E-Mail-Versand anschließen** (`worker/lib/mailer.ts`): Anmeldecodes, Wartelisten-Bestätigung,
    Kündigungsbestätigung. Vorschlag: Brevo (EU, Gratis-Kontingent). Schlüssel als Secret, Dienst in die
    Datenschutzerklärung. Ohne das ist kein Start möglich.
-4. **Echte Story-Inhalte einpflegen:** `src/content/story.ts` (Folgen + Sätze + Video-Link),
+4. **Echte Story-Inhalte einpflegen:** `src/content/story.ts` (Folgen + Sätze + Video-Link – kommt aus `out/epXX/learned.json` des Folgen-Generators),
    `src/content/trialMissions.ts`, `worker/content/missions.ts`, `shared/characters.ts`. Alles dort ist Platzhalter.
 5. **Echte KI anschließen:** neuen Anbieter in `worker/ai/` neben `mock.ts`, Auswahl in `createAiProvider`.
    Kosten pro Aufruf aus den Token-Zahlen berechnen (`costMicro`), `maxCostMicroPerCall` realistisch setzen,

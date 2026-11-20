@@ -5,22 +5,24 @@ import * as THREE from 'three'
 import { useLook } from './materials'
 
 /** Himmel als senkrechter Farbverlauf hinter allem. */
-export function Sky() {
+export function Sky({ colors }: { colors?: [string, string] }) {
   const look = useLook()
   const { scene } = useThree()
+  const top = colors?.[0] ?? look.palette.skyTop
+  const bottom = colors?.[1] ?? look.palette.skyBottom
   const texture = useMemo(() => {
     const c = document.createElement('canvas')
     c.width = 4; c.height = 256
     const g = c.getContext('2d')!
     const grad = g.createLinearGradient(0, 0, 0, 256)
-    grad.addColorStop(0, look.palette.skyTop)
-    grad.addColorStop(1, look.palette.skyBottom)
+    grad.addColorStop(0, top)
+    grad.addColorStop(1, bottom)
     g.fillStyle = grad
     g.fillRect(0, 0, 4, 256)
     const t = new THREE.CanvasTexture(c)
     t.colorSpace = THREE.SRGBColorSpace
     return t
-  }, [look])
+  }, [top, bottom])
   // Direkt beim Rendern setzen: Remotion zeichnet jedes Bild sofort, Effekte kämen zu spät.
   scene.background = texture
   return null
@@ -53,10 +55,10 @@ export function CameraRig({ position, target, fov = 40 }: { position: [number, n
   return null
 }
 
-export function StageContent({ children }: { children: ReactNode }) {
+export function StageContent({ children, sky }: { children: ReactNode; sky?: [string, string] }) {
   return (
     <>
-      <Sky />
+      <Sky colors={sky} />
       <Lights />
       {children}
     </>

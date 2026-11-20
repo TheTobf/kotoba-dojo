@@ -1,0 +1,322 @@
+{
+  "id": "ep05",
+  "season": 1,
+  "number": 5,
+  "title": "Der Konbini",
+  "titleJa": "温めますか",
+  "summary": "Ole findet einen Konbini, den kleinen Laden an jeder Ecke. An der Kasse stellt die Kassiererin eine Frage – und Ole hat keine Ahnung.",
+  "postDate": "2026-12-04",
+  "learn": {
+    "new": [
+      "c033",
+      "c034"
+    ],
+    "review": [
+      "c013"
+    ]
+  },
+  "hook": {
+    "title": "Hunger um 22 Uhr.",
+    "sub": "Zum Glück: Konbini."
+  },
+  "endCard": "Morgen: Wohin zeigt der Pfeil?",
+  "cast": {
+    "ole": {
+      "figure": "ole",
+      "voice": "ole",
+      "label": "Ole"
+    },
+    "kassiererin": {
+      "figure": "kassiererin",
+      "voice": "frau2",
+      "label": "Kassiererin"
+    }
+  },
+  "beats": [
+    {
+      "kind": "erzaehler",
+      "scene": "konbini",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "eingang",
+          "action": "gehen",
+          "to": "regal"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "idle"
+        }
+      ],
+      "lines": [
+        {
+          "n": 1,
+          "text": "Zweiundzwanzig Uhr. Ole hat Hunger. Und da: ein Konbini.",
+          "regie": "schnell"
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "konbini",
+      "speaker": "kassiererin",
+      "sentence": "c014",
+      "role": "kontext",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "regal",
+          "action": "erschrocken"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "verbeugen",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "konbini",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "regal",
+          "action": "freuen"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "idle"
+        }
+      ],
+      "lines": [
+        {
+          "n": 2,
+          "text": "Irasshaimase – Willkommen. Das ruft man hier jedem zu."
+        },
+        {
+          "n": 3,
+          "text": "Ole nimmt ein Bento. Mit Reis, Ei und Lachs."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "konbini",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "regal",
+          "action": "gehen",
+          "to": "kasse"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 4,
+          "text": "An der Kasse fragt die Kassiererin etwas."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "konbini",
+      "speaker": "kassiererin",
+      "sentence": "c033",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "kasse",
+          "action": "verwirrt",
+          "face": "kassiererin"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "zeigen",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "konbini",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "kasse",
+          "action": "idle",
+          "face": "kassiererin"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 5,
+          "text": "Atatamemasu ka? Soll ich es warm machen?"
+        },
+        {
+          "n": 6,
+          "text": "Hier steht eine Mikrowelle direkt an der Kasse."
+        },
+        {
+          "n": 7,
+          "text": "Warmes Bento? Unbedingt."
+        }
+      ]
+    },
+    {
+      "kind": "quiz",
+      "scene": "konbini",
+      "speaker": "ole",
+      "sentence": "c034",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "kasse",
+          "action": "warten",
+          "face": "kassiererin"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "konbini",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "kasse",
+          "action": "freuen",
+          "face": "kassiererin"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 8,
+          "text": "Hai, onegai shimasu. Ja, bitte."
+        },
+        {
+          "n": 9,
+          "text": "Dann noch die wichtigste Frage des Abends."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "konbini",
+      "speaker": "ole",
+      "sentence": "c013",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "kasse",
+          "action": "zeigen",
+          "face": "kassiererin"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "konbini",
+      "speaker": "kassiererin",
+      "sentence": "c037",
+      "role": "kontext",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "kasse",
+          "action": "idle",
+          "face": "kassiererin"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "konbini",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "kasse",
+          "action": "verbeugen",
+          "face": "kassiererin"
+        },
+        {
+          "who": "kassiererin",
+          "at": "kassiererin",
+          "action": "verbeugen",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 10,
+          "text": "Fünfhundert Yen. Ole zahlt und will Danke sagen."
+        },
+        {
+          "n": 11,
+          "text": "Kann er noch nicht. Also verbeugt er sich. Tief."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "konbini",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "kasse",
+          "action": "verwirrt"
+        }
+      ],
+      "lines": [
+        {
+          "n": 12,
+          "text": "Draußen schaut er auf den Kassenbon."
+        },
+        {
+          "n": 13,
+          "text": "Sie hat etwas daraufgemalt: einen Pfeil. Und ein Haus.",
+          "regie": "langsam"
+        }
+      ]
+    }
+  ]
+}

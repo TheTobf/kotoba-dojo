@@ -1,6 +1,111 @@
 {
-  "hinweis": "Wird von /staffel und /folge gepflegt: welche Lehrplan-Einträge in welcher Folge vorkamen (neu oder als Wiederholung).",
-  "folgen": {},
-  "eingefuehrt": {},
-  "wiederholt": {}
+  "hinweis": "Wird automatisch aus episodes/*/episode.json berechnet (npm run skripte / status). Nicht von Hand ändern.",
+  "stand": "2026-11-20",
+  "folgen": {
+    "ep01": {
+      "neu": [
+        "c018",
+        "c020"
+      ],
+      "wiederholung": [],
+      "postDatum": "2026-11-30",
+      "status": "geplant"
+    },
+    "ep02": {
+      "neu": [
+        "c001",
+        "c069"
+      ],
+      "wiederholung": [
+        "c018"
+      ],
+      "postDatum": "2026-12-01",
+      "status": "geplant"
+    },
+    "ep03": {
+      "neu": [
+        "c025",
+        "c013"
+      ],
+      "wiederholung": [
+        "c001"
+      ],
+      "postDatum": "2026-12-02",
+      "status": "geplant"
+    },
+    "ep04": {
+      "neu": [
+        "c030",
+        "c026"
+      ],
+      "wiederholung": [
+        "c001"
+      ],
+      "postDatum": "2026-12-03",
+      "status": "geplant"
+    },
+    "ep05": {
+      "neu": [
+        "c033",
+        "c034"
+      ],
+      "wiederholung": [
+        "c013"
+      ],
+      "postDatum": "2026-12-04",
+      "status": "geplant"
+    },
+    "ep06": {
+      "neu": [
+        "c088",
+        "c043"
+      ],
+      "wiederholung": [
+        "c001"
+      ],
+      "postDatum": "2026-12-05",
+      "status": "geplant"
+    },
+    "ep07": {
+      "neu": [
+        "c040",
+        "c063"
+      ],
+      "wiederholung": [
+        "c001"
+      ],
+      "postDatum": "2026-12-06",
+      "status": "geplant"
+    }
+  },
+  "eingefuehrt": {
+    "c018": "ep01",
+    "c020": "ep01",
+    "c001": "ep02",
+    "c069": "ep02",
+    "c025": "ep03",
+    "c013": "ep03",
+    "c030": "ep04",
+    "c026": "ep04",
+    "c033": "ep05",
+    "c034": "ep05",
+    "c088": "ep06",
+    "c043": "ep06",
+    "c040": "ep07",
+    "c063": "ep07"
+  },
+  "wiederholt": {
+    "c018": [
+      "ep02"
+    ],
+    "c001": [
+      "ep03",
+      "ep04",
+      "ep06",
+      "ep07"
+    ],
+    "c013": [
+      "ep05"
+    ]
+  }
 }

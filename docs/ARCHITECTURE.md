@@ -190,3 +190,56 @@ Auf dem Gerät (IndexedDB `kotoba-dojo-v2`, `src/lib/db.ts`): `cards`, `reviewLo
 | `GET /api/reminders/key` | alle | öffentlicher Schlüssel für Web Push |
 | `POST /api/reminders`, `/reminders/:id/seen`, `DELETE /api/reminders/:id` | alle (mit geheimer ID) | Lern-Erinnerung an/aus, „heute gelernt“ |
 | `/api/dev/stripe/*` | nur lokal | Stripe-Simulator |
+
+## Folgen-Generator „Gestrandet in Japan“ (`studio/`)
+
+Eigenes Node-Projekt neben der App (eigene `package.json`), damit die App schlank bleibt. Läuft auf Tobias' Laptop.
+
+```
+episodes/epXX/episode.json   ← Claude schreibt (Szenen, Figuren, Kamera, Erzähltext, Lernsätze)
+        │  npm run skripte
+        ▼
+recordings/epXX/script.md    → Tobias spricht ein → recordings/epXX/voice.m4a (nicht in Git)
+        │  npm run kontrolle / fertig
+        ▼
+Ton: säubern → whisper.cpp → Skript-Abgleich → Sätze schneiden │ VOICEVOX (Lesungs-Prüfung)
+        ▼
+src/episode/timeline.ts: Zeitplan (Schnitte, Kamera, Untertitel, Lernkasten, Quiz) → mix.wav
+        ▼
+Remotion: Standbilder zur Selbstkontrolle → npm run final → out/epXX/video.mp4, cover.jpg, caption.txt, learned.json
+```
+
+**Entscheidungen:**
+- **Eine Quelle der Wahrheit:** `episode.json`. Sprechskript, Zeitplan und Begleittexte werden daraus erzeugt.
+  `curriculum/progress.json` wird aus allen Folgen berechnet (nicht von Hand gepflegt). So kann nichts auseinanderlaufen.
+- **Der Ton bestimmt den Takt:** Erst entstehen die Tonclips (deine Sätze, VOICEVOX), dann rechnet `buildTimeline` die
+  Zeiten. Szenen, Untertitel und Kamera richten sich nach der echten Stimme. Pausen werden automatisch gestreckt oder
+  gestaucht, damit die Folge 61–75 s lang wird.
+- **Tonbearbeitung in TypeScript statt Zusatzprogrammen** (`scripts/lib/dsp.ts`): Das mit Remotion gelieferte ffmpeg
+  kann nur umwandeln (keine Rausch- oder Lautheitsfilter). Eigener Code läuft unter Windows, Mac und Linux gleich
+  und ist getestet.
+- **Versprecher:** whisper.cpp liefert Wörter mit Zeiten. `scripts/lib/align.ts` sucht jeden Skript-Satz unscharf
+  (Editierdistanz auf Wortebene) und wählt per dynamischer Programmierung die Reihenfolge-treue Kombination. Bei
+  mehreren Fassungen gewinnt die letzte, die fast so gut ist wie die beste. Schnittkanten werden an echte
+  Sprechpausen angelegt.
+- **Japanisch nie falsch:** VOICEVOX liest den Satz, die Pipeline vergleicht die Aussprache mit der geprüften
+  Umschrift. Bei Abweichung liest VOICEVOX die Kana, danach Hiragana nach Aussprache. Passt nichts, bricht die
+  Pipeline ab.
+- **Kameras über den Bildausschnitt** (`framed()` in `src/scenes/registry.ts`): Hochformat ist seitlich schmal
+  (56 % der Höhe), Ole ist fast so breit wie hoch. Kameras werden über „was, aus welcher Richtung, wie viel Bild“
+  festgelegt, nicht über Koordinaten.
+- **Selbstkontrolle:** Dieselbe Rechnung wie im Video (`frameState`) projiziert Figuren und Texte und meldet
+  angeschnittene Hauptfiguren oder verdeckte Gesichter. Claude sieht sich die Standbilder trotzdem einzeln an.
+- **Vorschau ≠ fertig:** Ersatzstimmen erzeugen nur `preview.mp4` mit rotem „VORSCHAU“-Hinweis. `final` verweigert
+  Vorschau-Ton, offene Kontroll-Hinweise und ungeprüfte Stimmen-Bedingungen.
+- **App-Videos** (`app-videos/app-XX/appvideo.json`) laufen durch dieselbe Pipeline, ohne Lernsätze, mit
+  Werbe-Kennzeichnung im Bild und in `caption.txt`.
+
+**Wichtige Dateien:** `src/episode/schema.ts` (Aufbau einer Folge) · `src/episode/validate.ts` (Regeln) ·
+`src/episode/timeline.ts` (Schnitt) · `src/compositions/EpisodeVideo.tsx` (Video) · `src/scenes/` (Szenen + Verzeichnis) ·
+`src/characters/` (Ole, Personen, Bewegungen) · `src/overlay/` (Einblendungen, Kontrolle) · `scripts/kotoba.ts` (Befehle) ·
+`scripts/lib/audio.ts` (Ton) · `scripts/lib/voicevox.ts` · `scripts/lib/align.ts` · `scripts/lib/dsp.ts`.
+
+**Umgebungsvariablen (optional):** `VOICEVOX_URL`, `KOTOBA_GL` (`angle` mit Grafikkarte, `swangle` ohne),
+`KOTOBA_BROWSER` (eigener Chrome), `KOTOBA_CONCURRENCY`, `KOTOBA_WHISPER_MODEL`/`_VERSION`, `KOTOBA_OPENJTALK_PY`
+(Ersatzstimme Japanisch), `KOTOBA_FFMPEG`, `KOTOBA_APP_URL`.

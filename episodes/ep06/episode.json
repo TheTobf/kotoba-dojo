@@ -1,0 +1,277 @@
+{
+  "id": "ep06",
+  "season": 1,
+  "number": 6,
+  "title": "Verlaufen",
+  "titleJa": "道に迷いました",
+  "summary": "Der Pfeil auf dem Kassenbon führt Ole im Kreis. Nachts, ohne Handy, in einer fremden Straße – Zeit für einen neuen Satz.",
+  "postDate": "2026-12-05",
+  "learn": {
+    "new": [
+      "c088",
+      "c043"
+    ],
+    "review": [
+      "c001"
+    ]
+  },
+  "hook": {
+    "title": "Dritte Runde.",
+    "sub": "Selbe Laterne."
+  },
+  "endCard": "Morgen: Zu spät?",
+  "cast": {
+    "ole": {
+      "figure": "ole",
+      "voice": "ole",
+      "label": "Ole"
+    },
+    "passantin": {
+      "figure": "reisende",
+      "voice": "frau",
+      "label": "Passantin"
+    }
+  },
+  "beats": [
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "ecke",
+          "action": "gehen",
+          "to": "mitte"
+        }
+      ],
+      "lines": [
+        {
+          "n": 1,
+          "text": "Dieselbe Laterne. Zum dritten Mal.",
+          "regie": "schnell"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "verwirrt"
+        }
+      ],
+      "lines": [
+        {
+          "n": 2,
+          "text": "Der Pfeil auf dem Bon zeigt nach links. Oder nach oben?"
+        },
+        {
+          "n": 3,
+          "text": "Ole dreht den Zettel. Und dreht ihn noch mal."
+        },
+        {
+          "n": 4,
+          "text": "Links ein Tempel. Rechts ein Getränkeautomat. Kein Hotel."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "idle",
+          "face": "passantin"
+        },
+        {
+          "who": "passantin",
+          "at": "passant",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 5,
+          "text": "Da kommt jemand. Ole nimmt allen Mut zusammen."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "strasse",
+      "speaker": "ole",
+      "sentence": "c001",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "winken",
+          "face": "passantin"
+        },
+        {
+          "who": "passantin",
+          "at": "passant",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "idle",
+          "face": "passantin"
+        },
+        {
+          "who": "passantin",
+          "at": "passant",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 6,
+          "text": "Sie bleibt stehen. Was jetzt?"
+        }
+      ]
+    },
+    {
+      "kind": "quiz",
+      "scene": "strasse",
+      "speaker": "ole",
+      "sentence": "c088",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "warten",
+          "face": "passantin"
+        },
+        {
+          "who": "passantin",
+          "at": "passant",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "freuen",
+          "face": "passantin"
+        },
+        {
+          "who": "passantin",
+          "at": "passant",
+          "action": "zeigen",
+          "face": "hoteltuer"
+        }
+      ],
+      "lines": [
+        {
+          "n": 7,
+          "text": "Michi ni mayoimashita. Ich habe mich verlaufen."
+        },
+        {
+          "n": 8,
+          "text": "Sie schaut auf den Bon, lacht – und zeigt die Straße hinunter."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "strasse",
+      "speaker": "passantin",
+      "sentence": "c043",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "idle",
+          "face": "passantin"
+        },
+        {
+          "who": "passantin",
+          "at": "passant",
+          "action": "zeigen",
+          "face": "hoteltuer"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "verbeugen",
+          "face": "passantin"
+        },
+        {
+          "who": "passantin",
+          "at": "passant",
+          "action": "verbeugen",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 9,
+          "text": "Massugu itte, migi desu. Geradeaus und dann rechts."
+        },
+        {
+          "n": 10,
+          "text": "Danke sagen? Immer noch nicht drin. Ole verbeugt sich wieder."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "gehen",
+          "to": "hoteltuer"
+        }
+      ],
+      "lines": [
+        {
+          "n": 11,
+          "text": "Geradeaus. Rechts. Und da ist es: Hotel Kawabe!"
+        },
+        {
+          "n": 12,
+          "text": "Ole rennt die letzten Meter."
+        },
+        {
+          "n": 13,
+          "text": "Aber hinter der Glastür …",
+          "regie": "langsam"
+        },
+        {
+          "n": 14,
+          "text": "… geht gerade das Licht aus.",
+          "regie": "leise"
+        }
+      ]
+    }
+  ]
+}

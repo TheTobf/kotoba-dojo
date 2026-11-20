@@ -69,3 +69,39 @@ Alle Laufzeit-Abhängigkeiten erlauben kommerzielle Nutzung:
 | tailwindcss, vite, vitest, wrangler (Entwicklung) | MIT bzw. MIT/Apache 2.0 |
 
 Icons und Logo sind selbst gezeichnet (`src/ui/Icon.tsx`, `public/icon.svg`).
+
+## Folgen-Generator „Gestrandet in Japan“ (`studio/`)
+
+Alles läuft lokal und kostenlos. Stand 20.11.2026.
+
+| Bestandteil | Wofür | Lizenz / Bedingung |
+|---|---|---|
+| [Remotion](https://www.remotion.dev/license) 4 | Videos aus Code rendern | Remotion-Lizenz: kostenlos für Einzelpersonen und Firmen bis 3 Personen. Ab 4 Personen Firmenlizenz nötig. |
+| three.js, @react-three/fiber | 3D-Szenen | MIT |
+| whisper.cpp (über @remotion/install-whisper-cpp), Whisper-Modell `large-v3-turbo` | Spracherkennung deiner Aufnahmen (nur Zeitmarken, lokal) | MIT (Programm und Modellgewichte) |
+| VOICEVOX Engine | japanische Stimmen (lokal) | Engine: LGPL/MIT. **Jede Stimme hat eigene Bedingungen**, siehe unten. |
+| OpenJTalk (pyopenjtalk), espeak-ng | nur Ersatzstimmen für Vorschauen (`preview.mp4`, wird nie gepostet) | BSD bzw. GPL – Ausgabe wird nicht veröffentlicht |
+| Windows-Sprachausgabe / macOS `say` | nur Vorschau-Erzähler | Betriebssystem, Ausgabe wird nicht veröffentlicht |
+| Zen Maru Gothic, Noto Sans JP, Noto Serif JP | Schrift in den Videos | SIL Open Font License 1.1 (keine Nennung im Video nötig) |
+| Geräusche (Tick, Pling, Wusch) | Quiz und Schnitte | selbst erzeugt im Code (`studio/scripts/lib/dsp.ts`) – eigen |
+| Musik | – | keine (es gibt noch keine geprüft lizenzfreie, kommerziell nutzbare Musik) |
+| Figuren, Szenen, Postkarte, Schilder | alles im Code gezeichnet | eigen, keine fremden Bilder, Logos oder Marken |
+
+### VOICEVOX-Stimmen in den Folgen
+
+Pflicht ist die Namensnennung „VOICEVOX:Name“. `caption.txt` enthält sie automatisch für jede Stimme, die in der Folge
+spricht. Die genauen Bedingungen stehen **in der Engine selbst** (`/speaker_info`). `npm run stimmen` speichert sie nach
+`licenses/voicevox/<Name>.md`. Diese Dateien landen nicht in Git, weil es fremde Texte sind. Claude liest sie und trägt das
+Ergebnis in `licenses/voicevox/geprueft.json` ein: Nennung, kommerziell erlaubt, Datum, Hinweise. **Ohne diesen Eintrag
+gibt `npm run final` kein Video frei.**
+
+| Rolle | Stimme | Stand |
+|---|---|---|
+| Ole | 白上虎太郎 (ふつう) | Bedingungen auf dem Laptop prüfen (`npm run stimmen`) |
+| Beamter / Männer | 玄野武宏 (ノーマル) | Bedingungen auf dem Laptop prüfen |
+| Frauen | 冥鳴ひまり, 九州そら (ノーマル) | Bedingungen auf dem Laptop prüfen |
+| Durchsagen | 四国めたん (ノーマル) | Bedingungen auf dem Laptop prüfen |
+| nicht verwenden | 青山龍星 | geschäftliche Nutzung nur mit vorheriger Genehmigung |
+
+Die Webseite von VOICEVOX war aus der Cloud-Umgebung nicht erreichbar. Darum läuft die Prüfung bewusst über die Engine
+auf dem Laptop.

@@ -4,10 +4,10 @@ import { Part } from '../three/materials'
 import { box, sphere, torus } from '../three/shapes'
 import { blink, type Pose } from './types'
 
-export function Eyes({ pose, spread = 0.28, size = 0.17, y = 0, z = 0.8 }: { pose: Pose; spread?: number; size?: number; y?: number; z?: number }) {
+export function Eyes({ pose, spread = 0.28, size = 0.17, y = 0, z = 0.8, seed = 0 }: { pose: Pose; spread?: number; size?: number; y?: number; z?: number; seed?: number }) {
   const look = useLook()
   const seg = Math.max(look.segments, 16)
-  const open = pose.mood === 'shocked' ? 1.25 : blink(pose.t)
+  const open = pose.mood === 'shocked' ? 1.25 : pose.mood === 'sad' ? 0.75 * blink(pose.t, seed) : blink(pose.t, seed)
   const ink = look.palette.ink
   return (
     <group position={[0, y, z]}>
@@ -28,6 +28,19 @@ export function Eyes({ pose, spread = 0.28, size = 0.17, y = 0, z = 0.8 }: { pos
 export function Mouth({ pose, y = -0.2, z = 0.82, width = 0.16 }: { pose: Pose; y?: number; z?: number; width?: number }) {
   const look = useLook()
   const ink = look.palette.ink
+  const talk = pose.mouth ?? 0
+  if (talk > 0.04) {
+    // offener Mund beim Sprechen: dunkles Oval mit kleiner Zunge
+    return (
+      <group position={[0, y, z]}>
+        <Part geometry={sphere(20)} color="#5a2630" scale={[width * 0.5, width * (0.12 + talk * 0.42), width * 0.25]} outline={false} />
+        <Part geometry={sphere(16)} color="#e27c7c" position={[0, -width * (0.05 + talk * 0.2), width * 0.05]} scale={[width * 0.3, width * 0.1 * (0.5 + talk), width * 0.2]} outline={false} />
+      </group>
+    )
+  }
+  if (pose.mood === 'sad') {
+    return <Part geometry={torus(28, 0.18)} color={ink} position={[0, y - 0.03, z]} rotation={[0, 0, 0]} scale={[width * 0.5, width * 0.28, width * 0.3]} outline={false} />
+  }
   if (pose.mood === 'shocked') {
     return <Part geometry={sphere(20)} color={ink} position={[0, y, z]} scale={[width * 0.55, width * 0.75, width * 0.3]} outline={false} />
   }

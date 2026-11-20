@@ -23,6 +23,24 @@ Korrekturen, Fehler-Karteikarten. Dieser Branch ist das **Grundgerüst** für di
 `npm run dev` legt beim ersten Start `.env` mit Test-Geheimnissen an und richtet die lokale Datenbank ein.
 Ohne Stripe-Schlüssel läuft lokal der Stripe-Simulator (siehe ARCHITECTURE.md).
 
+## Folgen-Generator „Gestrandet in Japan“ (`studio/`)
+
+TikTok-Serie mit Ole, dem Seehund (Stil „Knete“, fest in `style/stilvorlage.json`). Befehle für Claude Code:
+`/staffel`, `/skripte`, `/folge`, `/appvideo`, `/fertig`, `/status` (Anleitungen in `.claude/commands/`).
+Im Ordner `studio/`: `npm install` (einmalig), `npm test`, `npm run pruefen|skripte|vorschau|kontrolle|final|status|stimmen`.
+
+Regeln (vom Nutzer vorgegeben):
+- **Folgen sind reiner Lerninhalt:** kein App-Hinweis, keine Werbe-Endkarte. Werbung nur im App-Video (`/appvideo`),
+  dort klar gekennzeichnet.
+- **Japanisch muss stimmen:** nur Lehrplan-Sätze mit `status: "ok"`. [PRÜFEN]-Sätze erst nach Bestätigung des Nutzers.
+  1–2 neue Sätze plus 1 Wiederholung pro Folge, `curriculum/progress.json` wird berechnet, nie von Hand ändern.
+- **Vorschauen** mit Ersatzstimmen heißen `preview.mp4` und werden nie als fertiges Video ausgegeben.
+- **Selbstkontrolle Pflicht:** vor `npm run final` jedes Standbild in `out/epXX/kontrolle/` ansehen.
+- **Stimmen:** VOICEVOX-Bedingungen je Stimme prüfen (`npm run stimmen` → `licenses/voicevox/geprueft.json`),
+  Namensnennung kommt automatisch in `caption.txt`. 青山龍星 nicht verwenden.
+- **Aufnahmen und Videos nie in Git** (Repo ist öffentlich): `recordings/**/*.m4a|mp3|wav` und `out/` sind ignoriert.
+- Keine fremden Bilder, Logos, Marken oder Musik. Alles wird im Code gezeichnet bzw. erzeugt.
+
 ## Regeln (vom Nutzer vorgegeben – nicht aufweichen)
 
 1. **Sprache:** Mit dem Nutzer Deutsch und einfach. Oberfläche und Kommentare auf Deutsch, Bezeichner im Code Englisch.

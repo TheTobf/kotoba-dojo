@@ -1,0 +1,316 @@
+{
+  "id": "ep02",
+  "season": 1,
+  "number": 2,
+  "title": "Der Koffer kommt nicht",
+  "titleJa": "荷物が出てきません",
+  "summary": "Das Gepäckband steht still, Oles Koffer ist nicht da. Ole muss zum ersten Mal selbst jemanden ansprechen – auf Japanisch.",
+  "postDate": "2026-12-01",
+  "learn": {
+    "new": [
+      "c001",
+      "c069"
+    ],
+    "review": [
+      "c018"
+    ]
+  },
+  "hook": {
+    "title": "Koffer: weg.",
+    "sub": "Handy: tot."
+  },
+  "endCard": "Morgen: Wo ist Oles Hotel?",
+  "cast": {
+    "ole": {
+      "figure": "ole",
+      "voice": "ole",
+      "label": "Ole"
+    },
+    "mitarbeiterin": {
+      "figure": "mitarbeiterin",
+      "voice": "frau",
+      "label": "Mitarbeiterin"
+    }
+  },
+  "beats": [
+    {
+      "kind": "erzaehler",
+      "scene": "gepaeckband",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "band",
+          "action": "traurig"
+        }
+      ],
+      "state": {
+        "band": "stopp",
+        "koffer": "keine"
+      },
+      "camera": [
+        "ole-front"
+      ],
+      "lines": [
+        {
+          "n": 1,
+          "text": "Das Band steht. Oles Koffer: weg.",
+          "regie": "schnell"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "gepaeckband",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "band",
+          "action": "suchen"
+        }
+      ],
+      "state": {
+        "band": "stopp",
+        "koffer": "keine"
+      },
+      "camera": [
+        "totale",
+        "ole-nah"
+      ],
+      "lines": [
+        {
+          "n": 2,
+          "text": "Hinten ist ein Schalter für verlorenes Gepäck."
+        },
+        {
+          "n": 3,
+          "text": "Ausgerechnet. Ole arbeitet zu Hause im Fundbüro."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "gepaeck-schalter",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "eingang",
+          "action": "gehen",
+          "to": "schalter"
+        },
+        {
+          "who": "mitarbeiterin",
+          "at": "mitarbeiterin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 4,
+          "text": "Jetzt nur noch fragen. Aber wie spricht man jemanden an?"
+        },
+        {
+          "n": 5,
+          "text": "Mit dem wichtigsten Wort in Japan."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "gepaeck-schalter",
+      "speaker": "ole",
+      "sentence": "c001",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "schalter",
+          "action": "winken",
+          "face": "mitarbeiterin"
+        },
+        {
+          "who": "mitarbeiterin",
+          "at": "mitarbeiterin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "gepaeck-schalter",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "schalter",
+          "action": "idle",
+          "face": "mitarbeiterin"
+        },
+        {
+          "who": "mitarbeiterin",
+          "at": "mitarbeiterin",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 6,
+          "text": "Sumimasen heißt Entschuldigung."
+        },
+        {
+          "n": 7,
+          "text": "Damit fängt man fast jede Frage an."
+        },
+        {
+          "n": 8,
+          "text": "Die Mitarbeiterin lächelt. Und jetzt?"
+        }
+      ]
+    },
+    {
+      "kind": "quiz",
+      "scene": "gepaeck-schalter",
+      "speaker": "ole",
+      "sentence": "c069",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "schalter",
+          "action": "warten",
+          "face": "mitarbeiterin"
+        },
+        {
+          "who": "mitarbeiterin",
+          "at": "mitarbeiterin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "gepaeck-schalter",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "schalter",
+          "action": "freuen",
+          "face": "mitarbeiterin"
+        },
+        {
+          "who": "mitarbeiterin",
+          "at": "mitarbeiterin",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 9,
+          "text": "Nimotsu ga dete kimasen. Mein Gepäck kommt nicht."
+        },
+        {
+          "n": 10,
+          "text": "Sie nickt, tippt – und sagt etwas, das Ole kennt."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "gepaeck-schalter",
+      "speaker": "mitarbeiterin",
+      "sentence": "c018",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "schalter",
+          "action": "idle",
+          "face": "mitarbeiterin"
+        },
+        {
+          "who": "mitarbeiterin",
+          "at": "mitarbeiterin",
+          "action": "zeigen",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "gepaeck-schalter",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "schalter",
+          "action": "geben",
+          "face": "mitarbeiterin",
+          "prop": "pass"
+        },
+        {
+          "who": "mitarbeiterin",
+          "at": "mitarbeiterin",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 11,
+          "text": "Den Satz hatten wir gestern!"
+        },
+        {
+          "n": 12,
+          "text": "Ole reicht den Pass rüber – diesmal ganz lässig."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "gepaeck-schalter",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "schalter",
+          "action": "freuen",
+          "face": "mitarbeiterin"
+        },
+        {
+          "who": "mitarbeiterin",
+          "at": "mitarbeiterin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 13,
+          "text": "Ergebnis: Der Koffer steht noch in Frankfurt."
+        },
+        {
+          "n": 14,
+          "text": "Er kommt in drei Tagen. Direkt ins Hotel."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "handy",
+      "state": {
+        "akku": 0,
+        "aus": "ja"
+      },
+      "lines": [
+        {
+          "n": 15,
+          "text": "Kleines Problem: Welches Hotel?",
+          "regie": "langsam"
+        },
+        {
+          "n": 16,
+          "text": "Die Adresse war auf dem Handy.",
+          "regie": "leise"
+        }
+      ]
+    }
+  ]
+}

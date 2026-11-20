@@ -1,0 +1,279 @@
+{
+  "id": "ep07",
+  "season": 1,
+  "number": 7,
+  "title": "Der Check-in",
+  "titleJa": "予約しています",
+  "summary": "Ole klopft an die dunkle Hoteltür. Zimmer, Adapter, endlich Strom – und dann sieht die Rezeptionistin die Postkarte.",
+  "postDate": "2026-12-06",
+  "learn": {
+    "new": [
+      "c040",
+      "c063"
+    ],
+    "review": [
+      "c001"
+    ]
+  },
+  "hook": {
+    "title": "Licht aus.",
+    "sub": "Ole klopft."
+  },
+  "endCard": "Staffel 2: Ein Dach über dem Kopf",
+  "cast": {
+    "ole": {
+      "figure": "ole",
+      "voice": "ole",
+      "label": "Ole"
+    },
+    "rezeptionistin": {
+      "figure": "rezeptionistin",
+      "voice": "frau",
+      "label": "Rezeptionistin"
+    }
+  },
+  "beats": [
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "hoteltuer",
+          "action": "winken"
+        }
+      ],
+      "lines": [
+        {
+          "n": 1,
+          "text": "Licht aus. Ole klopft an die Scheibe.",
+          "regie": "schnell"
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "strasse",
+      "speaker": "ole",
+      "sentence": "c001",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "hoteltuer",
+          "action": "winken"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "hotel-lobby",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "tuer",
+          "action": "gehen",
+          "to": "rezeption"
+        },
+        {
+          "who": "rezeptionistin",
+          "at": "rezeptionistin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 2,
+          "text": "Die Tür geht auf. Die Rezeptionistin war noch da."
+        },
+        {
+          "n": 3,
+          "text": "Und jetzt der Satz, auf den Ole den ganzen Tag gewartet hat."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "hotel-lobby",
+      "speaker": "ole",
+      "sentence": "c040",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "rezeption",
+          "action": "freuen",
+          "face": "rezeptionistin"
+        },
+        {
+          "who": "rezeptionistin",
+          "at": "rezeptionistin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "hotel-lobby",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "rezeption",
+          "action": "idle",
+          "face": "rezeptionistin"
+        },
+        {
+          "who": "rezeptionistin",
+          "at": "rezeptionistin",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 4,
+          "text": "Yoyaku shite imasu. Ich habe reserviert."
+        },
+        {
+          "n": 5,
+          "text": "Sie findet den Namen sofort. Zimmer zwölf."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "hotel-lobby",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "rezeption",
+          "action": "traurig"
+        },
+        {
+          "who": "rezeptionistin",
+          "at": "rezeptionistin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 6,
+          "text": "Bleibt ein Problem: Der Stecker passt nicht in die Steckdose."
+        }
+      ]
+    },
+    {
+      "kind": "quiz",
+      "scene": "hotel-lobby",
+      "speaker": "ole",
+      "sentence": "c063",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "rezeption",
+          "action": "warten",
+          "face": "rezeptionistin"
+        },
+        {
+          "who": "rezeptionistin",
+          "at": "rezeptionistin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "hotel-lobby",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "rezeption",
+          "action": "freuen",
+          "face": "rezeptionistin"
+        },
+        {
+          "who": "rezeptionistin",
+          "at": "rezeptionistin",
+          "action": "geben",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 7,
+          "text": "Henkan puragu o kashite moraemasu ka?"
+        },
+        {
+          "n": 8,
+          "text": "Können Sie mir einen Adapter leihen?"
+        },
+        {
+          "n": 9,
+          "text": "Sie lächelt und holt einen aus der Schublade."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "handy",
+      "state": {
+        "akku": 1
+      },
+      "lines": [
+        {
+          "n": 10,
+          "text": "Ein Brummen. Das Handy lebt!"
+        },
+        {
+          "n": 11,
+          "text": "Ein Prozent. Was für ein Tag."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "postkarte",
+      "state": {
+        "seite": "vorne"
+      },
+      "lines": [
+        {
+          "n": 12,
+          "text": "Dann sieht sie die Postkarte auf dem Tresen."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "hotel-lobby",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "rezeption",
+          "action": "erstarrt",
+          "face": "rezeptionistin"
+        },
+        {
+          "who": "rezeptionistin",
+          "at": "rezeptionistin",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 13,
+          "text": "Sie wird ganz still.",
+          "regie": "langsam"
+        },
+        {
+          "n": 14,
+          "text": "„Yanaka“, sagt sie leise. „Diesen Laden gibt es seit dreißig Jahren nicht mehr.“",
+          "regie": "leise"
+        }
+      ]
+    }
+  ]
+}

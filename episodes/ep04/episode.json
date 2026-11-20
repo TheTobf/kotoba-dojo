@@ -1,0 +1,297 @@
+{
+  "id": "ep04",
+  "season": 1,
+  "number": 4,
+  "title": "Im richtigen Zug?",
+  "titleJa": "この電車は東京駅に行きますか",
+  "summary": "Ole muss am Bahnhof Tokio umsteigen. Die Türen schließen, der Zug ist voll – und Ole ist sich nicht sicher, ob er richtig ist.",
+  "postDate": "2026-12-03",
+  "learn": {
+    "new": [
+      "c030",
+      "c026"
+    ],
+    "review": [
+      "c001"
+    ]
+  },
+  "hook": {
+    "title": "Türen zu.",
+    "sub": "Richtiger Zug?"
+  },
+  "endCard": "Morgen: Großer Hunger!",
+  "cast": {
+    "ole": {
+      "figure": "ole",
+      "voice": "ole",
+      "label": "Ole"
+    },
+    "durchsage": {
+      "figure": "stimme",
+      "voice": "durchsage",
+      "label": "Durchsage"
+    },
+    "opa": {
+      "figure": "opa",
+      "voice": "mann",
+      "label": "Fahrgast"
+    }
+  },
+  "beats": [
+    {
+      "kind": "erzaehler",
+      "scene": "bahnsteig",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "erschrocken"
+        }
+      ],
+      "state": {
+        "zug": "da"
+      },
+      "lines": [
+        {
+          "n": 1,
+          "text": "Ein Signal. Eine Stimme. Ole versteht kein Wort.",
+          "regie": "schnell"
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "bahnsteig",
+      "speaker": "durchsage",
+      "sentence": "c030",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "verwirrt"
+        }
+      ],
+      "state": {
+        "zug": "da"
+      }
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnsteig",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "gehen",
+          "to": "tuer"
+        }
+      ],
+      "state": {
+        "zug": "da"
+      },
+      "lines": [
+        {
+          "n": 2,
+          "text": "Doa ga shimarimasu. Die Türen schließen."
+        },
+        {
+          "n": 3,
+          "text": "Ole springt – und schafft es gerade so."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "zug-innen",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "tuer",
+          "action": "suchen"
+        },
+        {
+          "who": "opa",
+          "at": "sitz",
+          "action": "idle"
+        }
+      ],
+      "lines": [
+        {
+          "n": 4,
+          "text": "Drinnen: alles leise. Niemand telefoniert."
+        },
+        {
+          "n": 5,
+          "text": "Ole muss am Bahnhof Tokio umsteigen. Aber ist das der richtige Zug?"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "zug-innen",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "tuer",
+          "action": "gehen",
+          "to": "mitte"
+        },
+        {
+          "who": "opa",
+          "at": "sitz",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 6,
+          "text": "Neben ihm sitzt ein freundlicher Herr. Erst mal: ansprechen."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "zug-innen",
+      "speaker": "ole",
+      "sentence": "c001",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "idle",
+          "face": "opa"
+        },
+        {
+          "who": "opa",
+          "at": "sitz",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "zug-innen",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "idle",
+          "face": "opa"
+        },
+        {
+          "who": "opa",
+          "at": "sitz",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 7,
+          "text": "Der Herr schaut auf. Jetzt die große Frage."
+        }
+      ]
+    },
+    {
+      "kind": "quiz",
+      "scene": "zug-innen",
+      "speaker": "ole",
+      "sentence": "c026",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "warten",
+          "face": "opa"
+        },
+        {
+          "who": "opa",
+          "at": "sitz",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "zug-innen",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "freuen",
+          "face": "opa"
+        },
+        {
+          "who": "opa",
+          "at": "sitz",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 8,
+          "text": "Kono densha wa Tōkyō-eki ni ikimasu ka?"
+        },
+        {
+          "n": 9,
+          "text": "Fährt dieser Zug zum Bahnhof Tokio?"
+        },
+        {
+          "n": 10,
+          "text": "Der Herr nickt und lächelt. Ole atmet aus."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "zug-innen",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "traurig"
+        }
+      ],
+      "lines": [
+        {
+          "n": 11,
+          "text": "So erleichtert, dass ihm die Augen zufallen …",
+          "regie": "langsam",
+          "pause": "lang"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnsteig",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "schild",
+          "action": "erschrocken"
+        }
+      ],
+      "state": {
+        "zug": "weg"
+      },
+      "lines": [
+        {
+          "n": 12,
+          "text": "Als er aufwacht: Endstation. Alle sind weg."
+        },
+        {
+          "n": 13,
+          "text": "Auf dem Schild steht: Higashimachi. Glück gehabt!"
+        },
+        {
+          "n": 14,
+          "text": "Nur: Es ist dunkel. Und Ole hat riesigen Hunger."
+        }
+      ]
+    }
+  ]
+}

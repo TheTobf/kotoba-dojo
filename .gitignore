@@ -22,5 +22,10 @@ recordings/**/*.m4a
 recordings/**/*.mp3
 recordings/**/*.wav
 recordings/**/work/
-out/
+out/*
+!out/POSTPLAN.md
 studio/out-stills/
+# VOICEVOX-Bedingungen (fremde Texte, nur lokal) – geprueft.json wird eingecheckt
+licenses/voicevox/*.md
+# Werkzeuge des Folgen-Generators (whisper.cpp, Modelle)
+studio/.tools/

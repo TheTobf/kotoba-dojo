@@ -1,0 +1,104 @@
+{
+  "hinweis": "Feste Stilvorlage für „Gestrandet in Japan“. Gewählt von Tobias am 20.11.2026: Stil B (Knete), Maskottchen 1 (Ole, der Seehund). Nur nach Rücksprache ändern. Die Zahlen hier steuern Schnitt, Texte und Ton aller Folgen.",
+  "serie": "Gestrandet in Japan",
+  "look": "knete",
+  "maskottchen": {
+    "id": "robbe",
+    "name": "Ole",
+    "beschreibung": "Seehund aus Hamburg mit gelbem Südwester. Rund, gemütlich, wackelt beim Gehen. Arbeitet im Fundbüro."
+  },
+  "format": {
+    "breite": 1080,
+    "hoehe": 1920,
+    "fps": 30,
+    "laengeMin": 61,
+    "laengeMax": 75
+  },
+  "sicherheitszone": {
+    "oben": 170,
+    "unten": 440,
+    "links": 64,
+    "rechts": 170
+  },
+  "schnitt": {
+    "hookBis": 2.0,
+    "einstellungMin": 2.0,
+    "einstellungMax": 3.0,
+    "kameraImmerInBewegung": true,
+    "quizCountdown": 3,
+    "pauseVorBeat": 0.15,
+    "pauseZwischenSaetzen": 0.25,
+    "pauseKurz": 0.6,
+    "pauseLang": 1.0,
+    "japanischVorlauf": 0.25,
+    "japanischNachlauf": 0.55,
+    "lernsatzLangsamWiederholen": true,
+    "langsamFaktor": 0.8,
+    "endkarte": 1.6
+  },
+  "text": {
+    "japanisch": 104,
+    "kana": 40,
+    "deutsch": 46,
+    "untertitel": 60,
+    "untertitelMaxWoerter": 4,
+    "hook": 92
+  },
+  "audio": {
+    "stimmeLufs": -16,
+    "japanischLufs": -16.5,
+    "effekteLufs": -26,
+    "gesamtLufs": -14,
+    "spitzeDb": -1.5,
+    "musik": null,
+    "musikHinweis": "Keine Musik: Es gibt (noch) keine selbst erstellte oder geprüft lizenzfreie Musik. TikTok-Sounds bitte nicht in der App hinzufügen, wenn das Video auch auf YouTube/Instagram läuft."
+  },
+  "stimmen": {
+    "hinweis": "Japanische Stimmen kommen von VOICEVOX (lokal). Bedingungen jeder Stimme speichert `npm run stimmen` aus der laufenden Engine nach licenses/voicevox/. Erst wenn sie dort geprüft sind (geprueft.json), gibt /fertig Videos frei. Nicht verwenden: 青山龍星 (geschäftliche Nutzung nur mit vorheriger Genehmigung, siehe LICENSES.md).",
+    "ole": {
+      "voicevox": "白上虎太郎",
+      "stil": "ふつう"
+    },
+    "beamter": {
+      "voicevox": "玄野武宏",
+      "stil": "ノーマル"
+    },
+    "mann": {
+      "voicevox": "玄野武宏",
+      "stil": "ノーマル"
+    },
+    "frau": {
+      "voicevox": "冥鳴ひまり",
+      "stil": "ノーマル"
+    },
+    "frau2": {
+      "voicevox": "九州そら",
+      "stil": "ノーマル"
+    },
+    "durchsage": {
+      "voicevox": "四国めたん",
+      "stil": "ノーマル"
+    }
+  },
+  "verboteneWoerter": [
+    "App",
+    "Kotoba",
+    "Dojo",
+    "Link in",
+    "Bio",
+    "Download",
+    "herunterladen",
+    "Abo",
+    "Pro-Version",
+    "Werbung",
+    "Rabatt",
+    "kostenlos testen"
+  ],
+  "hashtags": [
+    "#japanischlernen",
+    "#japan",
+    "#gestrandetinjapan",
+    "#sprachenlernen",
+    "#japanreise"
+  ]
+}

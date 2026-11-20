@@ -1,11 +1,16 @@
 /** Szene: Bahnsteig mit einfahrendem Zug, Bahnhofsschild, Bank und gelbem Blindenleitstreifen. */
 import { useMemo } from 'react'
+import { ease } from '../characters/actions'
+import type { TBeat } from '../episode/timeline'
 import * as THREE from 'three'
 import { Part, useLook } from '../three/materials'
 import { box, cylinder } from '../three/shapes'
 import { signTexture } from '../three/signTexture'
 
-export function Platform({ trainX = 0 }: { trainX?: number }) {
+export function Platform({ trainX: fixedX, beat, t = 0 }: { trainX?: number; beat?: TBeat; t?: number }) {
+  const zug = beat?.state.zug ?? 'da'
+  const since = beat?.stateSince.zug ?? 0
+  const trainX = fixedX ?? (zug === 'faehrt-ein' ? 16 * (1 - ease((t - since) / 4)) : -1.5)
   const look = useLook()
   const p = look.palette
   const s = look.segments
@@ -27,7 +32,7 @@ export function Platform({ trainX = 0 }: { trainX?: number }) {
       {/* Blindenleitstreifen */}
       <Part geometry={box(8)} color={p.groundLine} position={[0, 0.005, -1.7]} scale={[16, 0.02, 0.32]} receiveShadow castShadow={false} outline={false} />
       {/* Zug */}
-      <group position={[trainX, 0, -3.65]}>
+      {zug !== 'weg' && <group position={[trainX, 0, -3.65]}>
         <Part geometry={box(s, 0.08)} color={p.paper} position={[0, 1.1, 0]} scale={[11, 2.7, 2.4]} receiveShadow />
         <Part geometry={box(8)} color={p.accent2} position={[0, 0.25, 1.21]} scale={[11, 0.28, 0.02]} outline={false} />
         <Part geometry={box(8)} color={p.accent} position={[0, 2.25, 1.21]} scale={[11, 0.08, 0.02]} outline={false} />
@@ -37,7 +42,7 @@ export function Platform({ trainX = 0 }: { trainX?: number }) {
         {[-3.3, 2.1].map((x) => (
           <Part key={x} geometry={box(8)} color="#d8d2c6" position={[x, 0.95, 1.215]} scale={[1.1, 1.9, 0.02]} outline={false} />
         ))}
-      </group>
+      </group>}
       {/* Säule mit Schild */}
       <Part geometry={cylinder(s)} color={p.metal} position={[1.6, 1.8, -1.0]} scale={[0.12, 3.6, 0.12]} />
       <group position={[1.6, 2.45, -0.8]} scale={0.75}>

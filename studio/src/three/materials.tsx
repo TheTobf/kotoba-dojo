@@ -1,5 +1,5 @@
 /** Materialien je Look. Figuren und Szenen nutzen nur <Part color="…">, der Look entscheidet über das Aussehen. */
-import { createContext, useContext, useMemo, type ReactNode } from 'react'
+import { createContext, useContext, type ReactNode } from 'react'
 import * as THREE from 'three'
 import { LOOKS, type Look, type LookId } from '../look/looks'
 
@@ -51,18 +51,28 @@ function toonGradient(): THREE.DataTexture {
   return toonRamp
 }
 
-export function useLookMaterial(color: string, { glossy = false, emissive }: { glossy?: boolean; emissive?: string } = {}) {
-  const look = useLook()
-  return useMemo(() => {
+const materialCache = new Map<string, THREE.Material>()
+
+/** Material im Look. Gleiche Farbe = gleiches Material (spart Speicher und Zeit beim Rendern). */
+export function lookMaterial(look: Look, color: string, { glossy = false, emissive, opacity }: { glossy?: boolean; emissive?: string; opacity?: number } = {}): THREE.Material {
+  const key = `${look.material}|${color}|${glossy}|${emissive ?? ''}|${opacity ?? 1}`
+  let m = materialCache.get(key)
+  if (!m) {
+    const transparent = opacity !== undefined && opacity < 1
+    const common = { color, emissive: emissive ?? '#000000', transparent, opacity: opacity ?? 1, depthWrite: !transparent }
     switch (look.material) {
-      case 'paper':
-        return new THREE.MeshLambertMaterial({ color, flatShading: true, map: paperGrain(), emissive: emissive ?? '#000000' })
-      case 'clay':
-        return new THREE.MeshStandardMaterial({ color, roughness: glossy ? 0.25 : 0.62, metalness: 0, emissive: emissive ?? '#000000' })
-      case 'toon':
-        return new THREE.MeshToonMaterial({ color, gradientMap: toonGradient(), emissive: emissive ?? '#000000' })
+      case 'paper': m = new THREE.MeshLambertMaterial({ ...common, flatShading: true, map: paperGrain() }); break
+      case 'clay': m = new THREE.MeshStandardMaterial({ ...common, roughness: glossy ? 0.25 : 0.62, metalness: 0 }); break
+      case 'toon': m = new THREE.MeshToonMaterial({ ...common, gradientMap: toonGradient() }); break
     }
-  }, [look.material, color, glossy, emissive])
+    materialCache.set(key, m)
+  }
+  return m
+}
+
+export function useLookMaterial(color: string, options: { glossy?: boolean; emissive?: string; opacity?: number } = {}) {
+  const look = useLook()
+  return lookMaterial(look, color, options)
 }
 
 const outlineMaterial = new THREE.MeshBasicMaterial({ color: '#1c1a17', side: THREE.BackSide })
@@ -72,7 +82,7 @@ const outlineMaterial = new THREE.MeshBasicMaterial({ color: '#1c1a17', side: TH
  * (dieselbe Form, etwas größer, nur die Rückseite sichtbar).
  */
 export function Part({
-  geometry, color, position, rotation, scale, glossy, emissive, outline = true, castShadow = true, receiveShadow = false,
+  geometry, color, position, rotation, scale, glossy, emissive, opacity, outline = true, castShadow = true, receiveShadow = false,
 }: {
   geometry: THREE.BufferGeometry
   color: string
@@ -81,12 +91,14 @@ export function Part({
   scale?: number | [number, number, number]
   glossy?: boolean
   emissive?: string
+  /** < 1 = durchsichtig (Glas) */
+  opacity?: number
   outline?: boolean
   castShadow?: boolean
   receiveShadow?: boolean
 }) {
   const look = useLook()
-  const material = useLookMaterial(color, { glossy, emissive })
+  const material = useLookMaterial(color, { glossy, emissive, opacity })
   const s: [number, number, number] = typeof scale === 'number' ? [scale, scale, scale] : scale ?? [1, 1, 1]
   return (
     <group position={position} rotation={rotation} scale={s}>

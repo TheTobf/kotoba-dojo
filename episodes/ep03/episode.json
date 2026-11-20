@@ -1,0 +1,305 @@
+{
+  "id": "ep03",
+  "season": 1,
+  "number": 3,
+  "title": "Der Fahrkartenautomat",
+  "titleJa": "切符はどこで買えますか",
+  "summary": "Im Rucksack findet Ole einen Zettel: Sein Hotel liegt in Higashimachi. Jetzt braucht er eine Fahrkarte – und ein Automat spielt nicht mit.",
+  "postDate": "2026-12-02",
+  "learn": {
+    "new": [
+      "c025",
+      "c013"
+    ],
+    "review": [
+      "c001"
+    ]
+  },
+  "hook": {
+    "title": "Taste gedrückt.",
+    "sub": "Raus kommt: Tee."
+  },
+  "endCard": "Morgen: Falscher Zug?",
+  "cast": {
+    "ole": {
+      "figure": "ole",
+      "voice": "ole",
+      "label": "Ole"
+    },
+    "helfer": {
+      "figure": "helfer",
+      "voice": "mann",
+      "label": "Bahnhofsmitarbeiter"
+    }
+  },
+  "beats": [
+    {
+      "kind": "erzaehler",
+      "scene": "bahnhof-automat",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "getraenke",
+          "action": "erschrocken"
+        }
+      ],
+      "lines": [
+        {
+          "n": 1,
+          "text": "Ole drückt eine Taste. Heraus kommt: Tee.",
+          "regie": "schnell"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnhof-automat",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "getraenke",
+          "action": "verwirrt"
+        }
+      ],
+      "lines": [
+        {
+          "n": 2,
+          "text": "Das war kein Fahrkartenautomat."
+        },
+        {
+          "n": 3,
+          "text": "Aber von vorn: Im Rucksack lag ein Zettel."
+        },
+        {
+          "n": 4,
+          "text": "Hotel Kawabe, Higashimachi. Dahin muss er."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnhof-automat",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "getraenke",
+          "action": "gehen",
+          "to": "mitte"
+        },
+        {
+          "who": "helfer",
+          "at": "helfer",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 5,
+          "text": "Nur – wo gibt es Fahrkarten? Da hinten steht jemand."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "bahnhof-automat",
+      "speaker": "ole",
+      "sentence": "c001",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "winken",
+          "face": "helfer"
+        },
+        {
+          "who": "helfer",
+          "at": "helfer",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnhof-automat",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "idle",
+          "face": "helfer"
+        },
+        {
+          "who": "helfer",
+          "at": "helfer",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 6,
+          "text": "Sumimasen – sitzt schon. Jetzt die eigentliche Frage."
+        }
+      ]
+    },
+    {
+      "kind": "quiz",
+      "scene": "bahnhof-automat",
+      "speaker": "ole",
+      "sentence": "c025",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "warten",
+          "face": "helfer"
+        },
+        {
+          "who": "helfer",
+          "at": "helfer",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnhof-automat",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "mitte",
+          "action": "gehen",
+          "to": "automat"
+        },
+        {
+          "who": "helfer",
+          "at": "helfer",
+          "action": "zeigen",
+          "face": "automat"
+        }
+      ],
+      "lines": [
+        {
+          "n": 7,
+          "text": "Kippu wa doko de kaemasu ka? Wo kann ich eine Fahrkarte kaufen?"
+        },
+        {
+          "n": 8,
+          "text": "Der Mann bringt ihn zu den richtigen Automaten."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnhof-automat",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "automat",
+          "action": "freuen",
+          "face": "helfer"
+        },
+        {
+          "who": "helfer",
+          "at": "helfer",
+          "action": "idle",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 9,
+          "text": "Und weil Ole jetzt mutig ist, fragt er gleich weiter."
+        }
+      ]
+    },
+    {
+      "kind": "japanisch",
+      "scene": "bahnhof-automat",
+      "speaker": "ole",
+      "sentence": "c013",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "automat",
+          "action": "zeigen",
+          "face": "helfer"
+        },
+        {
+          "who": "helfer",
+          "at": "helfer",
+          "action": "idle",
+          "face": "ole"
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnhof-automat",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "automat",
+          "action": "freuen"
+        },
+        {
+          "who": "helfer",
+          "at": "helfer",
+          "action": "nicken",
+          "face": "ole"
+        }
+      ],
+      "lines": [
+        {
+          "n": 10,
+          "text": "Ikura desu ka? Wie viel kostet das?"
+        },
+        {
+          "n": 11,
+          "text": "Der Mann zeigt auf die Tafel: 480 Yen."
+        },
+        {
+          "n": 12,
+          "text": "Ole wirft Münzen ein. Das Ticket kommt raus!"
+        },
+        {
+          "n": 13,
+          "text": "Und den Tee nimmt er auch mit."
+        }
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "bahnsteig",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "tuer",
+          "action": "verwirrt"
+        }
+      ],
+      "state": {
+        "zug": "da"
+      },
+      "lines": [
+        {
+          "n": 14,
+          "text": "Zwei Minuten später sitzt Ole im Zug."
+        },
+        {
+          "n": 15,
+          "text": "Nur ein Gedanke stört.",
+          "regie": "langsam"
+        },
+        {
+          "n": 16,
+          "text": "Fährt der überhaupt nach Higashimachi?",
+          "regie": "leise"
+        }
+      ]
+    }
+  ]
+}

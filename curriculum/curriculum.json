@@ -1,7 +1,7 @@
 {
   "$schema": "./curriculum.schema.json",
   "titel": "Gestrandet in Japan – Lehrplan",
-  "pruefung": "Jeder Satz zweimal geprüft: von Hand und maschinell (Lesung mit kuromoji/IPADIC, Umschrift mit WanaKana). Abweichungen des Analysators bei 何 (なん/なに), 一人, 一週間, 何時, 試着, 内見, 風邪薬, 入れる (Schicht) sind Fehler des Analysators – die Angaben hier stimmen. Bei 三階 sind さんがい und さんかい beide richtig.",
+  "pruefung": "Jeder Satz zweimal geprüft: von Hand und maschinell (Lesung mit kuromoji/IPADIC, Umschrift mit WanaKana). Abweichungen des Analysators bei 何 (なん/なに), 一人, 一週間, 何時, 試着, 内見, 風邪薬, 入れる (Schicht) sind Fehler des Analysators – die Angaben hier stimmen. Bei 三階 sind さんがい und さんかい beide richtig. Entscheidung von Tobias am 20.11.2026: c082 und c147 in der einfacheren Form freigegeben; c162 (Erdbebenwarnung) bleibt gesperrt, bis der Wortlaut geprüft ist.",
   "regeln": [
     "Test für jeden Eintrag: Würde man das in den ersten Wochen in Japan wirklich sagen oder hören?",
     "Höfliche です/ます-Form, außer bei festen Wendungen.",
@@ -949,14 +949,14 @@
     {
       "id": "c082",
       "art": "hoeren",
-      "ja": "レシートはご入用ですか。",
-      "kana": "レシートはごにゅうようですか。",
-      "romaji": "Reshīto wa go-nyūyō desu ka.",
+      "ja": "レシートはよろしいですか。",
+      "kana": "レシートはよろしいですか。",
+      "romaji": "Reshīto wa yoroshii desu ka.",
       "de": "Brauchen Sie den Kassenbon?",
       "situation": "konbini",
       "niveau": 2,
-      "status": "pruefen",
-      "pruefen": "[PRÜFEN] ob diese Form an der Kasse heute noch üblich ist (oft auch: レシートはよろしいですか)"
+      "status": "ok",
+      "hinweis": "よろしいですか ist die höfliche Form von いいですか. Gemeint ist: Brauchen Sie ihn, oder darf er weg? Antwort: 大丈夫です (nein, danke) oder ください (ja, bitte)."
     },
     {
       "id": "c083",
@@ -1675,14 +1675,14 @@
     {
       "id": "c147",
       "art": "hoeren",
-      "ja": "週に何日入れますか。",
-      "kana": "しゅうになんにちはいれますか。",
-      "romaji": "Shū ni nan-nichi hairemasu ka.",
+      "ja": "週に何日働けますか。",
+      "kana": "しゅうになんにちはたらけますか。",
+      "romaji": "Shū ni nan-nichi hatarakemasu ka.",
       "de": "Wie viele Tage pro Woche können Sie arbeiten?",
       "situation": "arbeit",
       "niveau": 3,
-      "status": "pruefen",
-      "pruefen": "[PRÜFEN] ob „入れますか“ (Schichten übernehmen) für Lernende verständlich genug ist oder besser 週に何日働けますか。"
+      "status": "ok",
+      "hinweis": "働けます = „kann arbeiten“ (Können-Form von 働く). Im Job hört man auch 何日入れますか (wie viele Schichten)."
     },
     {
       "id": "c148",

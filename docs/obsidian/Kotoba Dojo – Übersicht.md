@@ -1,6 +1,6 @@
 ---
 tags: [projekt, kotoba-dojo]
-aktualisiert: 2026-11-17
+aktualisiert: 2026-11-20
 ---
 # Kotoba Dojo – Übersicht
 
@@ -37,7 +37,17 @@ Mikrofon), Korrekturen auf Deutsch, Fehler werden automatisch zu Karteikarten.
 - Story-Folgen, Missionen und Figuren sind Platzhalter
 - Stimmen: Anfrage an den VOICEVOX-Rechteinhaber vorbereitet, muss noch abgeschickt werden; bei Nein Azure Speech
 
+## TikTok-Serie „Gestrandet in Japan“ (Folgen-Generator)
+- Ole, ein Seehund aus Hamburg, strandet in Tokio und lernt Satz für Satz Japanisch. Stil: Knete (3D aus Code).
+- Staffel 1 „Angekommen“ geplant: 7 Folgen, Post täglich Mo 30.11. bis So 06.12.2026
+- Fertig: 0 von 7 · **Vorlauf: 0 Tage** · Aufnahmen fehlen: alle 7 (`recordings/AUFNAHME.md`)
+- Folge 1 liegt als Vorschau mit Ersatzstimmen vor (nicht zum Posten)
+- So geht es: in Claude Code `/skripte` → einsprechen → Datei nach `recordings/epXX/voice.m4a` → `/fertig` → posten.
+  Überblick jederzeit mit `/status`, neue Staffel mit `/staffel`, Werbevideo für die App mit `/appvideo`.
+- Vor dem ersten fertigen Video: VOICEVOX starten und `npm run stimmen` (Nutzungsbedingungen der Stimmen prüfen)
+
 ## Nächste Schritte
+0. Folge 1 einsprechen und mit `/fertig` das erste echte Video machen (auf dem Laptop)
 1. VOICEVOX-Anfrage abschicken (`docs/anfragen/voicevox-anfrage.md`); bei Nein oder ohne Antwort Azure Speech
 2. Stripe einmal von Hand im Browser durchklicken
 3. E-Mail-Versand anschließen
