@@ -159,9 +159,17 @@ export const SCENES: Record<string, SceneMeta> = {
   },
   // Geplant für Staffel 1 – Plätze stehen fest, die Grafik wird vor dem ersten Rendern gebaut (built: false):
   'gepaeck-schalter': {
-    id: 'gepaeck-schalter', name: 'Flughafen – Gepäckermittlung', built: false,
+    id: 'gepaeck-schalter', name: 'Flughafen – Gepäckermittlung', built: true,
     spots: { schalter: { pos: [0, 0, 0.3], yaw: PI }, mitarbeiterin: { pos: [0, 0, -1.3], yaw: 0 }, eingang: { pos: [2.5, 0, 2.5], yaw: -2.4 } },
-    cameras: { totale: framed([0, 1.4, -0.5], -0.45, 0.2, 7.5, 0.5, 38) }, defaultCameras: ['totale'],
+    cameras: {
+      totale: framed([0, 1.3, -0.8], -0.45, 0.2, 8.0, 0.5, 38),
+      'ole-front': framed([0, 1.3, 0.3], PI - 0.6, 0.28, 3.9, 0.4, 40),
+      'ole-nah': framed([0, 1.35, 0.3], PI - 0.55, 0.26, 2.9, 0.4, 40),
+      'mitarbeiterin-front': framed([0, 2.5, -1.3], 0.35, -0.02, 3.0, 0.36, 34),
+      'ueber-ole': framed([0, 2.3, -1.3], -0.4, 0.08, 4.4, 0.36, 34),
+      seite: framed([0, 1.6, -0.5], PI / 2 + 0.35, 0.08, 6.0, 0.42, 34),
+    },
+    defaultCameras: ['totale', 'ole-front', 'ueber-ole', 'seite'],
   },
   'bahnhof-automat': {
     id: 'bahnhof-automat', name: 'Bahnhof – Fahrkartenautomaten', built: false,

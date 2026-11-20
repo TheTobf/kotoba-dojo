@@ -58,7 +58,8 @@ Sprachmemo ein und postet das fertige Video. Alles läuft lokal, ohne Zusatzkost
 - Studio `studio/`: Remotion + Three.js. Datenmodell und Prüfung der Folgen, Schnitt-Rechner (Schnitt alle 2–3 s,
   Kamera immer in Bewegung, Hook, Quiz mit 3-s-Countdown, Zähler „Ole kann X Sätze“, Endkarte), Ole mit 14 festen
   Bewegungen und Lippenbewegung nach VOICEVOX-Moren, Personen-Vorlagen, Szenen Passkontrolle, Gepäckband,
-  Handy- und Postkarten-Nahaufnahme, Bahnsteig, App-Handy. Lernkasten mit mitlaufender Hervorhebung.
+  Handy- und Postkarten-Nahaufnahme, Bahnsteig, App-Handy, Gepäckermittlung (damit ist auch ep02 komplett
+  renderbar; Selbstkontrolle ohne Hinweise). Lernkasten mit mitlaufender Hervorhebung.
   Die Selbstkontrolle rendert Standbilder mit Sicherheitszone und Figuren-Umrissen und meldet angeschnittene Figuren
   oder verdeckte Gesichter.
 - Ton-Pipeline in reinem TypeScript: Hochpass, Rauschminderung, Lautheit nach EBU R128, Begrenzer, Pausen kürzen,
@@ -69,7 +70,7 @@ Sprachmemo ein und postet das fertige Video. Alles läuft lokal, ohne Zusatzkost
   `app:bilder`.
 - 28 Tests grün (`cd studio && npm test`): Abgleich/Versprecher, Tonbearbeitung, Lesungs-Prüfung, Schnitt, Folgen-Prüfung.
 - **Folge 1 als Vorschau gerendert:** `out/ep01/preview.mp4` (Ersatzstimmen: espeak-ng deutsch, OpenJTalk japanisch,
-  roter Hinweis „VORSCHAU“ im Bild). Die Standbilder der Selbstkontrolle sind durchgesehen und die Fehler behoben (Kameras im
+  roter Hinweis „VORSCHAU“ im Bild, Ton −14,4 LUFS). Die Standbilder der Selbstkontrolle sind durchgesehen und die Fehler behoben (Kameras im
   Hochformat, Statisten, Rückwand). Renderzeit in der Cloud ohne Grafikkarte ≈ 0,4 s pro Bild (~15 min).
 
 **Nicht geprüft (ehrlich) – nur auf Tobias' Laptop möglich:**
@@ -84,8 +85,8 @@ Sprachmemo ein und postet das fertige Video. Alles läuft lokal, ohne Zusatzkost
 **Als Nächstes (Folgen-Generator):**
 1. Auf dem Laptop: `cd studio && npm install`, VOICEVOX starten, `npm run stimmen` → Bedingungen prüfen.
 2. Tobias spricht ep01 ein (`recordings/ep01/script.md`) → `/fertig`. Dabei whisper.cpp + Modell einmalig laden.
-3. Szenen für ep02–ep07 bauen (`gepaeck-schalter`, `bahnhof-automat`, `zug-innen`, `konbini`, `strasse`,
-   `hotel-lobby`; Plätze stehen in `studio/src/scenes/registry.ts`, `built: false`). Danach je `npm run vorschau`.
+3. Szenen für ep03–ep07 bauen (`bahnhof-automat`, `zug-innen`, `konbini`, `strasse`, `hotel-lobby`; Plätze stehen
+   in `studio/src/scenes/registry.ts`, `built: false`). Danach je `npm run vorschau`. ep01 und ep02 sind fertig gebaut.
 4. Erstes App-Video mit `/appvideo`, sobald die App öffentlich ist (vorher gibt es keinen Link für die Bio).
 5. Lektionen aus `out/epXX/learned.json` in `src/content/story.ts` übernehmen (ersetzt die Platzhalter-Folgen).
 
