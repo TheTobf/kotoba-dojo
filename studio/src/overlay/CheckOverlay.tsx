@@ -29,17 +29,17 @@ export function figureRects(tl: Timeline, fs: FrameState): { who: string; main: 
     const l = Math.hypot(d[0], d[2]) || 1
     const right: V3 = [d[2] / l, 0, -d[0] / l]
     const pts: V3[] = [
-      [place.pos[0], seated ? 1.3 : 0, place.pos[2]],
-      [place.pos[0], H, place.pos[2]],
-      [place.pos[0] + right[0] * half, H * 0.45, place.pos[2] + right[2] * half],
-      [place.pos[0] - right[0] * half, H * 0.45, place.pos[2] - right[2] * half],
+      [place.pos[0], place.pos[1] + (seated ? 1.3 : 0), place.pos[2]],
+      [place.pos[0], place.pos[1] + H, place.pos[2]],
+      [place.pos[0] + right[0] * half, place.pos[1] + H * 0.45, place.pos[2] + right[2] * half],
+      [place.pos[0] - right[0] * half, place.pos[1] + H * 0.45, place.pos[2] - right[2] * half],
     ].map((p) => p as V3)
     const sp = pts.map((p) => project(fs.cam, tl.width, tl.height, p))
     const xs = sp.map((p) => p.x), ys = sp.map((p) => p.y)
     const body = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) }
     const eye = meta.eyeHeight - (seated ? 0.15 : 0)
-    const c = project(fs.cam, tl.width, tl.height, [place.pos[0], eye - 0.05, place.pos[2]])
-    const top = project(fs.cam, tl.width, tl.height, [place.pos[0], eye + 0.35, place.pos[2]])
+    const c = project(fs.cam, tl.width, tl.height, [place.pos[0], place.pos[1] + eye - 0.05, place.pos[2]])
+    const top = project(fs.cam, tl.width, tl.height, [place.pos[0], place.pos[1] + eye + 0.35, place.pos[2]])
     const r = Math.abs(c.y - top.y)
     // Gesicht nur prüfen, wenn die Figur ungefähr zur Kamera schaut (sonst sieht man den Hinterkopf)
     const facing = (Math.sin(place.yaw) * d[0] + Math.cos(place.yaw) * d[2]) / l

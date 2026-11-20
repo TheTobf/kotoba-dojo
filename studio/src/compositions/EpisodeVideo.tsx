@@ -13,7 +13,7 @@ import { useFonts } from '../fonts'
 import { Overlays } from '../overlay/EpisodeOverlays'
 import { CheckOverlay } from '../overlay/CheckOverlay'
 import { PropFor } from '../props/Props'
-import { SCENE_COMPONENTS, SCENE_SKY } from '../scenes'
+import { SCENE_COMPONENTS, SCENE_LIGHT, SCENE_SKY } from '../scenes'
 import { SCENES, type V3 } from '../scenes/registry'
 import { applyMove, baseCamera, type CamPose, type PlacedFigure } from '../three/camera'
 import { LookProvider } from '../three/materials'
@@ -49,7 +49,7 @@ export function EpisodeScene({ tl, t }: { tl: Timeline; t: number }) {
     <ThreeCanvas width={width} height={height} shadows flat linear={false} camera={{ fov: fs.cam.fov, position: fs.cam.pos, near: 0.1, far: 200 }}>
       <LookProvider look="knete">
         <CameraRig position={fs.cam.pos} target={fs.cam.target} fov={fs.cam.fov} />
-        <StageContent sky={SCENE_SKY[fs.beat.scene]}>
+        <StageContent sky={SCENE_SKY[fs.beat.scene]} light={SCENE_LIGHT[fs.beat.scene]}>
           {Scene && <Scene beat={fs.beat} t={t} />}
           {!scene.insert && fs.placed.map(({ actor, place }, i) => (
             <group key={actor.who} position={place.pos} rotation={[0, place.yaw, 0]}>

@@ -111,6 +111,10 @@ export function poseFor(actor: TActor, lt: number, t: number, walking: boolean):
       const k = lt < 0.5 ? ease(lt / 0.5) : 1 - ease((lt - 1.1) / 0.5)
       return { ...idle, lean: 0.42 * k, headPitch: 0.1 * k }
     }
+    case 'schlafen': {
+      const k = ease(lt / 1.2)
+      return { t, headPitch: 0.3 * k + Math.sin(t * 1.1) * 0.03, tilt: 0.18 * k, mood: k > 0.5 ? 'sleep' : 'neutral', squash: 1 + Math.sin(t * 1.1) * 0.015, lean: 0.06 * k }
+    }
     case 'warten':
       return { ...idle, bounce: Math.max(0, Math.sin(lt * 9)) * 0.025, headYaw: Math.sin(lt * 0.8) * 0.25 }
   }

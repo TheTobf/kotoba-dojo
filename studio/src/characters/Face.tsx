@@ -7,7 +7,7 @@ import { blink, type Pose } from './types'
 export function Eyes({ pose, spread = 0.28, size = 0.17, y = 0, z = 0.8, seed = 0 }: { pose: Pose; spread?: number; size?: number; y?: number; z?: number; seed?: number }) {
   const look = useLook()
   const seg = Math.max(look.segments, 16)
-  const open = pose.mood === 'shocked' ? 1.25 : pose.mood === 'sad' ? 0.75 * blink(pose.t, seed) : blink(pose.t, seed)
+  const open = pose.mood === 'shocked' ? 1.25 : pose.mood === 'sleep' ? 0.08 : pose.mood === 'sad' ? 0.75 * blink(pose.t, seed) : blink(pose.t, seed)
   const ink = look.palette.ink
   return (
     <group position={[0, y, z]}>

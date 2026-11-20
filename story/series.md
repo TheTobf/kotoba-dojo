@@ -74,8 +74,8 @@ Ziel: vom Flughafen ins Hotel. Großer Cliffhanger: Die Rezeptionistin sieht die
 | ep06 Verlaufen | Sa 05.12. | Der Pfeil führt im Kreis | 道に迷いました, まっすぐ行って、右です (hören) | すみません | Hotel gefunden – hinter der Glastür geht das Licht aus. |
 | ep07 Der Check-in | So 06.12. | Zu spät, Stecker passt nicht | 予約しています, 変換プラグを貸してもらえますか | すみません | „Yanaka … diesen Laden gibt es seit dreißig Jahren nicht mehr.“ |
 
-Gebaut sind die Szenen für ep01 und ep02. Für ep03–ep07 (Bahnhof, Zug, Konbini, Straße, Hotel) stehen die Plätze in
-`studio/src/scenes/registry.ts`; die Grafik entsteht vor dem ersten Rendern der jeweiligen Folge.
+Alle Szenen für Staffel 1 sind gebaut (Passkontrolle, Gepäckband, Gepäckermittlung, Bahnhof, Bahnsteig, Zug, Konbini,
+Straße bei Nacht, Hotel-Lobby, Handy- und Postkarten-Nahaufnahme).
 
 ## Figuren
 

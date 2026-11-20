@@ -73,7 +73,11 @@
       ],
       "state": {
         "zug": "da"
-      }
+      },
+      "camera": [
+        "ole-nah",
+        "totale"
+      ]
     },
     {
       "kind": "erzaehler",
@@ -98,6 +102,10 @@
           "n": 3,
           "text": "Ole springt – und schafft es gerade so."
         }
+      ],
+      "camera": [
+        "totale",
+        "gleis"
       ]
     },
     {
@@ -124,6 +132,10 @@
           "n": 5,
           "text": "Ole muss am Bahnhof Tokio umsteigen. Aber ist das der richtige Zug?"
         }
+      ],
+      "camera": [
+        "totale",
+        "nah:ole"
       ]
     },
     {
@@ -148,6 +160,10 @@
           "n": 6,
           "text": "Neben ihm sitzt ein freundlicher Herr. Erst mal: ansprechen."
         }
+      ],
+      "camera": [
+        "totale",
+        "opa-front"
       ]
     },
     {
@@ -168,6 +184,10 @@
           "action": "idle",
           "face": "ole"
         }
+      ],
+      "camera": [
+        "ole-front",
+        "opa-front"
       ]
     },
     {
@@ -192,6 +212,10 @@
           "n": 7,
           "text": "Der Herr schaut auf. Jetzt die große Frage."
         }
+      ],
+      "camera": [
+        "opa-front",
+        "ole-front"
       ]
     },
     {
@@ -212,6 +236,10 @@
           "action": "idle",
           "face": "ole"
         }
+      ],
+      "camera": [
+        "ole-front",
+        "totale"
       ]
     },
     {
@@ -244,6 +272,10 @@
           "n": 10,
           "text": "Der Herr nickt und lächelt. Ole atmet aus."
         }
+      ],
+      "camera": [
+        "opa-front",
+        "ole-front"
       ]
     },
     {
@@ -252,8 +284,13 @@
       "actors": [
         {
           "who": "ole",
-          "at": "mitte",
-          "action": "traurig"
+          "at": "ole-sitz",
+          "action": "schlafen"
+        },
+        {
+          "who": "opa",
+          "at": "sitz",
+          "action": "idle"
         }
       ],
       "lines": [
@@ -263,6 +300,10 @@
           "regie": "langsam",
           "pause": "lang"
         }
+      ],
+      "camera": [
+        "ole-sitz",
+        "sitz"
       ]
     },
     {
@@ -291,6 +332,10 @@
           "n": 14,
           "text": "Nur: Es ist dunkel. Und Ole hat riesigen Hunger."
         }
+      ],
+      "camera": [
+        "nah:ole",
+        "totale"
       ]
     }
   ]

@@ -49,6 +49,13 @@
           "text": "Licht aus. Ole klopft an die Scheibe.",
           "regie": "schnell"
         }
+      ],
+      "state": {
+        "hotel": "aus"
+      },
+      "camera": [
+        "hotel",
+        "totale"
       ]
     },
     {
@@ -62,6 +69,13 @@
           "at": "hoteltuer",
           "action": "winken"
         }
+      ],
+      "state": {
+        "hotel": "aus"
+      },
+      "camera": [
+        "hotel",
+        "totale"
       ]
     },
     {
@@ -197,7 +211,8 @@
           "who": "rezeptionistin",
           "at": "rezeptionistin",
           "action": "geben",
-          "face": "ole"
+          "face": "ole",
+          "prop": "adapter"
         }
       ],
       "lines": [
@@ -236,7 +251,8 @@
       "kind": "erzaehler",
       "scene": "postkarte",
       "state": {
-        "seite": "vorne"
+        "seite": "vorne",
+        "ort": "hotel"
       },
       "lines": [
         {
@@ -272,6 +288,14 @@
           "n": 14,
           "text": "„Yanaka“, sagt sie leise. „Diesen Laden gibt es seit dreißig Jahren nicht mehr.“",
           "regie": "leise"
+        }
+      ],
+      "camera": [
+        "rezeptionistin-front",
+        "ole-nah",
+        {
+          "preset": "ole-front",
+          "move": "push"
         }
       ]
     }

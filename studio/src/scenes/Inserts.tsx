@@ -50,25 +50,27 @@ export function PostkarteInsert({ beat, t }: { beat: TBeat; t: number }) {
   const side = beat.state.seite ?? 'vorne'
   const since = beat.stateSince.seite ?? beat.start
   const flip = side === 'hinten' ? 1 : side === 'dreht' ? ease((t - since - 0.4) / 0.9) : 0
+  const hotel = beat.state.ort === 'hotel'
   return (
     <group>
-      {/* Holztisch im Fundbüro */}
-      <Part geometry={box(48, 0.04)} color="#c98f5e" position={[0, -0.12, 0]} scale={[6, 0.2, 4]} receiveShadow />
-      {[-2.2, -1.1, 0, 1.1, 2.2].map((x) => <Part key={x} geometry={box(8)} color="#b57d4f" position={[x, -0.015, 0]} scale={[0.02, 0.01, 4]} outline={false} castShadow={false} />)}
+      {/* Holztisch im Fundbüro bzw. Tresen im Hotel */}
+      <Part geometry={box(48, 0.04)} color={hotel ? '#efe4d2' : '#c98f5e'} position={[0, -0.12, 0]} scale={[6, 0.2, 4]} receiveShadow />
+      {hotel && <group position={[1.1, 0, 0.6]}><Part geometry={sphere(32)} color="#d9b45a" position={[0, 0.08, 0]} scale={[0.16, 0.12, 0.16]} glossy /></group>}
+      {!hotel && [-2.2, -1.1, 0, 1.1, 2.2].map((x) => <Part key={x} geometry={box(8)} color="#b57d4f" position={[x, -0.015, 0]} scale={[0.02, 0.01, 4]} outline={false} castShadow={false} />)}
       <Postcard flip={flip} />
       {/* Fundbüro-Anhänger mit Schnur, Schlüsselbund, Stempel */}
-      <group position={[1.25, 0.01, 0.55]} rotation={[0, -0.5, 0]}>
+      {!hotel && <group position={[1.25, 0.01, 0.55]} rotation={[0, -0.5, 0]}>
         <Part geometry={box(16)} color="#f4e7b5" scale={[0.42, 0.02, 0.24]} />
         <Part geometry={torus(24, 0.2)} color="#ffffff" position={[-0.17, 0.02, 0]} rotation={[Math.PI / 2, 0, 0]} scale={0.035} outline={false} />
-      </group>
-      <group position={[-1.35, 0.02, 0.7]}>
+      </group>}
+      {!hotel && <group position={[-1.35, 0.02, 0.7]}>
         <Part geometry={torus(32, 0.12)} color="#c7ccd6" rotation={[Math.PI / 2, 0, 0]} scale={0.13} glossy />
         <Part geometry={box(16)} color="#d9b45a" position={[0.18, 0, 0.05]} rotation={[0, 0.4, 0]} scale={[0.26, 0.02, 0.07]} glossy />
-      </group>
-      <group position={[-1.2, 0, -0.9]}>
+      </group>}
+      {!hotel && <group position={[-1.2, 0, -0.9]}>
         <Part geometry={cylinder(32)} color="#3a6ea5" position={[0, 0.12, 0]} scale={[0.16, 0.24, 0.16]} />
         <Part geometry={sphere(32)} color="#8a5a3a" position={[0, 0.34, 0]} scale={[0.1, 0.1, 0.1]} />
-      </group>
+      </group>}
       <pointLight position={[0.5, 2.2, 1.2]} intensity={6} color="#ffd9a0" distance={6} />
     </group>
   )

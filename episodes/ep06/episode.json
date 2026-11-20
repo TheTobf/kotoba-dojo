@@ -50,7 +50,14 @@
           "text": "Dieselbe Laterne. Zum dritten Mal.",
           "regie": "schnell"
         }
-      ]
+      ],
+      "camera": [
+        "totale",
+        "laterne"
+      ],
+      "state": {
+        "hotel": "an"
+      }
     },
     {
       "kind": "erzaehler",
@@ -75,7 +82,14 @@
           "n": 4,
           "text": "Links ein Tempel. Rechts ein Getränkeautomat. Kein Hotel."
         }
-      ]
+      ],
+      "camera": [
+        "ole-front",
+        "laterne"
+      ],
+      "state": {
+        "hotel": "an"
+      }
     },
     {
       "kind": "erzaehler",
@@ -99,7 +113,14 @@
           "n": 5,
           "text": "Da kommt jemand. Ole nimmt allen Mut zusammen."
         }
-      ]
+      ],
+      "camera": [
+        "totale",
+        "ole-front"
+      ],
+      "state": {
+        "hotel": "an"
+      }
     },
     {
       "kind": "japanisch",
@@ -119,7 +140,10 @@
           "action": "idle",
           "face": "ole"
         }
-      ]
+      ],
+      "state": {
+        "hotel": "an"
+      }
     },
     {
       "kind": "erzaehler",
@@ -143,7 +167,14 @@
           "n": 6,
           "text": "Sie bleibt stehen. Was jetzt?"
         }
-      ]
+      ],
+      "camera": [
+        "passantin-front",
+        "ole-front"
+      ],
+      "state": {
+        "hotel": "an"
+      }
     },
     {
       "kind": "quiz",
@@ -163,7 +194,10 @@
           "action": "idle",
           "face": "ole"
         }
-      ]
+      ],
+      "state": {
+        "hotel": "an"
+      }
     },
     {
       "kind": "erzaehler",
@@ -191,7 +225,14 @@
           "n": 8,
           "text": "Sie schaut auf den Bon, lacht – und zeigt die Straße hinunter."
         }
-      ]
+      ],
+      "camera": [
+        "passantin-front",
+        "totale"
+      ],
+      "state": {
+        "hotel": "an"
+      }
     },
     {
       "kind": "japanisch",
@@ -211,6 +252,13 @@
           "action": "zeigen",
           "face": "hoteltuer"
         }
+      ],
+      "state": {
+        "hotel": "an"
+      },
+      "camera": [
+        "totale",
+        "ole-front"
       ]
     },
     {
@@ -239,7 +287,14 @@
           "n": 10,
           "text": "Danke sagen? Immer noch nicht drin. Ole verbeugt sich wieder."
         }
-      ]
+      ],
+      "camera": [
+        "totale",
+        "ole-front"
+      ],
+      "state": {
+        "hotel": "an"
+      }
     },
     {
       "kind": "erzaehler",
@@ -260,7 +315,27 @@
         {
           "n": 12,
           "text": "Ole rennt die letzten Meter."
-        },
+        }
+      ],
+      "state": {
+        "hotel": "an"
+      },
+      "camera": [
+        "totale",
+        "hotel"
+      ]
+    },
+    {
+      "kind": "erzaehler",
+      "scene": "strasse",
+      "actors": [
+        {
+          "who": "ole",
+          "at": "hoteltuer",
+          "action": "erschrocken"
+        }
+      ],
+      "lines": [
         {
           "n": 13,
           "text": "Aber hinter der Glastür …",
@@ -270,6 +345,16 @@
           "n": 14,
           "text": "… geht gerade das Licht aus.",
           "regie": "leise"
+        }
+      ],
+      "state": {
+        "hotel": "aus"
+      },
+      "camera": [
+        "hotel",
+        {
+          "preset": "hotel",
+          "move": "push"
         }
       ]
     }

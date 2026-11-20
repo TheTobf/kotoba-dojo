@@ -28,9 +28,17 @@ export function Sky({ colors }: { colors?: [string, string] }) {
   return null
 }
 
-export function Lights() {
+export type LightMood = 'tag' | 'nacht'
+
+export function Lights({ mood = 'tag' }: { mood?: LightMood }) {
   const look = useLook()
-  const { ambient, sun, sunColor, hemiSky, hemiGround, shadows } = look.light
+  const night = mood === 'nacht'
+  const { shadows } = look.light
+  const ambient = night ? 0.3 : look.light.ambient
+  const sun = night ? 0.75 : look.light.sun
+  const sunColor = night ? '#9fb2ff' : look.light.sunColor
+  const hemiSky = night ? '#3c4a7c' : look.light.hemiSky
+  const hemiGround = night ? '#2a2333' : look.light.hemiGround
   return (
     <>
       <ambientLight intensity={ambient} />
@@ -55,11 +63,11 @@ export function CameraRig({ position, target, fov = 40 }: { position: [number, n
   return null
 }
 
-export function StageContent({ children, sky }: { children: ReactNode; sky?: [string, string] }) {
+export function StageContent({ children, sky, light }: { children: ReactNode; sky?: [string, string]; light?: LightMood }) {
   return (
     <>
       <Sky colors={sky} />
-      <Lights />
+      <Lights mood={light} />
       {children}
     </>
   )

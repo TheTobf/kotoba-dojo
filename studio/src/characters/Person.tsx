@@ -21,7 +21,15 @@ export function Person({ look: p, pose, seated = false, hold, seed = 0 }: { look
   const breathe = 1 + Math.sin(pose.t * 2 + seed) * 0.01
   return (
     <group scale={[sc / Math.sqrt(sq), sc * sq, sc / Math.sqrt(sq)]} position={[0, pose.bounce ?? 0, 0]}>
-      {/* Beine (im Sitzen verdeckt der Schalter sie) */}
+      {/* sitzend: Oberschenkel nach vorn, Unterschenkel nach unten */}
+      {seated && [-1, 1].map((side) => (
+        <group key={side} position={[side * 0.2, 0, 0]}>
+          <Part geometry={capsule(s)} color={p.trousers} position={[0, 0.9, 0.22]} rotation={[Math.PI / 2, 0, 0]} scale={[0.26, 0.38, 0.28]} />
+          <Part geometry={capsule(s)} color={p.trousers} position={[0, 0.46, 0.5]} scale={[0.22, 0.4, 0.22]} />
+          <Part geometry={sphere(s)} color="#2b2826" position={[0, 0.08, 0.6]} scale={[0.15, 0.09, 0.22]} />
+        </group>
+      ))}
+      {/* stehend */}
       {!seated && [-1, 1].map((side) => (
         <group key={side} position={[side * 0.2, 0, 0]}>
           <Part geometry={capsule(s)} color={p.trousers} position={[0, 0.55, 0]} scale={[0.25, 0.62, 0.27]} />

@@ -47,13 +47,15 @@ export interface SceneMeta {
   states?: Record<string, string[]>
   /** fertig gebaut? Szenen ohne Grafik dürfen schon geplant, aber noch nicht gerendert werden. */
   built: boolean
+  /** Bereich, in dem automatische Kameras (nah:, zwei: …) stehen dürfen – z. B. nicht hinter einer Wand */
+  cameraBounds?: { minX?: number; maxX?: number; minZ?: number; maxZ?: number; maxY?: number }
 }
 
 export const SCENES: Record<string, SceneMeta> = {
   passkontrolle: {
     id: 'passkontrolle',
     name: 'Flughafen – Passkontrolle',
-    built: true,
+    built: true, cameraBounds: { minZ: -8.5 },
     spots: {
       schalter: { pos: [0.55, 0, 0.15], yaw: Math.PI },
       'schalter-seite': { pos: [1.75, 0, 0.55], yaw: -2.4 },
@@ -78,7 +80,7 @@ export const SCENES: Record<string, SceneMeta> = {
   gepaeckband: {
     id: 'gepaeckband',
     name: 'Flughafen – Gepäckband',
-    built: true,
+    built: true, cameraBounds: { minZ: -8.5 },
     spots: {
       band: { pos: [0.4, 0, 0.35], yaw: Math.PI },
       'band-links': { pos: [-1.8, 0, 0.45], yaw: Math.PI },
@@ -123,7 +125,7 @@ export const SCENES: Record<string, SceneMeta> = {
       nah: framed([0, 0, -0.3], 0.15, 1.0, 1.6, 0.5, 32),
     },
     defaultCameras: ['oben', 'schraeg', 'nah'],
-    states: { seite: ['vorne', 'hinten', 'dreht'] },
+    states: { seite: ['vorne', 'hinten', 'dreht'], ort: ['fundbuero', 'hotel'] },
   },
   'app-handy': {
     id: 'app-handy',
@@ -142,12 +144,12 @@ export const SCENES: Record<string, SceneMeta> = {
   bahnsteig: {
     id: 'bahnsteig',
     name: 'Bahnsteig',
-    built: true,
+    built: true, cameraBounds: { minZ: -2.2 },
     spots: {
       mitte: { pos: [-0.35, 0, 0.9], yaw: 0.2 },
       schild: { pos: [1.0, 0, -0.4], yaw: 0.4 },
       bank: { pos: [-2.7, 0, -0.1], yaw: 0.25 },
-      tuer: { pos: [-1.3, 0, -1.6], yaw: Math.PI },
+      tuer: { pos: [0.6, 0, -1.7], yaw: PI },
     },
     cameras: {
       totale: { pos: [0.9, 2.4, 11.5], target: [0.45, 0.2, 0], fov: 34 },
@@ -159,7 +161,7 @@ export const SCENES: Record<string, SceneMeta> = {
   },
   // Geplant für Staffel 1 – Plätze stehen fest, die Grafik wird vor dem ersten Rendern gebaut (built: false):
   'gepaeck-schalter': {
-    id: 'gepaeck-schalter', name: 'Flughafen – Gepäckermittlung', built: true,
+    id: 'gepaeck-schalter', name: 'Flughafen – Gepäckermittlung', built: true, cameraBounds: { minZ: -8.5 },
     spots: { schalter: { pos: [0, 0, 0.3], yaw: PI }, mitarbeiterin: { pos: [0, 0, -1.3], yaw: 0 }, eingang: { pos: [2.5, 0, 2.5], yaw: -2.4 } },
     cameras: {
       totale: framed([0, 1.3, -0.8], -0.45, 0.2, 8.0, 0.5, 38),
@@ -172,29 +174,76 @@ export const SCENES: Record<string, SceneMeta> = {
     defaultCameras: ['totale', 'ole-front', 'ueber-ole', 'seite'],
   },
   'bahnhof-automat': {
-    id: 'bahnhof-automat', name: 'Bahnhof – Fahrkartenautomaten', built: false,
-    spots: { automat: { pos: [0, 0, 0.4], yaw: PI }, getraenke: { pos: [-2.6, 0, 0.5], yaw: PI }, helfer: { pos: [1.4, 0, 0.8], yaw: -2.2 }, mitte: { pos: [0, 0, 2.0], yaw: PI } },
-    cameras: { totale: framed([0, 1.4, -0.3], -0.4, 0.2, 7.5, 0.5, 38) }, defaultCameras: ['totale'],
+    id: 'bahnhof-automat', name: 'Bahnhof – Fahrkartenautomaten', built: true, cameraBounds: { minZ: -0.6 },
+    spots: {
+      automat: { pos: [0.5, 0, 0.3], yaw: PI }, getraenke: { pos: [-2.6, 0, 0.4], yaw: PI },
+      helfer: { pos: [1.6, 0, 1.2], yaw: -1.1 }, mitte: { pos: [0.2, 0, 1.9], yaw: 2.03 },
+    },
+    cameras: {
+      totale: framed([-0.5, 1.4, 0.4], -0.3, 0.18, 8.6, 0.5, 38),
+      getraenke: framed([-2.6, 1.2, 0.4], 0.45, 0.12, 3.9, 0.42, 38),
+      automat: framed([0.5, 1.4, 0.25], -0.45, 0.2, 3.4, 0.45, 38),
+      'ole-front': framed([0.2, 1.35, 1.9], 1.25, 0.12, 3.9, 0.4, 40),
+      'helfer-front': framed([1.6, 2.5, 1.2], -0.6, 0.0, 3.0, 0.36, 36),
+      seite: framed([0.4, 1.3, 1.3], -PI / 2 + 0.35, 0.08, 5.0, 0.45, 38),
+    },
+    defaultCameras: ['totale', 'ole-front', 'seite'],
   },
   'zug-innen': {
-    id: 'zug-innen', name: 'Im Zug', built: false,
-    spots: { tuer: { pos: [0, 0, 0], yaw: PI / 2 }, mitte: { pos: [0.4, 0, 0.2], yaw: 0 }, sitz: { pos: [1.6, 0, -0.7], yaw: 0, seated: true }, fahrgast: { pos: [-1.0, 0, -0.3], yaw: 0.4 } },
-    cameras: { totale: framed([0.3, 1.4, -0.2], -0.3, 0.12, 6.5, 0.5, 40) }, defaultCameras: ['totale'],
+    id: 'zug-innen', name: 'Im Zug', built: true, cameraBounds: { minZ: -1.25, maxY: 3.3 },
+    spots: {
+      tuer: { pos: [-3.1, 0, -0.6], yaw: 0 }, mitte: { pos: [0.6, 0, -0.35], yaw: 2.09 },
+      sitz: { pos: [1.9, 0, -1.05], yaw: 0, seated: true }, 'ole-sitz': { pos: [0.55, 0.8, -1.15], yaw: 0 },
+      fahrgast: { pos: [-1.0, 0, -0.3], yaw: 0.4 },
+    },
+    cameras: {
+      totale: framed([0.6, 1.4, -0.6], -0.25, 0.12, 6.2, 0.48, 42),
+      'ole-front': framed([0.6, 1.35, -0.35], 1.25, 0.15, 3.6, 0.42, 40),
+      'opa-front': framed([1.9, 2.35, -1.05], -0.7, 0.02, 3.0, 0.38, 36),
+      sitz: framed([1.2, 1.9, -1.1], 0.1, 0.1, 4.0, 0.45, 40),
+      'ole-sitz': framed([0.55, 2.15, -1.15], 0.25, 0.08, 2.9, 0.4, 38),
+    },
+    defaultCameras: ['totale', 'ole-front', 'sitz'],
   },
   konbini: {
-    id: 'konbini', name: 'Konbini – Kasse', built: false,
+    id: 'konbini', name: 'Konbini – Kasse', built: true, cameraBounds: { minZ: -5.2, minX: -3.2 },
     spots: { kasse: { pos: [0, 0, 0.3], yaw: PI }, kassiererin: { pos: [0, 0, -1.3], yaw: 0 }, regal: { pos: [-2.4, 0, 0.6], yaw: -PI / 2 }, eingang: { pos: [2.6, 0, 2.4], yaw: -2.4 } },
-    cameras: { totale: framed([0, 1.4, -0.5], -0.45, 0.2, 7.5, 0.5, 38) }, defaultCameras: ['totale'],
+    cameras: {
+      totale: framed([-0.3, 1.3, -0.6], -0.45, 0.2, 8.2, 0.5, 38),
+      'ole-front': framed([0, 1.3, 0.3], PI - 0.6, 0.28, 3.9, 0.4, 40),
+      'ole-nah': framed([0, 1.35, 0.3], PI - 0.55, 0.26, 2.9, 0.4, 40),
+      'kassiererin-front': framed([0, 2.5, -1.3], 0.35, -0.02, 3.0, 0.36, 34),
+      'ueber-ole': framed([0, 2.3, -1.3], -0.4, 0.08, 4.4, 0.36, 34),
+      regal: framed([-2.6, 1.3, 0.6], -0.25, 0.15, 4.0, 0.45, 38),
+      eingang: framed([2.4, 1.3, 2.0], -0.5, 0.15, 4.4, 0.45, 38),
+    },
+    defaultCameras: ['totale', 'ole-front', 'ueber-ole'],
   },
   strasse: {
-    id: 'strasse', name: 'Straße am Abend', built: false,
-    spots: { mitte: { pos: [0, 0, 0], yaw: 0 }, passant: { pos: [1.4, 0, 0.4], yaw: -1.8 }, ecke: { pos: [-2.5, 0, -1.5], yaw: 0.6 }, hoteltuer: { pos: [2.8, 0, -2.2], yaw: PI } },
-    cameras: { totale: framed([0, 1.2, -0.5], -0.3, 0.25, 8.5, 0.5, 38) }, defaultCameras: ['totale'],
+    id: 'strasse', name: 'Straße am Abend', built: true, cameraBounds: { minZ: -2.0 },
+    spots: { mitte: { pos: [0, 0, 0], yaw: 0 }, passant: { pos: [2.2, 0, 0.5], yaw: -1.8 }, ecke: { pos: [-2.5, 0, -0.8], yaw: 0.6 }, hoteltuer: { pos: [2.8, 0, -2.45], yaw: PI } },
+    cameras: {
+      totale: framed([0.8, 1.3, -1.2], -0.2, 0.22, 9.2, 0.5, 40),
+      'ole-front': framed([0, 1.35, 0], 0.35, 0.12, 3.9, 0.4, 40),
+      'passantin-front': framed([2.2, 2.5, 0.5], -0.8, 0.02, 3.0, 0.36, 36),
+      hotel: framed([2.8, 1.8, -2.6], 0.35, 0.12, 4.8, 0.45, 38),
+      laterne: framed([-0.5, 1.6, -0.6], -0.35, -0.1, 5.6, 0.5, 38),
+    },
+    defaultCameras: ['totale', 'ole-front', 'laterne'],
+    states: { hotel: ['an', 'aus'] },
   },
   'hotel-lobby': {
-    id: 'hotel-lobby', name: 'Hotel – Rezeption', built: false,
+    id: 'hotel-lobby', name: 'Hotel – Rezeption', built: true, cameraBounds: { minZ: -6.5 },
     spots: { rezeption: { pos: [0, 0, 0.3], yaw: PI }, rezeptionistin: { pos: [0, 0, -1.3], yaw: 0 }, tuer: { pos: [2.6, 0, 2.6], yaw: -2.4 }, mitte: { pos: [0.8, 0, 1.6], yaw: PI } },
-    cameras: { totale: framed([0, 1.4, -0.5], -0.45, 0.2, 7.5, 0.5, 38) }, defaultCameras: ['totale'],
+    cameras: {
+      totale: framed([0, 1.3, -0.8], -0.45, 0.2, 8.0, 0.5, 38),
+      'ole-front': framed([0, 1.3, 0.3], PI - 0.6, 0.28, 3.9, 0.4, 40),
+      'ole-nah': framed([0, 1.35, 0.3], PI - 0.55, 0.26, 2.9, 0.4, 40),
+      'rezeptionistin-front': framed([0, 2.5, -1.3], 0.35, -0.02, 3.0, 0.36, 34),
+      'ueber-ole': framed([0, 2.3, -1.3], -0.4, 0.08, 4.4, 0.36, 34),
+      seite: framed([0, 1.6, -0.5], PI / 2 + 0.35, 0.08, 6.0, 0.42, 34),
+    },
+    defaultCameras: ['totale', 'ole-front', 'ueber-ole', 'seite'],
   },
 }
 

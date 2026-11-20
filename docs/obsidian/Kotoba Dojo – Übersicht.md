@@ -41,7 +41,7 @@ Mikrofon), Korrekturen auf Deutsch, Fehler werden automatisch zu Karteikarten.
 - Ole, ein Seehund aus Hamburg, strandet in Tokio und lernt Satz für Satz Japanisch. Stil: Knete (3D aus Code).
 - Staffel 1 „Angekommen“ geplant: 7 Folgen, Post täglich Mo 30.11. bis So 06.12.2026
 - Fertig: 0 von 7 · **Vorlauf: 0 Tage** · Aufnahmen fehlen: alle 7 (`recordings/AUFNAHME.md`)
-- Folge 1 liegt als Vorschau mit Ersatzstimmen vor (nicht zum Posten)
+- Folge 1 liegt als Vorschau mit Ersatzstimmen vor (nicht zum Posten); alle 7 Folgen sind fertig gebaut und geprüft
 - So geht es: in Claude Code `/skripte` → einsprechen → Datei nach `recordings/epXX/voice.m4a` → `/fertig` → posten.
   Überblick jederzeit mit `/status`, neue Staffel mit `/staffel`, Werbevideo für die App mit `/appvideo`.
 - Vor dem ersten fertigen Video: VOICEVOX starten und `npm run stimmen` (Nutzungsbedingungen der Stimmen prüfen)

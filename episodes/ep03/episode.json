@@ -40,7 +40,9 @@
         {
           "who": "ole",
           "at": "getraenke",
-          "action": "erschrocken"
+          "action": "erschrocken",
+          "prop": "tee",
+          "face": "kamera"
         }
       ],
       "lines": [
@@ -49,6 +51,9 @@
           "text": "Ole drückt eine Taste. Heraus kommt: Tee.",
           "regie": "schnell"
         }
+      ],
+      "camera": [
+        "getraenke"
       ]
     },
     {
@@ -58,7 +63,9 @@
         {
           "who": "ole",
           "at": "getraenke",
-          "action": "verwirrt"
+          "action": "verwirrt",
+          "prop": "tee",
+          "face": "kamera"
         }
       ],
       "lines": [
@@ -74,6 +81,10 @@
           "n": 4,
           "text": "Hotel Kawabe, Higashimachi. Dahin muss er."
         }
+      ],
+      "camera": [
+        "getraenke",
+        "totale"
       ]
     },
     {
@@ -98,6 +109,10 @@
           "n": 5,
           "text": "Nur – wo gibt es Fahrkarten? Da hinten steht jemand."
         }
+      ],
+      "camera": [
+        "totale",
+        "seite"
       ]
     },
     {
@@ -118,6 +133,10 @@
           "action": "idle",
           "face": "ole"
         }
+      ],
+      "camera": [
+        "ole-front",
+        "helfer-front"
       ]
     },
     {
@@ -142,6 +161,10 @@
           "n": 6,
           "text": "Sumimasen – sitzt schon. Jetzt die eigentliche Frage."
         }
+      ],
+      "camera": [
+        "helfer-front",
+        "ole-front"
       ]
     },
     {
@@ -162,6 +185,10 @@
           "action": "idle",
           "face": "ole"
         }
+      ],
+      "camera": [
+        "ole-front",
+        "zwei:ole:helfer"
       ]
     },
     {
@@ -190,6 +217,10 @@
           "n": 8,
           "text": "Der Mann bringt ihn zu den richtigen Automaten."
         }
+      ],
+      "camera": [
+        "totale",
+        "seite"
       ]
     },
     {
@@ -214,6 +245,10 @@
           "n": 9,
           "text": "Und weil Ole jetzt mutig ist, fragt er gleich weiter."
         }
+      ],
+      "camera": [
+        "automat",
+        "seite"
       ]
     },
     {
@@ -234,6 +269,10 @@
           "action": "idle",
           "face": "ole"
         }
+      ],
+      "camera": [
+        "nah:ole",
+        "nah:helfer"
       ]
     },
     {
@@ -269,21 +308,23 @@
           "n": 13,
           "text": "Und den Tee nimmt er auch mit."
         }
+      ],
+      "camera": [
+        "seite",
+        "automat"
       ]
     },
     {
       "kind": "erzaehler",
-      "scene": "bahnsteig",
+      "scene": "zug-innen",
       "actors": [
         {
           "who": "ole",
-          "at": "tuer",
-          "action": "verwirrt"
+          "at": "ole-sitz",
+          "action": "verwirrt",
+          "prop": "tee"
         }
       ],
-      "state": {
-        "zug": "da"
-      },
       "lines": [
         {
           "n": 14,
@@ -299,6 +340,10 @@
           "text": "Fährt der überhaupt nach Higashimachi?",
           "regie": "leise"
         }
+      ],
+      "camera": [
+        "ole-sitz",
+        "totale"
       ]
     }
   ]

@@ -55,6 +55,10 @@
           "text": "Zweiundzwanzig Uhr. Ole hat Hunger. Und da: ein Konbini.",
           "regie": "schnell"
         }
+      ],
+      "camera": [
+        "totale",
+        "regal"
       ]
     },
     {
@@ -75,6 +79,10 @@
           "action": "verbeugen",
           "face": "ole"
         }
+      ],
+      "camera": [
+        "nah:kassiererin",
+        "regal"
       ]
     },
     {
@@ -101,6 +109,10 @@
           "n": 3,
           "text": "Ole nimmt ein Bento. Mit Reis, Ei und Lachs."
         }
+      ],
+      "camera": [
+        "regal",
+        "totale"
       ]
     },
     {
@@ -125,6 +137,10 @@
           "n": 4,
           "text": "An der Kasse fragt die Kassiererin etwas."
         }
+      ],
+      "camera": [
+        "totale",
+        "eingang"
       ]
     },
     {
@@ -298,11 +314,11 @@
     },
     {
       "kind": "erzaehler",
-      "scene": "konbini",
+      "scene": "strasse",
       "actors": [
         {
           "who": "ole",
-          "at": "kasse",
+          "at": "ecke",
           "action": "verwirrt"
         }
       ],
@@ -316,7 +332,14 @@
           "text": "Sie hat etwas daraufgemalt: einen Pfeil. Und ein Haus.",
           "regie": "langsam"
         }
-      ]
+      ],
+      "camera": [
+        "nah:ole",
+        "totale"
+      ],
+      "state": {
+        "hotel": "an"
+      }
     }
   ]
 }

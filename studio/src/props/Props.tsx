@@ -185,12 +185,33 @@ function darker(hex: string): string {
   return `#${f(n >> 16)}${f((n >> 8) & 255)}${f(n & 255)}`
 }
 
+export function TeaBottle({ scale = 1 }: { scale?: number }) {
+  return (
+    <group scale={scale}>
+      <Part geometry={cylinder(32)} color="#7cc47a" position={[0, 0.18, 0]} scale={[0.07, 0.36, 0.07]} glossy opacity={0.85} />
+      <Part geometry={cylinder(32)} color="#f3efe2" position={[0, 0.2, 0]} scale={[0.072, 0.14, 0.072]} />
+      <Part geometry={cylinder(32)} color="#3f7d3c" position={[0, 0.4, 0]} scale={[0.04, 0.05, 0.04]} />
+    </group>
+  )
+}
+
+export function Adapter({ scale = 1 }: { scale?: number }) {
+  return (
+    <group scale={scale}>
+      <Part geometry={box(16, 0.2)} color="#f4f4f2" scale={[0.16, 0.12, 0.2]} />
+      {[-0.035, 0.035].map((x) => <Part key={x} geometry={box(8)} color="#c7ccd6" position={[x, 0, 0.13]} scale={[0.012, 0.035, 0.07]} outline={false} glossy />)}
+    </group>
+  )
+}
+
 export function PropFor({ prop }: { prop?: string }) {
   switch (prop) {
     case 'handy': return <group rotation={[-0.3, 0, 0]}><Phone scale={0.45} /></group>
     case 'pass': return <group rotation={[-0.4, 0, 0]}><Passport scale={0.8} /></group>
     case 'postkarte': return <group rotation={[Math.PI / 2 - 0.3, 0, 0]}><Postcard scale={0.32} /></group>
     case 'koffer': return <group position={[0, -0.95, 0]}><Suitcase handleUp scale={0.9} /></group>
+    case 'tee': return <group position={[0, -0.12, 0.04]}><TeaBottle scale={0.9} /></group>
+    case 'adapter': return <group rotation={[-0.3, 0, 0]}><Adapter scale={0.9} /></group>
     default: return null
   }
 }

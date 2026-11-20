@@ -23,7 +23,7 @@ export interface Pose {
   /** Mund offen beim Sprechen (0–1) */
   mouth?: number
   /** Gesichtsausdruck */
-  mood?: 'neutral' | 'happy' | 'confused' | 'shocked' | 'sad'
+  mood?: 'neutral' | 'happy' | 'confused' | 'shocked' | 'sad' | 'sleep'
   /** Zusätze über dem Kopf */
   question?: number
   sweat?: number

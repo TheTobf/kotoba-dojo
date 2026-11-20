@@ -14,13 +14,36 @@ export interface PlacedFigure { who: string; figure: string; pos: V3; yaw: numbe
 export function headOf(f: PlacedFigure): V3 {
   const meta = FIGURES[f.figure] ?? FIGURES.ole
   const eye = meta.eyeHeight - (f.seated ? 0.15 : 0)
-  return [f.pos[0], eye, f.pos[2]]
+  return [f.pos[0], f.pos[1] + eye, f.pos[2]]
 }
 
 const add = (a: V3, b: V3): V3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]]
 const scale = (a: V3, k: number): V3 => [a[0] * k, a[1] * k, a[2] * k]
 const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]]
 const norm = (a: V3): V3 => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l] }
+
+/** Steht jemand zwischen Kamera und Ziel? (grob: Figuren als senkrechte Zylinder) */
+export function blocked(pos: V3, target: V3, others: PlacedFigure[]): boolean {
+  for (const o of others) {
+    const meta = FIGURES[o.figure] ?? FIGURES.ole
+    if (!meta.height) continue
+    const r = o.figure === 'ole' ? 0.75 : 0.55
+    const dx = target[0] - pos[0], dz = target[2] - pos[2]
+    const l2 = dx * dx + dz * dz || 1
+    const u = Math.max(0, Math.min(1, ((o.pos[0] - pos[0]) * dx + (o.pos[2] - pos[2]) * dz) / l2))
+    if (u > 0.93) continue
+    const dist = Math.hypot(o.pos[0] - (pos[0] + u * dx), o.pos[2] - (pos[2] + u * dz))
+    const y = pos[1] + u * (target[1] - pos[1])
+    if (dist < r && y > o.pos[1] && y < o.pos[1] + meta.height + 0.25) return true
+  }
+  return false
+}
+
+function inBounds(scene: SceneMeta, p: V3): boolean {
+  const b = scene.cameraBounds
+  if (!b) return true
+  return (b.minX === undefined || p[0] >= b.minX) && (b.maxX === undefined || p[0] <= b.maxX) && (b.minZ === undefined || p[2] >= b.minZ) && (b.maxZ === undefined || p[2] <= b.maxZ) && (b.maxY === undefined || p[1] <= b.maxY)
+}
 
 export function baseCamera(preset: string, scene: SceneMeta, figures: PlacedFigure[]): CamPose {
   const fixed = scene.cameras[preset]
@@ -35,6 +58,14 @@ export function baseCamera(preset: string, scene: SceneMeta, figures: PlacedFigu
   if (kind === 'nah' || kind === 'halbnah') {
     // Hochformat: Breite entscheidet (Ole ist fast so breit wie hoch)
     const h = kind === 'halbnah' ? (isOle ? 4.4 : 5.2) : isOle ? 2.9 : 2.8
+    // leicht seitlich; steht jemand im Weg, weicht die Kamera nach links/rechts aus
+    const others = figures.filter((f) => f.who !== a)
+    for (const off of [0.3, -0.3, 0.65, -0.65, 1.0, -1.0, 1.4, -1.4]) {
+      const c = framed(ha, fa.yaw + off, 0.06, h, kind === 'halbnah' ? 0.36 : 0.4, 32)
+      if (inBounds(scene, c.pos) && !blocked(c.pos, c.target, others)) return { pos: c.pos, target: c.target, fov: c.fov ?? 32 }
+    }
+    // keine freie Position gefunden: lieber die Totale der Szene
+    if (fallback) return { pos: fallback.pos, target: fallback.target, fov: fallback.fov ?? 36 }
     const c = framed(ha, fa.yaw + 0.3, 0.06, h, kind === 'halbnah' ? 0.36 : 0.4, 32)
     return { pos: c.pos, target: c.target, fov: c.fov ?? 32 }
   }

@@ -20,11 +20,12 @@ export const ACTIONS = [
   'suchen', // schaut hin und her
   'verbeugen', // kleine Verbeugung
   'warten', // tippelt ungeduldig
+  'schlafen', // Augen zu, Kopf sinkt, ruhiges Atmen
 ] as const
 export const ActionZ = z.enum(ACTIONS)
 export type Action = z.infer<typeof ActionZ>
 
-export const PROPS = ['handy', 'pass', 'postkarte', 'koffer'] as const
+export const PROPS = ['handy', 'pass', 'postkarte', 'koffer', 'tee', 'adapter'] as const
 export const PropZ = z.enum(PROPS)
 
 /** Kamerabewegung innerhalb einer Einstellung – die Kamera steht nie still. */
