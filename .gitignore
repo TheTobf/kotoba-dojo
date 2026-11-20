@@ -16,3 +16,11 @@ dist
 # Lokale Cloudflare-Daten (lokale Datenbank, Zwischenspeicher)
 .wrangler
 worker-configuration.d.ts
+
+# Folgen-Generator: eigene Sprachaufnahmen und fertige Videos bleiben privat (Repo ist öffentlich)
+recordings/**/*.m4a
+recordings/**/*.mp3
+recordings/**/*.wav
+recordings/**/work/
+out/
+studio/out-stills/
