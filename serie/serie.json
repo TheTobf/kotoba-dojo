@@ -1,0 +1,14 @@
+{
+  "titel": "Gestrandet in Japan",
+  "startdatum": "2026-12-01",
+  "postUhrzeit": "18:00",
+  "appVideoWochentag": "Sonntag",
+  "vorlaufZielTage": 7,
+  "hashtagsBasis": [
+    "#japanischlernen",
+    "#japan",
+    "#gestrandetinjapan"
+  ],
+  "eingangOrdner": null,
+  "eingangHinweis": "Optional: Ordner, den Handy und Laptop synchronisieren (z. B. \"~/OneDrive/Sprachmemos\"). Dateien mit „Folge 3“ oder „ep03“ im Namen werden automatisch zugeordnet."
+}

@@ -1,0 +1,579 @@
+{
+ "id": "ep07",
+ "staffel": 1,
+ "folge": 7,
+ "titel": "Hotel Kamome",
+ "problem": "Knö erreicht endlich das Hotel – und muss auf Japanisch einchecken.",
+ "cliffhanger": "Die Reservierung gilt nur für eine Nacht. Und vor dem Hotel klaut eine Krähe die Postkarte.",
+ "neu": [
+  "c032",
+  "c033"
+ ],
+ "wiederholung": [
+  "c004"
+ ],
+ "naechste": "Bald: Staffel 2 – Ein Dach über dem Kopf",
+ "segmente": [
+  {
+   "id": "s01",
+   "art": "erzaehler",
+   "text": "Endlich! Hotel Kamome. Knö schleppt sich zur Rezeption.",
+   "regie": "müde"
+  },
+  {
+   "id": "s02",
+   "art": "erzaehler",
+   "text": "Jetzt braucht Knö zwei Sätze. Erstens: einchecken."
+  },
+  {
+   "id": "s03",
+   "art": "erzaehler",
+   "text": "Check-in heißt einfach chekkuin. Dazu onegai shimasu: bitte."
+  },
+  {
+   "id": "s04",
+   "art": "quiz"
+  },
+  {
+   "id": "s05",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c032",
+   "wiederholen": true
+  },
+  {
+   "id": "s06",
+   "art": "japanisch",
+   "sprecher": "personal",
+   "text": "ご予約のお名前は",
+   "kana": "ごよやくのおなまえは",
+   "romaji": "goyoyaku no onamae wa",
+   "de": "Auf welchen Namen ist die Reservierung?",
+   "karte": "klein"
+  },
+  {
+   "id": "s07",
+   "art": "erzaehler",
+   "text": "Sie will den Namen. Knö hat unter Omas Namen gebucht: Schmidt."
+  },
+  {
+   "id": "s08",
+   "art": "erzaehler",
+   "text": "Yoyaku shite iru heißt: Ich habe reserviert. Dann der Name und desu."
+  },
+  {
+   "id": "s09",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c033",
+   "wiederholen": true
+  },
+  {
+   "id": "s10",
+   "art": "erzaehler",
+   "text": "Die Frau tippt. Und stutzt.",
+   "regie": "stolz"
+  },
+  {
+   "id": "s11",
+   "art": "japanisch",
+   "sprecher": "personal",
+   "text": "一泊のご予約ですね",
+   "kana": "いっぱくのごよやくですね",
+   "romaji": "ippaku no goyoyaku desu ne",
+   "de": "Sie haben eine Nacht reserviert, richtig?",
+   "karte": "klein"
+  },
+  {
+   "id": "s12",
+   "art": "erzaehler",
+   "text": "Ippaku. Eine Nacht. Knö hat nur eine einzige Nacht gebucht!",
+   "regie": "geschockt"
+  },
+  {
+   "id": "s13",
+   "art": "japanisch",
+   "sprecher": "personal",
+   "curriculum": "c006",
+   "karte": "klein"
+  },
+  {
+   "id": "s14",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c004"
+  },
+  {
+   "id": "s15",
+   "art": "erzaehler",
+   "text": "Knö sagt: Alles gut. Aber nichts ist gut."
+  },
+  {
+   "id": "s16",
+   "art": "erzaehler",
+   "text": "Vor dem Hotel holt Knö die Postkarte raus. Wo ist dieser Laden bloß?"
+  },
+  {
+   "id": "s17",
+   "art": "erzaehler",
+   "text": "Da landet etwas Schwarzes auf dem Automaten. Eine Krähe.",
+   "regie": "spannend"
+  },
+  {
+   "id": "s18",
+   "art": "erzaehler",
+   "text": "Sie schnappt sich die Postkarte. Und fliegt davon.",
+   "regie": "sehr spannend"
+  }
+ ],
+ "shots": [
+  {
+   "ab": "s01",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "totale",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.9,
+      1.8
+     ],
+     "blick": -170,
+     "aktion": "gehen",
+     "nach": [
+      0.5,
+      0.55
+     ]
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      0.4,
+      -1.9
+     ],
+     "blick": 0,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s02",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 10,
+     "aktion": "traurig"
+    }
+   ]
+  },
+  {
+   "ab": "s03",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 15,
+     "aktion": "zeigen"
+    }
+   ]
+  },
+  {
+   "ab": "s04",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 15,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s05",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 180,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      0.4,
+      -1.9
+     ],
+     "blick": 0,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s07",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 10,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s08",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rechts"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 10,
+     "aktion": "zeigen"
+    }
+   ]
+  },
+  {
+   "ab": "s09",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 180,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      0.4,
+      -1.9
+     ],
+     "blick": 0,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s10",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "personal",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 180,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      0.4,
+      -1.9
+     ],
+     "blick": 0,
+     "aktion": "verwirrt",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s11",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 180,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      0.4,
+      -1.9
+     ],
+     "blick": 0,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s12",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "raus"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 10,
+     "aktion": "erschrecken"
+    }
+   ],
+   "effekt": "wackeln"
+  },
+  {
+   "ab": "s13",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 180,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      0.4,
+      -1.9
+     ],
+     "blick": 0,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s15",
+   "szene": "hotel",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "runter"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.5,
+      0.55
+     ],
+     "blick": 10,
+     "aktion": "traurig"
+    }
+   ]
+  },
+  {
+   "ab": "s16",
+   "szene": "strasse",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.1,
+      0.9
+     ],
+     "blick": -20,
+     "aktion": "zeigen"
+    }
+   ]
+  },
+  {
+   "ab": "s17",
+   "szene": "strasse",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "kraehe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.1,
+      0.9
+     ],
+     "blick": 30,
+     "aktion": "stehen"
+    },
+    {
+     "id": "kraehe",
+     "figur": "kraehe",
+     "pos": [
+      1.95,
+      0.2
+     ],
+     "blick": -40,
+     "aktion": "stehen",
+     "extra": {
+      "y": 1.82
+     }
+    }
+   ]
+  },
+  {
+   "ab": "s18",
+   "szene": "strasse",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "raus"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.1,
+      0.9
+     ],
+     "blick": 30,
+     "aktion": "erschrecken"
+    },
+    {
+     "id": "kraehe",
+     "figur": "kraehe",
+     "pos": [
+      1.4,
+      0.9
+     ],
+     "blick": -70,
+     "aktion": "rennen",
+     "nach": [
+      -2.5,
+      -0.5
+     ],
+     "extra": {
+      "y": 1.1,
+      "nachY": 3.6,
+      "beute": "postkarte"
+     }
+    }
+   ],
+   "effekt": "wackeln"
+  }
+ ],
+ "texte": [
+  {
+   "ab": "s01",
+   "art": "hook",
+   "text": "EINCHECKEN?!",
+   "unter": "Folge 7: Hotel Kamome"
+  }
+ ]
+}

@@ -1,0 +1,466 @@
+{
+ "id": "ep04",
+ "staffel": 1,
+ "folge": 4,
+ "titel": "Welcher Zug?",
+ "problem": "Auf Gleis 3 halten zwei Züge – nur einer fährt nach Shinjuku.",
+ "cliffhanger": "Knö sitzt im richtigen Zug – und der Magen knurrt so laut, dass der ganze Waggon guckt.",
+ "neu": [
+  "c027"
+ ],
+ "wiederholung": [
+  "c001"
+ ],
+ "naechste": "Morgen: Folge 5 – Onigiri-Notfall",
+ "segmente": [
+  {
+   "id": "s01",
+   "art": "erzaehler",
+   "text": "Gleis drei. Zwei Züge. Einer fährt nach Shinjuku. Aber welcher?",
+   "regie": "hektisch"
+  },
+  {
+   "id": "s02",
+   "art": "japanisch",
+   "sprecher": "ansage",
+   "curriculum": "c045",
+   "karte": "klein"
+  },
+  {
+   "id": "s03",
+   "art": "erzaehler",
+   "text": "Mamonaku heißt: gleich. Gleich fährt ein Zug ein!"
+  },
+  {
+   "id": "s03b",
+   "art": "erzaehler",
+   "text": "Zwei Züge, zwei Gleise. Und die Anzeige wechselt viel zu schnell."
+  },
+  {
+   "id": "s04",
+   "art": "erzaehler",
+   "text": "Neben Knö wartet eine junge Frau. Knö nimmt allen Mut zusammen."
+  },
+  {
+   "id": "s05",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c001"
+  },
+  {
+   "id": "s06",
+   "art": "erzaehler",
+   "text": "Jetzt die Frage: Fährt dieser Zug nach Shinjuku?"
+  },
+  {
+   "id": "s07",
+   "art": "erzaehler",
+   "text": "Kono densha heißt dieser Zug. Ni ikimasu ka heißt: fährt er nach …?"
+  },
+  {
+   "id": "s08",
+   "art": "quiz"
+  },
+  {
+   "id": "s09",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c027",
+   "wiederholen": true
+  },
+  {
+   "id": "s10",
+   "art": "erzaehler",
+   "text": "Kono densha wa Shinjuku ni ikimasu ka. Ein ganzer Satz!",
+   "regie": "stolz"
+  },
+  {
+   "id": "s11",
+   "art": "japanisch",
+   "sprecher": "personal",
+   "text": "はい、行きますよ",
+   "kana": "はい、いきますよ",
+   "romaji": "hai, ikimasu yo",
+   "de": "Ja, der fährt dahin.",
+   "karte": "klein"
+  },
+  {
+   "id": "s12",
+   "art": "erzaehler",
+   "text": "Hai heißt ja. Knö springt in den Zug.",
+   "regie": "erleichtert"
+  },
+  {
+   "id": "s13",
+   "art": "japanisch",
+   "sprecher": "ansage",
+   "curriculum": "c046",
+   "karte": "klein"
+  },
+  {
+   "id": "s14",
+   "art": "erzaehler",
+   "text": "Die Türen schließen. Geschafft! Knö fährt durch Tokio."
+  },
+  {
+   "id": "s15",
+   "art": "erzaehler",
+   "text": "Aber dann knurrt Knös Magen. So laut, dass der ganze Waggon guckt.",
+   "regie": "spannend"
+  },
+  {
+   "id": "s16",
+   "art": "erzaehler",
+   "text": "Knö hat seit dem Flug nichts gegessen.",
+   "regie": "leise"
+  }
+ ],
+ "shots": [
+  {
+   "ab": "s01",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "totale",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": -20,
+     "aktion": "verwirrt"
+    }
+   ],
+   "szeneProps": {
+    "zugX": -14
+   }
+  },
+  {
+   "ab": "s02",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "seite",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": -90,
+     "aktion": "erschrecken"
+    }
+   ],
+   "szeneProps": {
+    "zugX": -8
+   }
+  },
+  {
+   "ab": "s04",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "rechts"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      2.0,
+      -0.6
+     ],
+     "blick": -20,
+     "aktion": "stehen",
+     "variante": "passant2"
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s05",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      2.0,
+      -0.6
+     ],
+     "blick": -110,
+     "aktion": "stehen",
+     "variante": "passant2"
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s06",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": 20,
+     "aktion": "verwirrt"
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s08",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": 20,
+     "aktion": "verwirrt"
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s09",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      2.0,
+      -0.6
+     ],
+     "blick": -110,
+     "aktion": "stehen",
+     "variante": "passant2"
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s11",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      2.0,
+      -0.6
+     ],
+     "blick": -110,
+     "aktion": "zeigen",
+     "variante": "passant2"
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s12",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "hoch"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      0.2
+     ],
+     "blick": 180,
+     "aktion": "rennen",
+     "nach": [
+      0.3,
+      -1.0
+     ]
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s14",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "totale",
+    "fokus": "0,-1",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "p1",
+     "figur": "mensch",
+     "pos": [
+      2.5,
+      0.6
+     ],
+     "blick": -30,
+     "aktion": "stehen",
+     "variante": "passant1"
+    }
+   ],
+   "szeneProps": {
+    "zugX": 6
+   }
+  },
+  {
+   "ab": "s15",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0,
+      0.3
+     ],
+     "blick": 10,
+     "aktion": "erschrecken"
+    }
+   ],
+   "effekt": "wackeln",
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s16",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "raus"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0,
+      0.3
+     ],
+     "blick": 10,
+     "aktion": "traurig"
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  }
+ ],
+ "texte": [
+  {
+   "ab": "s01",
+   "art": "hook",
+   "text": "WELCHER ZUG?!",
+   "unter": "Folge 4"
+  }
+ ]
+}

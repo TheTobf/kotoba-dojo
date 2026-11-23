@@ -1,0 +1,510 @@
+{
+ "id": "ep05",
+ "staffel": 1,
+ "folge": 5,
+ "titel": "Onigiri-Notfall",
+ "problem": "Knö ist halb verhungert und steht zum ersten Mal in einem Konbini.",
+ "cliffhanger": "An der Kasse fragt die Verkäuferin etwas – und noch etwas – und die Schlange wird immer länger.",
+ "neu": [
+  "c007",
+  "c010"
+ ],
+ "wiederholung": [
+  "c008"
+ ],
+ "naechste": "Morgen: Folge 6 – Die Kassen-Fragen",
+ "segmente": [
+  {
+   "id": "s01",
+   "art": "erzaehler",
+   "text": "Knö stolpert in einen Konbini. Ein kleiner Laden, rund um die Uhr offen.",
+   "regie": "hungrig"
+  },
+  {
+   "id": "s02",
+   "art": "erzaehler",
+   "text": "Die Tür geht auf und jemand ruft laut:"
+  },
+  {
+   "id": "s03",
+   "art": "japanisch",
+   "sprecher": "haru",
+   "curriculum": "c007"
+  },
+  {
+   "id": "s04",
+   "art": "erzaehler",
+   "text": "Knö zuckt zusammen. Ist das ein Angriff?",
+   "regie": "erschrocken"
+  },
+  {
+   "id": "s05",
+   "art": "erzaehler",
+   "text": "Nein! Irasshaimase heißt Willkommen. Antworten muss man nicht. Einfach lächeln."
+  },
+  {
+   "id": "s05b",
+   "art": "erzaehler",
+   "text": "Die Verkäufer rufen das jedem zu. Auch Knö.",
+   "regie": "erleichtert"
+  },
+  {
+   "id": "s06",
+   "art": "erzaehler",
+   "text": "Aber zuerst: Knö muss schon wieder."
+  },
+  {
+   "id": "s07",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c008"
+  },
+  {
+   "id": "s08",
+   "art": "japanisch",
+   "sprecher": "haru",
+   "curriculum": "c009",
+   "karte": "klein"
+  },
+  {
+   "id": "s09",
+   "art": "erzaehler",
+   "text": "Danach steht Knö vor dem Regal. Reisbälle! Onigiri!",
+   "regie": "begeistert"
+  },
+  {
+   "id": "s10",
+   "art": "erzaehler",
+   "text": "Knö nimmt einen und geht zur Kasse. Die Verkäuferin heißt Haru."
+  },
+  {
+   "id": "s10b",
+   "art": "erzaehler",
+   "text": "Sie trägt eine gelbe Schürze und ein Namensschild. Und sie wartet auf Knö."
+  },
+  {
+   "id": "s11",
+   "art": "erzaehler",
+   "text": "Wie sagt man jetzt: Das hier, bitte?"
+  },
+  {
+   "id": "s12",
+   "art": "quiz"
+  },
+  {
+   "id": "s13",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c010",
+   "wiederholen": true
+  },
+  {
+   "id": "s14",
+   "art": "erzaehler",
+   "text": "Kore o kudasai. Funktioniert bei allem, worauf du zeigen kannst.",
+   "regie": "stolz"
+  },
+  {
+   "id": "s15",
+   "art": "erzaehler",
+   "text": "Haru nickt. Dann fragt sie etwas. Und noch etwas. Und noch etwas."
+  },
+  {
+   "id": "s16",
+   "art": "erzaehler",
+   "text": "Knö versteht kein Wort. Hinter Knö wird die Schlange immer länger.",
+   "regie": "panisch"
+  }
+ ],
+ "shots": [
+  {
+   "ab": "s01",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "totale",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -0.3,
+      2.0
+     ],
+     "blick": -10,
+     "aktion": "gehen",
+     "nach": [
+      0.2,
+      1.4
+     ]
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -40,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s03",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "haru",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.2,
+      1.4
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "verbeugen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s04",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "raus"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.2,
+      1.4
+     ],
+     "blick": 20,
+     "aktion": "erschrecken"
+    }
+   ],
+   "effekt": "wackeln"
+  },
+  {
+   "ab": "s05",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.2,
+      1.4
+     ],
+     "blick": 20,
+     "aktion": "freuen"
+    }
+   ]
+  },
+  {
+   "ab": "s06",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.2,
+      1.4
+     ],
+     "blick": 10,
+     "aktion": "gehen"
+    }
+   ]
+  },
+  {
+   "ab": "s07",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "haru"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s09",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "rechts"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -1.8,
+      1.7
+     ],
+     "blick": -90,
+     "aktion": "freuen"
+    }
+   ]
+  },
+  {
+   "ab": "s10",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "totale",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -1.2,
+      1.7
+     ],
+     "blick": 80,
+     "aktion": "gehen",
+     "nach": [
+      1.05,
+      1.75
+     ]
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s11",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 20,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s13",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "haru"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "zeigen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s14",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 30,
+     "aktion": "freuen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s15",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "haru"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "sprechen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s16",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "raus"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 10,
+     "aktion": "verwirrt"
+    },
+    {
+     "id": "p1",
+     "figur": "mensch",
+     "pos": [
+      0.3,
+      2.2
+     ],
+     "blick": 60,
+     "aktion": "stehen",
+     "variante": "passant1"
+    },
+    {
+     "id": "p2",
+     "figur": "mensch",
+     "pos": [
+      -0.6,
+      2.7
+     ],
+     "blick": 50,
+     "aktion": "stehen",
+     "variante": "passant2"
+    }
+   ]
+  }
+ ],
+ "texte": [
+  {
+   "ab": "s01",
+   "art": "hook",
+   "text": "HUNGER!",
+   "unter": "Folge 5: Onigiri-Notfall"
+  }
+ ]
+}

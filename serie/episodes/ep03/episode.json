@@ -1,0 +1,523 @@
+{
+ "id": "ep03",
+ "staffel": 1,
+ "folge": 3,
+ "titel": "Der Fahrkarten-Automat",
+ "problem": "Ohne Fahrkarte kommt Knö nicht in die Stadt – aber wo kauft man die?",
+ "cliffhanger": "Der Mann mit dem Hut drückt für Knö einen Knopf. Auf der Fahrkarte steht: Shinjuku.",
+ "neu": [
+  "c042"
+ ],
+ "wiederholung": [
+  "c001"
+ ],
+ "naechste": "Morgen: Folge 4 – Welcher Zug?",
+ "segmente": [
+  {
+   "id": "s01",
+   "art": "erzaehler",
+   "text": "Knö steht im Bahnhof. Hunderte Menschen. Alle wissen, wohin.",
+   "regie": "spannend"
+  },
+  {
+   "id": "s02",
+   "art": "erzaehler",
+   "text": "Nur Knö nicht. Und ohne Fahrkarte geht hier gar nichts."
+  },
+  {
+   "id": "s03",
+   "art": "erzaehler",
+   "text": "Da vorne steht jemand vom Bahnpersonal. Erst mal: das Zauberwort von gestern."
+  },
+  {
+   "id": "s04",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c001"
+  },
+  {
+   "id": "s05",
+   "art": "erzaehler",
+   "text": "Der Mann dreht sich um. Und jetzt?"
+  },
+  {
+   "id": "s06",
+   "art": "erzaehler",
+   "text": "Fahrkarte heißt kippu. Wo kann ich kaufen, heißt doko de kaemasu ka."
+  },
+  {
+   "id": "s07",
+   "art": "quiz"
+  },
+  {
+   "id": "s08",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c042",
+   "wiederholen": true
+  },
+  {
+   "id": "s09",
+   "art": "erzaehler",
+   "text": "Kippu wa doko de kaemasu ka. Wo kann ich eine Fahrkarte kaufen?",
+   "regie": "stolz"
+  },
+  {
+   "id": "s10",
+   "art": "japanisch",
+   "sprecher": "personal2",
+   "text": "あちらの券売機です",
+   "kana": "あちらのけんばいきです",
+   "romaji": "achira no kenbaiki desu",
+   "de": "Dort drüben am Fahrkartenautomaten.",
+   "karte": "klein"
+  },
+  {
+   "id": "s11",
+   "art": "erzaehler",
+   "text": "Kenbaiki heißt Fahrkartenautomat. Achira kennt Knö schon: dort drüben."
+  },
+  {
+   "id": "s12",
+   "art": "erzaehler",
+   "text": "Knö steht vor dem Automaten. Hundert Knöpfe. Alles auf Japanisch."
+  },
+  {
+   "id": "s13",
+   "art": "erzaehler",
+   "text": "Knö drückt einfach irgendwas. Piep. Piep. Piiiep.",
+   "regie": "verzweifelt"
+  },
+  {
+   "id": "s14",
+   "art": "erzaehler",
+   "text": "Da greift eine Hand an Knö vorbei und drückt einen Knopf."
+  },
+  {
+   "id": "s15",
+   "art": "erzaehler",
+   "text": "Es ist wieder der Mann mit dem Hut. Eine Fahrkarte fällt heraus.",
+   "regie": "geheimnisvoll"
+  },
+  {
+   "id": "s16",
+   "art": "erzaehler",
+   "text": "Darauf steht: Shinjuku. Woher weiß er, wohin Knö will?",
+   "regie": "spannend"
+  }
+ ],
+ "shots": [
+  {
+   "ab": "s01",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "totale",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": 20,
+     "aktion": "verwirrt"
+    },
+    {
+     "id": "p1",
+     "figur": "mensch",
+     "pos": [
+      -3,
+      -0.6
+     ],
+     "blick": 90,
+     "aktion": "gehen",
+     "variante": "passant1",
+     "nach": [
+      3,
+      -0.8
+     ]
+    },
+    {
+     "id": "p2",
+     "figur": "mensch",
+     "pos": [
+      3,
+      0.9
+     ],
+     "blick": -90,
+     "aktion": "gehen",
+     "variante": "passant2",
+     "nach": [
+      -2,
+      0.7
+     ]
+    }
+   ],
+   "szeneProps": {
+    "zugX": 0
+   }
+  },
+  {
+   "ab": "s02",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "runter"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": 10,
+     "aktion": "traurig"
+    }
+   ]
+  },
+  {
+   "ab": "s03",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": -60,
+     "aktion": "zeigen"
+    },
+    {
+     "id": "personal2",
+     "figur": "mensch",
+     "pos": [
+      -0.7,
+      -0.5
+     ],
+     "blick": -70,
+     "aktion": "stehen",
+     "variante": "bahnpersonal"
+    }
+   ]
+  },
+  {
+   "ab": "s04",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal2"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": -130,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal2",
+     "figur": "mensch",
+     "pos": [
+      -0.7,
+      -0.5
+     ],
+     "blick": -70,
+     "aktion": "stehen",
+     "variante": "bahnpersonal"
+    }
+   ]
+  },
+  {
+   "ab": "s05",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal2"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": -130,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal2",
+     "figur": "mensch",
+     "pos": [
+      -0.7,
+      -0.5
+     ],
+     "blick": 55,
+     "aktion": "verbeugen",
+     "variante": "bahnpersonal"
+    }
+   ]
+  },
+  {
+   "ab": "s06",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": 10,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s07",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": 10,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s08",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal2"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": -130,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal2",
+     "figur": "mensch",
+     "pos": [
+      -0.7,
+      -0.5
+     ],
+     "blick": 55,
+     "aktion": "stehen",
+     "variante": "bahnpersonal"
+    }
+   ]
+  },
+  {
+   "ab": "s10",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "personal2",
+    "bewegung": "rechts"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.7,
+      0.9
+     ],
+     "blick": -130,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal2",
+     "figur": "mensch",
+     "pos": [
+      -0.7,
+      -0.5
+     ],
+     "blick": 55,
+     "aktion": "zeigen",
+     "variante": "bahnpersonal"
+    }
+   ]
+  },
+  {
+   "ab": "s12",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -3.2,
+      0.9
+     ],
+     "blick": -140,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s13",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -3.2,
+      0.9
+     ],
+     "blick": -140,
+     "aktion": "zeigen"
+    }
+   ]
+  },
+  {
+   "ab": "s14",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "hut",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -3.2,
+      0.9
+     ],
+     "blick": -140,
+     "aktion": "stehen"
+    },
+    {
+     "id": "hut",
+     "figur": "mensch",
+     "pos": [
+      -2.3,
+      0.2
+     ],
+     "blick": -40,
+     "aktion": "zeigen",
+     "variante": "hutmann"
+    }
+   ]
+  },
+  {
+   "ab": "s15",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "raus"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -3.2,
+      0.9
+     ],
+     "blick": 60,
+     "aktion": "erschrecken"
+    },
+    {
+     "id": "hut",
+     "figur": "mensch",
+     "pos": [
+      -2.3,
+      0.2
+     ],
+     "blick": -40,
+     "aktion": "stehen",
+     "variante": "hutmann"
+    }
+   ]
+  },
+  {
+   "ab": "s16",
+   "szene": "bahnsteig",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -3.2,
+      0.9
+     ],
+     "blick": 20,
+     "aktion": "verwirrt"
+    }
+   ]
+  }
+ ],
+ "texte": [
+  {
+   "ab": "s01",
+   "art": "hook",
+   "text": "KEINE FAHRKARTE.",
+   "unter": "Folge 3: Der Automat"
+  }
+ ]
+}

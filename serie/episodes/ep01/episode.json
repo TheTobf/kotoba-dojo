@@ -1,0 +1,78 @@
+{
+ "id": "ep01", "staffel": 1, "folge": 1,
+ "titel": "Platsch!",
+ "problem": "Knö steht an der Einreise. Die Beamtin fragt etwas – und Knös Übersetzer-Handy liegt im Brunnen.",
+ "cliffhanger": "Knö ist in Japan – aber ohne Handy. Wie kommt Knö jetzt in die Stadt?",
+ "neu": ["c030", "c031"],
+ "wiederholung": [],
+ "naechste": "Morgen: Folge 2 – Ganz dringend!",
+ "segmente": [
+  { "id": "s01", "art": "erzaehler", "regie": "spannend", "text": "Knö ist gerade in Japan gelandet. Und versteht kein einziges Wort." },
+  { "id": "s02", "art": "erzaehler", "text": "Schuld ist eine alte Postkarte vom Dachboden." },
+  { "id": "s03", "art": "erzaehler", "regie": "geheimnisvoll", "text": "Darauf ein Laternenladen am Meer. Und nur ein Satz: Komm jederzeit vorbei." },
+  { "id": "s04", "art": "erzaehler", "text": "Also hat Knö einfach einen Flug gebucht. Kein Plan. Kein Japanisch." },
+  { "id": "s05", "art": "erzaehler", "regie": "stolz", "text": "Aber Knö hat ja ein Handy mit Übersetzer-App." },
+  { "id": "s06", "art": "erzaehler", "text": "Nur noch schnell ein Foto vom Brunnen …" },
+  { "id": "s07", "art": "erzaehler", "regie": "erschrocken", "text": "Platsch." },
+  { "id": "s08", "art": "erzaehler", "regie": "trocken", "text": "Handy weg. Übersetzer weg. Und jetzt ist Knö dran." },
+  { "id": "s09", "art": "japanisch", "sprecher": "personal", "text": "次の方、どうぞ", "kana": "つぎのかた、どうぞ", "romaji": "tsugi no kata, douzo", "de": "Der Nächste, bitte.", "karte": "klein" },
+  { "id": "s10", "art": "erzaehler", "text": "Die Beamtin schaut Knö an und fragt:" },
+  { "id": "s11", "art": "japanisch", "sprecher": "personal", "curriculum": "c030" },
+  { "id": "s12", "art": "erzaehler", "regie": "verwirrt", "text": "Mokuteki? Ist das etwas zu essen?" },
+  { "id": "s13", "art": "erzaehler", "text": "Mokuteki heißt Zweck. Sie will wissen: Warum bist du hier?" },
+  { "id": "s14", "art": "erzaehler", "text": "Knö will Japan anschauen. Als Tourist." },
+  { "id": "s15", "art": "quiz" },
+  { "id": "s16", "art": "japanisch", "sprecher": "knoe", "curriculum": "c031", "wiederholen": true },
+  { "id": "s17", "art": "erzaehler", "regie": "freudig", "text": "Kankō desu. Tourismus. Kurz, höflich, perfekt." },
+  { "id": "s18", "art": "erzaehler", "text": "Die Beamtin nickt. Stempel. Knö darf rein!" },
+  { "id": "s19", "art": "japanisch", "sprecher": "personal", "text": "ようこそ、日本へ", "kana": "ようこそ、にほんへ", "romaji": "youkoso, nihon e", "de": "Willkommen in Japan.", "karte": "klein" },
+  { "id": "s20", "art": "erzaehler", "regie": "spannend", "text": "Aber dann steht Knö vor dem Bahnplan. Hunderte Zeichen. Kein Handy." },
+  { "id": "s21", "art": "erzaehler", "regie": "leise", "text": "Und plötzlich muss Knö ganz dringend aufs Klo." }
+ ],
+ "shots": [
+  { "ab": "s01", "szene": "flughafen", "kamera": { "preset": "nah", "fokus": "knoe", "bewegung": "rein" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [0.4, 1.4], "blick": 15, "aktion": "verwirrt" },
+    { "id": "p1", "figur": "mensch", "variante": "passant1", "pos": [-2.5, 0.2], "nach": [2.5, -0.2], "blick": 90, "aktion": "gehen" },
+    { "id": "p2", "figur": "mensch", "variante": "passant2", "pos": [2.2, -1.0], "nach": [-1.5, -1.3], "blick": -90, "aktion": "gehen" } ] },
+  { "ab": "s02", "szene": "flughafen", "kamera": { "preset": "halbnah", "fokus": "knoe", "bewegung": "links" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [0.4, 1.4], "blick": 0, "aktion": "zeigen" } ] },
+  { "ab": "s04", "szene": "flughafen", "kamera": { "preset": "totale", "fokus": "knoe", "bewegung": "rechts" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-0.8, 2.2], "nach": [1.0, 1.9], "blick": 80, "aktion": "gehen" },
+    { "id": "p1", "figur": "mensch", "variante": "passant1", "pos": [-3, -0.5], "nach": [0, -0.8], "blick": 90, "aktion": "gehen" } ] },
+  { "ab": "s05", "szene": "flughafen", "kamera": { "preset": "nah", "fokus": "knoe", "bewegung": "rein" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [1.0, 1.9], "blick": 20, "aktion": "zeigen", "extra": { "handy": true } } ] },
+  { "ab": "s07", "szene": "flughafen", "effekt": "platsch", "kamera": { "preset": "gross", "fokus": "knoe", "bewegung": "raus" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [1.0, 1.9], "blick": 20, "aktion": "erschrecken" } ] },
+  { "ab": "s08", "szene": "flughafen", "kamera": { "preset": "halbnah", "fokus": "knoe", "bewegung": "runter" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [1.0, 1.9], "blick": -10, "aktion": "traurig" } ] },
+  { "ab": "s09", "szene": "flughafen", "kamera": { "preset": "ueberSchulter", "fokus": "knoe", "gegen": "personal" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-2.2, -0.2], "blick": -140, "aktion": "stehen" },
+    { "id": "personal", "figur": "mensch", "variante": "beamtin", "pos": [-3.3, -2.15], "blick": 25, "aktion": "stehen" } ] },
+  { "ab": "s11", "szene": "flughafen", "kamera": { "preset": "halbnah", "fokus": "personal", "bewegung": "rein" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-2.2, -0.2], "blick": -140, "aktion": "stehen" },
+    { "id": "personal", "figur": "mensch", "variante": "beamtin", "pos": [-3.3, -2.15], "blick": 25, "aktion": "stehen" } ] },
+  { "ab": "s12", "szene": "flughafen", "kamera": { "preset": "gross", "fokus": "knoe", "bewegung": "rein" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-2.4, -0.3], "blick": 20, "aktion": "verwirrt" } ] },
+  { "ab": "s14", "szene": "flughafen", "kamera": { "preset": "halbnah", "fokus": "knoe", "bewegung": "links" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-2.4, -0.3], "blick": 10, "aktion": "stehen" },
+    { "id": "personal", "figur": "mensch", "variante": "beamtin", "pos": [-3.3, -2.15], "blick": 25, "aktion": "stehen" } ] },
+  { "ab": "s15", "szene": "flughafen", "kamera": { "preset": "nah", "fokus": "knoe", "bewegung": "rein" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-2.4, -0.3], "blick": 15, "aktion": "verwirrt" } ] },
+  { "ab": "s16", "szene": "flughafen", "kamera": { "preset": "ueberSchulter", "fokus": "personal", "gegen": "knoe" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-2.2, -0.2], "blick": -140, "aktion": "stehen" },
+    { "id": "personal", "figur": "mensch", "variante": "beamtin", "pos": [-3.3, -2.15], "blick": 25, "aktion": "stehen" } ] },
+  { "ab": "s17", "szene": "flughafen", "kamera": { "preset": "halbnah", "fokus": "knoe", "bewegung": "hoch" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-2.4, -0.3], "blick": 10, "aktion": "freuen" } ] },
+  { "ab": "s18", "szene": "flughafen", "kamera": { "preset": "seite", "fokus": "personal", "bewegung": "rein" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-2.2, -0.2], "blick": -140, "aktion": "stehen" },
+    { "id": "personal", "figur": "mensch", "variante": "beamtin", "pos": [-3.3, -2.15], "blick": 25, "aktion": "verbeugen" } ] },
+  { "ab": "s20", "szene": "flughafen", "kamera": { "preset": "frosch", "fokus": "knoe", "bewegung": "hoch" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-0.6, 0.6], "blick": 170, "aktion": "verwirrt" } ] },
+  { "ab": "s21", "szene": "flughafen", "effekt": "wackeln", "kamera": { "preset": "gross", "fokus": "knoe", "bewegung": "rein" }, "figuren": [
+    { "id": "knoe", "figur": "knoe", "pos": [-0.6, 0.6], "blick": 10, "aktion": "erschrecken" } ] }
+ ],
+ "texte": [
+  { "ab": "s01", "art": "hook", "text": "KEIN WORT JAPANISCH.", "unter": "Folge 1: Platsch!" },
+  { "ab": "s07", "art": "hook", "text": "PLATSCH." }
+ ]
+}

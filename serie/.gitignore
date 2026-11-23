@@ -1,6 +1,12 @@
 node_modules/
-entwurf-bilder/
-out/
-*.preview.mp4
 .cache/
 werkzeuge/
+entwurf-bilder/
+out/
+episodes/*/ton/
+episodes/*/kontrolle/
+episodes/*/aufnahme/
+episodes/*/timing.json
+episodes/*/preview.mp4
+episodes/*/*.roh.mp4
+recordings/*/voice.*

@@ -1,0 +1,499 @@
+{
+ "id": "ep06",
+ "staffel": 1,
+ "folge": 6,
+ "titel": "Die Kassen-Fragen",
+ "problem": "Haru stellt an der Kasse Fragen – Aufwärmen? Tüte? – und Knö muss höflich Nein sagen.",
+ "cliffhanger": "Haru kann Deutsch?! Aber draußen wird es dunkel, und Knö hat noch kein Hotel gefunden.",
+ "neu": [
+  "c017",
+  "c004"
+ ],
+ "wiederholung": [
+  "c010"
+ ],
+ "naechste": "Morgen: Folge 7 – Hotel Kamome",
+ "segmente": [
+  {
+   "id": "s01",
+   "art": "erzaehler",
+   "text": "Knö steht an der Kasse. Haru fragt etwas, und die Schlange wartet.",
+   "regie": "hektisch"
+  },
+  {
+   "id": "s01b",
+   "art": "erzaehler",
+   "text": "Knö kennt bisher nur: Das hier, bitte. Das reicht jetzt nicht mehr."
+  },
+  {
+   "id": "s02",
+   "art": "japanisch",
+   "sprecher": "haru",
+   "curriculum": "c017"
+  },
+  {
+   "id": "s03",
+   "art": "erzaehler",
+   "text": "Atatamemasu ka. Soll ich das aufwärmen?"
+  },
+  {
+   "id": "s04",
+   "art": "erzaehler",
+   "text": "Ein warmer Reisball? Knö will lieber nicht. Aber wie sagt man höflich nein?"
+  },
+  {
+   "id": "s05",
+   "art": "erzaehler",
+   "text": "Ein Satz hilft fast immer: Daijōbu desu. Alles gut, passt schon."
+  },
+  {
+   "id": "s05b",
+   "art": "erzaehler",
+   "text": "Höflich, kurz und ohne Ärger. Perfekt für alle Fragen an der Kasse."
+  },
+  {
+   "id": "s06",
+   "art": "quiz"
+  },
+  {
+   "id": "s07",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c004",
+   "wiederholen": true
+  },
+  {
+   "id": "s08",
+   "art": "erzaehler",
+   "text": "Daijōbu desu. Haru nickt und lächelt.",
+   "regie": "erleichtert"
+  },
+  {
+   "id": "s09",
+   "art": "japanisch",
+   "sprecher": "haru",
+   "curriculum": "c016",
+   "karte": "klein"
+  },
+  {
+   "id": "s10",
+   "art": "erzaehler",
+   "text": "Eine Tüte? Braucht Knö nicht. Also nochmal:"
+  },
+  {
+   "id": "s11",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c004",
+   "karte": "klein"
+  },
+  {
+   "id": "s12",
+   "art": "erzaehler",
+   "text": "Dann zeigt Knö noch auf ein Getränk."
+  },
+  {
+   "id": "s13",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c010"
+  },
+  {
+   "id": "s14",
+   "art": "erzaehler",
+   "text": "Haru packt alles zusammen. Und sagt plötzlich auf Deutsch: Gute Reise!",
+   "regie": "überrascht"
+  },
+  {
+   "id": "s15",
+   "art": "erzaehler",
+   "text": "Haru kann Deutsch? Knö will fragen, aber hinter Knö drängelt die Schlange."
+  },
+  {
+   "id": "s15b",
+   "art": "erzaehler",
+   "text": "Knö winkt nur noch kurz. Und steht wieder draußen."
+  },
+  {
+   "id": "s16",
+   "art": "erzaehler",
+   "text": "Draußen wird es dunkel. Und Knö hat noch kein Hotel gefunden.",
+   "regie": "spannend"
+  }
+ ],
+ "shots": [
+  {
+   "ab": "s01",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 50,
+     "aktion": "verwirrt"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    },
+    {
+     "id": "p1",
+     "figur": "mensch",
+     "pos": [
+      0.3,
+      2.2
+     ],
+     "blick": 60,
+     "aktion": "stehen",
+     "variante": "passant1"
+    }
+   ]
+  },
+  {
+   "ab": "s02",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "haru"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s04",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 15,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s05",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 15,
+     "aktion": "zeigen"
+    }
+   ]
+  },
+  {
+   "ab": "s06",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 15,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s07",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "haru"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s08",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "haru",
+    "bewegung": "rechts"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "verbeugen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s09",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "haru"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s12",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 40,
+     "aktion": "zeigen"
+    }
+   ]
+  },
+  {
+   "ab": "s13",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "haru"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "zeigen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s14",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "haru",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "haru",
+     "figur": "mensch",
+     "pos": [
+      2.26,
+      -0.5
+     ],
+     "blick": -60,
+     "aktion": "winken",
+     "variante": "haru"
+    }
+   ]
+  },
+  {
+   "ab": "s15",
+   "szene": "konbini",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "raus"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      1.05,
+      1.75
+     ],
+     "blick": 20,
+     "aktion": "erschrecken"
+    }
+   ]
+  },
+  {
+   "ab": "s16",
+   "szene": "strasse",
+   "kamera": {
+    "preset": "totale",
+    "fokus": "knoe",
+    "bewegung": "hoch"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.3,
+      1.0
+     ],
+     "blick": -70,
+     "aktion": "gehen",
+     "nach": [
+      -1.2,
+      1.5
+     ]
+    }
+   ]
+  }
+ ],
+ "texte": [
+  {
+   "ab": "s01",
+   "art": "hook",
+   "text": "WAS FRAGT SIE?!",
+   "unter": "Folge 6"
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+  "hinweis": "Feste Stilvorlage der Serie. Gewählt am 23.11.2026: Stil C (Tusche-Comic) + Maskottchen 1 (Knö). Werte hier ändern, nicht im Code.",
+  "stil": "tusche",
+  "maskottchen": { "id": "knoe", "name": "Knö", "beschreibung": "runder Knödel aus Bayern, Strickmütze (türkis, gelber Bommel), roter Rucksack, Brotkrumen-Sprenkel" },
+  "format": { "breite": 1080, "hoehe": 1920, "fps": 30, "codec": "h264", "crf": 18, "audioBitrate": "192k" },
+  "laenge": { "minSek": 61, "maxSek": 75 },
+  "sicherheitszone": { "hinweis": "TikTok/Shorts/Reels: unten Beschreibung+Buttons, rechts Like-Leiste, oben Suchleiste", "oben": 150, "links": 60, "rechts": 180, "unten": 480 },
+  "schnitt": {
+    "hookMaxSek": 2,
+    "hookTextGross": true,
+    "schnittMinSek": 2,
+    "schnittMaxSek": 3,
+    "kameraImmerInBewegung": true,
+    "quizCountdownSek": 3,
+    "quizFrage": "Was sagst du jetzt?",
+    "pauseZwischenSaetzenSek": 0.15,
+    "pauseVorJapanischSek": 0.25,
+    "pauseNachJapanischSek": 0.45,
+    "japanischWiederholen": true,
+    "endeTeaserSek": 3.5
+  },
+  "text": {
+    "ja": { "schrift": "Noto Sans JP", "gewicht": 900, "groesse": 112 },
+    "kanaRomaji": { "schrift": "Noto Sans JP", "gewicht": 400, "groesse": 40 },
+    "deutsch": { "schrift": "Noto Sans JP", "gewicht": 900, "groesse": 46 },
+    "untertitel": { "schrift": "Noto Sans JP", "gewicht": 900, "groesse": 58, "yOben": 1180, "maxZeilen": 2 },
+    "hook": { "schrift": "Noto Sans JP", "gewicht": 900, "groesse": 104 }
+  },
+  "farben": { "tinte": "#1b1b1b", "papier": "#ffffff", "rot": "#e63946", "gelb": "#f4d35e", "tuerkis": "#2a9d8f", "himmel": "#fff1cf", "raster": "#f2b950" },
+  "ton": {
+    "zielLautheitLUFS": -14,
+    "stimmeLUFS": -16,
+    "voicevoxLUFS": -16,
+    "musikLUFS": -30,
+    "sfxLUFS": -24,
+    "musik": null,
+    "musikHinweis": "Keine Musik, solange kein lizenzfreier, kommerziell nutzbarer Titel in music/ mit Lizenzdatei liegt."
+  },
+  "stimmen": {
+    "hinweis": "VOICEVOX-Sprecher je Rolle (Name + Stil, die ID wird zur Laufzeit über /speakers ermittelt). Bedingungen: LICENSES.md.",
+    "knoe": { "sprecher": "春日部つむぎ", "stil": "ノーマル", "tempo": 0.95 },
+    "haru": { "sprecher": "四国めたん", "stil": "ノーマル", "tempo": 1.0 },
+    "personal": { "sprecher": "冥鳴ひまり", "stil": "ノーマル", "tempo": 1.0 },
+    "personal2": { "sprecher": "青山龍星", "stil": "ノーマル", "tempo": 1.0 },
+    "ansage": { "sprecher": "冥鳴ひまり", "stil": "ノーマル", "tempo": 0.95 },
+    "mori": { "sprecher": "四国めたん", "stil": "ノーマル", "tempo": 0.95 },
+    "ken": { "sprecher": "玄野武宏", "stil": "ノーマル", "tempo": 1.0 }
+  },
+  "stimmenBedingungenGeprueft": false,
+  "vorschauStimme": { "hinweis": "Nur für preview.mp4, nie im fertigen Video.", "deutsch": "espeak-ng (Cloud) bzw. piper de_DE-thorsten (Laptop)" }
+}

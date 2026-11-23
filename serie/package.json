@@ -4,7 +4,15 @@
   "type": "module",
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "pruefen": "node scripts/pruefe-curriculum.mjs"
+    "lehrplan:pruefen": "node scripts/pruefe-curriculum.mjs",
+    "folge:pruefen": "tsx scripts/pruefe-folge.ts",
+    "ton": "tsx scripts/ton.ts",
+    "vorschau": "tsx scripts/render.ts --vorschau",
+    "render": "tsx scripts/render.ts",
+    "fertig": "tsx scripts/fertig.ts",
+    "status": "tsx scripts/status.ts",
+    "skripte": "tsx scripts/skripte.ts",
+    "test": "tsx --test tests/*.test.ts && node scripts/pruefe-curriculum.mjs && tsc -p ."
   },
   "dependencies": {
     "@fontsource/m-plus-rounded-1c": "5.3.0",

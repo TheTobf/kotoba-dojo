@@ -1,0 +1,597 @@
+{
+ "id": "ep02",
+ "staffel": 1,
+ "folge": 2,
+ "titel": "Ganz dringend!",
+ "problem": "Knö muss sofort aufs Klo – und versteht kein einziges Schild.",
+ "cliffhanger": "Vor der Toilette wartet ein alter Mann mit Hut und zeigt auf einen Automaten.",
+ "neu": [
+  "c001",
+  "c008"
+ ],
+ "wiederholung": [
+  "c031"
+ ],
+ "naechste": "Morgen: Folge 3 – Der Fahrkarten-Automat",
+ "segmente": [
+  {
+   "id": "s01",
+   "art": "erzaehler",
+   "text": "Knö muss aufs Klo. Sofort. Und überall nur Zeichen.",
+   "regie": "dringend"
+  },
+  {
+   "id": "s02",
+   "art": "erzaehler",
+   "text": "Knö hüpft von einem Bein aufs andere. Eine Frau vom Infoschalter kommt näher."
+  },
+  {
+   "id": "s03",
+   "art": "japanisch",
+   "sprecher": "personal",
+   "text": "観光ですか",
+   "kana": "かんこうですか",
+   "romaji": "kankou desu ka",
+   "de": "Sind Sie Tourist?",
+   "karte": "klein"
+  },
+  {
+   "id": "s04",
+   "art": "erzaehler",
+   "text": "Das kennt Knö von gestern!",
+   "regie": "stolz"
+  },
+  {
+   "id": "s05",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c031"
+  },
+  {
+   "id": "s06",
+   "art": "erzaehler",
+   "text": "Super. Aber das Klo ist damit leider nicht gefunden."
+  },
+  {
+   "id": "s07",
+   "art": "erzaehler",
+   "text": "Knö macht Pantomime. Die Frau denkt: Knö will tanzen.",
+   "regie": "lustig"
+  },
+  {
+   "id": "s08",
+   "art": "erzaehler",
+   "text": "Zum Glück gibt es ein Zauberwort, um jemanden höflich anzusprechen."
+  },
+  {
+   "id": "s09",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c001",
+   "wiederholen": true
+  },
+  {
+   "id": "s10",
+   "art": "erzaehler",
+   "text": "Sumimasen. Das heißt: Entschuldigung, darf ich kurz stören?"
+  },
+  {
+   "id": "s11",
+   "art": "erzaehler",
+   "text": "Jetzt die Frage. Toilette heißt toire. Wo ist … heißt wa doko desu ka."
+  },
+  {
+   "id": "s12",
+   "art": "quiz"
+  },
+  {
+   "id": "s13",
+   "art": "japanisch",
+   "sprecher": "knoe",
+   "curriculum": "c008",
+   "wiederholen": true
+  },
+  {
+   "id": "s14",
+   "art": "erzaehler",
+   "text": "Toire wa doko desu ka. Die Frau lächelt und zeigt nach links.",
+   "regie": "erleichtert"
+  },
+  {
+   "id": "s15",
+   "art": "japanisch",
+   "sprecher": "personal",
+   "curriculum": "c009",
+   "karte": "klein"
+  },
+  {
+   "id": "s16",
+   "art": "erzaehler",
+   "text": "Otearai heißt auch Toilette. Achira heißt: dort drüben."
+  },
+  {
+   "id": "s17",
+   "art": "erzaehler",
+   "text": "Knö rennt los. Gerade noch rechtzeitig!"
+  },
+  {
+   "id": "s18",
+   "art": "erzaehler",
+   "text": "Als Knö wieder rauskommt, steht da ein alter Mann mit Hut.",
+   "regie": "spannend"
+  },
+  {
+   "id": "s19",
+   "art": "erzaehler",
+   "text": "Er zeigt auf einen Automaten voller Knöpfe. Und lächelt geheimnisvoll.",
+   "regie": "geheimnisvoll"
+  }
+ ],
+ "shots": [
+  {
+   "ab": "s01",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": 10,
+     "aktion": "gehen"
+    },
+    {
+     "id": "p1",
+     "figur": "mensch",
+     "pos": [
+      -2.6,
+      -0.9
+     ],
+     "blick": 90,
+     "aktion": "gehen",
+     "variante": "passant2",
+     "nach": [
+      1.5,
+      -1.2
+     ]
+    }
+   ]
+  },
+  {
+   "ab": "s02",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": -30,
+     "aktion": "gehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      -2.0,
+      0.2
+     ],
+     "blick": 40,
+     "aktion": "gehen",
+     "variante": "rezeption",
+     "nach": [
+      -1.2,
+      0.6
+     ]
+    }
+   ]
+  },
+  {
+   "ab": "s03",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": -120,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      -1.2,
+      0.6
+     ],
+     "blick": 55,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s04",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": 0,
+     "aktion": "freuen"
+    }
+   ]
+  },
+  {
+   "ab": "s05",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": -120,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      -1.2,
+      0.6
+     ],
+     "blick": 55,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s07",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "raus"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": -60,
+     "aktion": "freuen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      -1.2,
+      0.6
+     ],
+     "blick": 55,
+     "aktion": "verwirrt",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s08",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": 15,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s09",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": -120,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      -1.2,
+      0.6
+     ],
+     "blick": 55,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s11",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "gross",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": 10,
+     "aktion": "stehen"
+    }
+   ]
+  },
+  {
+   "ab": "s12",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": 10,
+     "aktion": "verwirrt"
+    }
+   ]
+  },
+  {
+   "ab": "s13",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "ueberSchulter",
+    "fokus": "knoe",
+    "gegen": "personal"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": -120,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      -1.2,
+      0.6
+     ],
+     "blick": 55,
+     "aktion": "stehen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s14",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "personal",
+    "bewegung": "rechts"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": -120,
+     "aktion": "stehen"
+    },
+    {
+     "id": "personal",
+     "figur": "mensch",
+     "pos": [
+      -1.2,
+      0.6
+     ],
+     "blick": 55,
+     "aktion": "zeigen",
+     "variante": "rezeption"
+    }
+   ]
+  },
+  {
+   "ab": "s16",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "knoe"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.4,
+      1.6
+     ],
+     "blick": 0,
+     "aktion": "freuen"
+    }
+   ]
+  },
+  {
+   "ab": "s17",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "totale",
+    "fokus": "knoe",
+    "bewegung": "links"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      0.6,
+      1.2
+     ],
+     "blick": -80,
+     "aktion": "rennen",
+     "nach": [
+      -2.8,
+      1.6
+     ]
+    }
+   ]
+  },
+  {
+   "ab": "s18",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "halbnah",
+    "fokus": "knoe",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -1.2,
+      1.4
+     ],
+     "blick": 60,
+     "aktion": "erschrecken"
+    },
+    {
+     "id": "hut",
+     "figur": "mensch",
+     "pos": [
+      0.4,
+      0.6
+     ],
+     "blick": -60,
+     "aktion": "stehen",
+     "variante": "hutmann"
+    }
+   ]
+  },
+  {
+   "ab": "s19",
+   "szene": "flughafen",
+   "kamera": {
+    "preset": "nah",
+    "fokus": "hut",
+    "bewegung": "rein"
+   },
+   "figuren": [
+    {
+     "id": "knoe",
+     "figur": "knoe",
+     "pos": [
+      -1.2,
+      1.4
+     ],
+     "blick": 60,
+     "aktion": "stehen"
+    },
+    {
+     "id": "hut",
+     "figur": "mensch",
+     "pos": [
+      0.4,
+      0.6
+     ],
+     "blick": -60,
+     "aktion": "zeigen",
+     "variante": "hutmann"
+    }
+   ]
+  }
+ ],
+ "texte": [
+  {
+   "ab": "s01",
+   "art": "hook",
+   "text": "NOTFALL!",
+   "unter": "Folge 2: Ganz dringend!"
+  }
+ ]
+}

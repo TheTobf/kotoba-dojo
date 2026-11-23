@@ -10,7 +10,7 @@ import { Spatz } from '../figuren/Spatz';
 import { ladeSchriften } from '../lib/fonts';
 import { STILE, StilName, StilProvider } from '../lib/stil';
 import { Einblendung } from './Einblendung';
-import { Strasse } from './Strasse';
+import { Strasse } from '../szenen/Strasse';
 
 const Licht: React.FC<{ stil: StilName }> = ({ stil }) => {
   const st = { papier: [1.5, '#fff1dc', 0.85], knete: [1.3, '#ffffff', 1.0], tusche: [2.2, '#ffffff', 0.55], neutral: [1.4, '#ffffff', 0.95] }[stil] as [number, string, number];
