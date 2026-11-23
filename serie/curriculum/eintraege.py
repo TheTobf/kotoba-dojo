@@ -49,7 +49,7 @@ E = [
 ("hoeren","改札を出て右です","かいさつをでてみぎです","kaisatsu o dete migi desu","Raus durch die Sperre und dann rechts.","Bahnhof",2,1,None),
 ("sagen","ICカードはどこで買えますか","あいしーかーどはどこでかえますか","aishii kaado wa doko de kaemasu ka","Wo kann ich eine IC-Karte kaufen?","Bahnhof (Fahrkarte zum Aufladen)",2,1,None),
 ("sagen","チャージしたいです","ちゃーじしたいです","chaaji shitai desu","Ich möchte (die Karte) aufladen.","Automat, Konbini-Kasse",2,1,None),
-("hoeren","残高が足りません","ざんだかがたりません","zandaka ga tarimasen","Das Guthaben reicht nicht.","Bahnsteig-Sperre/Personal",2,1,"Formulierung des Personals; die Sperre selbst sagt evtl. anderes – bitte bestätigen"),
+("hoeren","残高が足りません","ざんだかがたりません","zandaka ga tarimasen","Das Guthaben reicht nicht.","Bahnsteig-Sperre/Personal",2,1,None),
 ("hoeren","精算機で精算してください","せいさんきでせいさんしてください","seisanki de seisan shite kudasai","Bitte zahlen Sie am Nachzahl-Automaten nach.","Bahnhof, wenn das Guthaben nicht reicht",3,1,None),
 ("sagen","すみません、これは何ですか","すみません、これはなんですか","sumimasen, kore wa nan desu ka","Entschuldigung, was ist das?","Laden, Speisekarte",1,1,None),
 ("sagen","これを一つください","これをひとつください","kore o hitotsu kudasai","Davon eins, bitte.","Laden, Bäcker (zwei: 二つ ふたつ, drei: 三つ みっつ)",1,1,None),

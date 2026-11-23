@@ -663,7 +663,7 @@
    "situation": "Bahnsteig-Sperre/Personal",
    "niveau": 2,
    "thema": "bahn",
-   "pruefen": "[PRÜFEN] Formulierung des Personals; die Sperre selbst sagt evtl. anderes – bitte bestätigen"
+   "pruefen": null
   },
   {
    "id": "c052",
