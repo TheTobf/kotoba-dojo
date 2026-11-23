@@ -1,0 +1,11 @@
+{
+ "hinweis": "Von Hand geprüfte Stellen, an denen kuromoji falsch liest (Satz → richtige Lesung ist die im Lehrplan).",
+ "saetze": {
+  "何名様ですか": "何名 = なんめい", "一人です": "一人 = ひとり", "日本語で何と言いますか": "何と = なんと",
+  "滞在の目的は何ですか": "何です = なんです", "パスポートをお願いします": "nur Langvokal-Schreibung", "一週間です": "いっしゅうかん (Verdopplung)",
+  "すみません、これは何ですか": "何です = なんです", "荷物を預けてもいいですか": "あずける", "Wi-Fiのパスワードは何ですか": "何です = なんです",
+  "一泊いくらですか": "いっぱく", "内見できますか": "ないけん (Wohnungsbesichtigung)", "今、入れますか": "はいれます (hineinkommen)",
+  "おすすめは何ですか": "何です = なんです", "これ、辛いですか": "からい (scharf), nicht つらい", "風邪薬はありますか": "かぜぐすり (Rendaku)",
+  "お一人様ですか": "おひとりさま"
+ }
+}
