@@ -156,7 +156,7 @@ export async function rendere(id: string, opt: { vorschau: boolean; nurKontrolle
   const l = lautheit(ziel);
   const lautOk = Math.abs(l.I - v.ton.zielLautheitLUFS) <= 1.5 && l.peak <= -0.5;
   (lautOk ? b.ok : b.warnungen).push(`Lautheit ${l.I} LUFS, Spitze ${l.peak} dBFS (Ziel ${v.ton.zielLautheitLUFS} LUFS)`);
-  b.ok.push('Stimme und VOICEVOX einzeln auf gleiche Lautheit normalisiert (−16 LUFS), keine Musik');
+  b.ok.push('Erzählung und japanische Stimme einzeln auf gleiche Lautheit normalisiert (−16 LUFS), keine Musik');
   schreibBericht([`\nRenderzeit: ${renderSek.toFixed(0)} s für ${(zeitleiste(ep, props.timing, v).gesamt / 30).toFixed(1)} s Video`]);
 
   if (!opt.vorschau) {

@@ -1,1 +1,17 @@
-{"version":1,"gelernt":[],"folgen":{}}
+{
+ "version": 1,
+ "gelernt": [
+  "c030",
+  "c031"
+ ],
+ "folgen": {
+  "ep01": {
+   "neu": [
+    "c030",
+    "c031"
+   ],
+   "wiederholung": [],
+   "fertig": "2026-11-25"
+  }
+ }
+}
