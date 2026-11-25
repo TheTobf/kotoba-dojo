@@ -54,14 +54,15 @@ export async function erzeugeTon(id: string, opt: { vorschau?: boolean; ohneEl?:
   const aufnahme = opt.vorschau ? null : findeAufnahme(id);
   // ElevenLabs auch für Vorschauen (Sätze werden zwischengespeichert und im fertigen Video wiederverwendet → keine Doppelkosten)
   const el = !aufnahme && !opt.ohneEl && v.erzaehler?.quelle === 'elevenlabs' && elSchluessel() ? v.erzaehler.elevenlabs : null;
-  const vv = await starteVoicevox();
-  if (!vv && !opt.vorschau && (aufnahme || el)) throw new Error('VOICEVOX läuft nicht. Bitte die VOICEVOX-App öffnen (oder Engine starten) – fürs fertige Video ist VOICEVOX Pflicht.');
+  const jpOpenJTalk = v.japanisch?.quelle === 'openjtalk';
+  const vv = jpOpenJTalk ? false : await starteVoicevox();
+  if (!jpOpenJTalk && !vv && !opt.vorschau && (aufnahme || el)) throw new Error('VOICEVOX läuft nicht. Bitte die VOICEVOX-App öffnen (oder Engine starten) – fürs fertige Video ist VOICEVOX Pflicht.');
   if (!vv && !vorschauJapanischMoeglich()) throw new Error('Weder VOICEVOX noch die Vorschau-Stimme (pyopenjtalk) verfügbar.');
   const jpVorschau = !vv;
   jpVorschauAktiv = jpVorschau;
   const erkl = v.stimmen.erklaerer ?? v.stimmen.personal;
   jpErklaerer = async (ja, ziel) => (await japanisch(ja, erkl, ziel, jpVorschau)).dauer;
-  const timing: Timing = { quelle: aufnahme ? 'aufnahme' : el ? 'elevenlabs' : 'vorschau', jpQuelle: jpVorschau ? 'vorschau' : 'voicevox', segmente: {} };
+  const timing: Timing = { quelle: aufnahme ? 'aufnahme' : el ? 'elevenlabs' : 'vorschau', jpQuelle: jpOpenJTalk ? 'openjtalk' : jpVorschau ? 'vorschau' : 'voicevox', segmente: {} };
   const meldungen: string[] = [];
 
   // --- Japanisch ---
@@ -136,7 +137,8 @@ export async function erzeugeTon(id: string, opt: { vorschau?: boolean; ohneEl?:
   const fx = sfx(ton);
   timing.sfx = { tick: 'ton/' + path.basename(fx.tick), pling: 'ton/' + path.basename(fx.pling) };
   schreib(path.join(ord, 'timing.json'), timing);
-  if (jpVorschau) meldungen.push('Japanisch mit Ersatzstimme (pyopenjtalk), weil VOICEVOX nicht läuft – nur Vorschau.');
+  if (jpOpenJTalk) meldungen.push('Japanisch: Open JTalk „Mei“ (CC BY 3.0) mit Tonhöhe je Rolle');
+  else if (jpVorschau) meldungen.push('Japanisch mit Ersatzstimme (pyopenjtalk), weil VOICEVOX nicht läuft – nur Vorschau.');
   return { timing, meldungen };
 }
 

@@ -1,7 +1,7 @@
 # Serie „Gestrandet in Japan“ – Anleitung für Claude
 
 Folgen-Generator für eine tägliche Kurzvideo-Serie (Japanisch lernen mit dem Maskottchen Knö). Läuft normalerweise auf dem
-Laptop des Nutzers (Windows, immer an); dort rendern VOICEVOX und Remotion lokal. **Deutsche Erzählung: ElevenLabs (KI-Stimme, vollautomatisch)**
+Laptop des Nutzers (Windows, immer an); dort rendert Remotion lokal; Japanisch spricht Open JTalk „Mei“ (vom Nutzer gewählt, CC BY 3.0). **Deutsche Erzählung: ElevenLabs (KI-Stimme, vollautomatisch)**
 – einzige Ausnahme von „0 € Zusatzkosten“, vom Nutzer gewünscht (Entscheidung 25.11.2026). Eigene Aufnahmen (whisper.cpp) bleiben möglich und haben Vorrang.
 Guthaben sparen: Sätze werden zwischengespeichert; vor Änderungen an Erzähltexten bedenken, dass jede neue Zeile Zeichen kostet.
 In der Cloud: Befehle mit `NODE_USE_ENV_PROXY=1 ELEVENLABS_API_KEY=proxy-injected` starten.

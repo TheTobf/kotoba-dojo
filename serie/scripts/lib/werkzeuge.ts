@@ -82,7 +82,7 @@ export function vorschauJapanischMoeglich(): boolean {
   const py = WIN ? 'python' : 'python3';
   return spawnSync(py, ['-c', 'import pyopenjtalk'], { encoding: 'utf8' }).status === 0;
 }
-export function sprichJAVorschau(text: string, wav: string) {
+export function sprichJAVorschau(text: string, wav: string, tempo = 1, halbton = 0) {
   const py = WIN ? 'python' : 'python3';
-  execFileSync(py, ['-c', `import pyopenjtalk,sys,wave,numpy as np\nx,sr=pyopenjtalk.tts(sys.argv[1])\nw=wave.open(sys.argv[2],'wb');w.setnchannels(1);w.setsampwidth(2);w.setframerate(sr);w.writeframes(np.clip(x,-32768,32767).astype(np.int16).tobytes());w.close()`, text, wav]);
+  execFileSync(py, ['-c', `import pyopenjtalk,sys,wave,numpy as np\nx,sr=pyopenjtalk.tts(sys.argv[1],speed=float(sys.argv[3]),half_tone=float(sys.argv[4]))\nw=wave.open(sys.argv[2],'wb');w.setnchannels(1);w.setsampwidth(2);w.setframerate(sr);w.writeframes(np.clip(x,-32768,32767).astype(np.int16).tobytes());w.close()`, text, wav, String(tempo), String(halbton)]);
 }

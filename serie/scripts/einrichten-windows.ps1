@@ -22,7 +22,11 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 Installiere git 'Git.Git'
 Installiere node 'OpenJS.NodeJS.LTS'
 Installiere ffmpeg 'Gyan.FFmpeg'
+Installiere python 'Python.Python.3.12'
 PfadNeu
+# Japanische Stimme (Open JTalk „Mei“) über pyopenjtalk
+python -m pip install --user --quiet pyopenjtalk-plus numpy
+if ($LASTEXITCODE -ne 0) { Write-Host '⚠ pyopenjtalk konnte nicht installiert werden – bitte Fehlermeldung an Claude schicken.' -ForegroundColor Yellow }
 
 # --- Projekt holen ---
 New-Item -ItemType Directory -Force -Path $ziel | Out-Null
@@ -43,9 +47,9 @@ npm ci --no-audit --no-fund
 Pop-Location
 New-Item -ItemType Directory -Force -Path $werkzeuge | Out-Null
 
-# --- VOICEVOX (kostenlos, lokal) ---
+# --- VOICEVOX (optional; Standard ist Open JTalk „Mei“) ---
 $vvEngine = Join-Path $env:LOCALAPPDATA 'Programs\VOICEVOX\vv-engine\run.exe'
-if (Test-Path $vvEngine) { Write-Host '✓ VOICEVOX ist schon installiert' } else {
+if ((Test-Path $vvEngine) -or ((Get-Content (Join-Path $repo 'serie\style\stilvorlage.json') -Raw) -match '"quelle": "openjtalk"')) { Write-Host '✓ VOICEVOX nicht nötig oder schon installiert' } else {
   Write-Host '→ lade VOICEVOX-Installer (GitHub) …'
   $rel = Invoke-RestMethod 'https://api.github.com/repos/VOICEVOX/voicevox/releases/latest' -Headers @{ 'User-Agent' = 'serie-einrichtung' }
   # DirectML-Version (nutzt die Grafikkarte, läuft aber auch ohne); sonst CPU-Version

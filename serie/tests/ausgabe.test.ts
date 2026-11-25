@@ -12,7 +12,7 @@ import { schneideZeile } from '../scripts/ton/aufnahme';
 test('caption enthält Pflichtangaben', () => {
   const c = caption(ladeEpisode('ep01'));
   assert.match(c, /Staffel 1 · Folge 1/);
-  assert.match(c, /VOICEVOX:/);
+  assert.match(c, /VOICEVOX:|Open JTalk/);
   assert.match(c, /mit KI und Code erstellt/i);
   assert.match(c, /angepinnten Kommentar/);
   const tags = c.match(/#\w+/g) ?? [];

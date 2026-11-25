@@ -11,6 +11,7 @@ const require = createRequire(import.meta.url);
 /** Sprecher, die in der Folge vorkommen → Pflicht-Namensnennung. */
 export function voicevoxCredits(ep: Episode): string[] {
   const v = ladeVorlage();
+  if (v.japanisch?.quelle === 'openjtalk') return ['Japanisch: Open JTalk, HTS Voice „Mei“ (MMDAgent Project / Nagoya Institute of Technology, CC BY 3.0)'];
   const namen = new Set(ep.segmente.filter((s) => s.art === 'japanisch').map((s) => v.stimmen[s.sprecher ?? 'knoe']?.sprecher).filter(Boolean));
   return [...namen].map((n) => `VOICEVOX:${n}`);
 }

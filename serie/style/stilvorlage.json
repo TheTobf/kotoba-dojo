@@ -91,43 +91,75 @@
     "knoe": {
       "sprecher": "春日部つむぎ",
       "stil": "ノーマル",
-      "tempo": 0.95
+      "tempo": 0.95,
+      "openjtalk": {
+        "halbton": 3.5,
+        "tempo": 0.95
+      }
     },
     "haru": {
       "sprecher": "四国めたん",
       "stil": "ノーマル",
-      "tempo": 1.0
+      "tempo": 1.0,
+      "openjtalk": {
+        "halbton": 1.5,
+        "tempo": 1.0
+      }
     },
     "personal": {
       "sprecher": "冥鳴ひまり",
       "stil": "ノーマル",
-      "tempo": 1.0
+      "tempo": 1.0,
+      "openjtalk": {
+        "halbton": 0,
+        "tempo": 1.0
+      }
     },
     "personal2": {
       "sprecher": "青山龍星",
       "stil": "ノーマル",
-      "tempo": 1.0
+      "tempo": 1.0,
+      "openjtalk": {
+        "halbton": -5,
+        "tempo": 1.0
+      }
     },
     "ansage": {
       "sprecher": "冥鳴ひまり",
       "stil": "ノーマル",
-      "tempo": 0.95
+      "tempo": 0.95,
+      "openjtalk": {
+        "halbton": 0.5,
+        "tempo": 0.95
+      }
     },
     "mori": {
       "sprecher": "四国めたん",
       "stil": "ノーマル",
-      "tempo": 0.95
+      "tempo": 0.95,
+      "openjtalk": {
+        "halbton": -1,
+        "tempo": 0.9
+      }
     },
     "ken": {
       "sprecher": "玄野武宏",
       "stil": "ノーマル",
-      "tempo": 1.0
+      "tempo": 1.0,
+      "openjtalk": {
+        "halbton": -6,
+        "tempo": 1.0
+      }
     },
     "erklaerer": {
       "sprecher": "冥鳴ひまり",
       "stil": "ノーマル",
       "tempo": 0.9,
-      "hinweis": "spricht japanische Wörter mitten in der deutschen Erzählung ([[…|…]]), etwas langsamer"
+      "hinweis": "spricht japanische Wörter mitten in der deutschen Erzählung ([[…|…]]), etwas langsamer",
+      "openjtalk": {
+        "halbton": 0,
+        "tempo": 0.85
+      }
     }
   },
   "stimmenBedingungenGeprueft": false,
@@ -143,15 +175,19 @@
       "name": "George",
       "modell": "eleven_multilingual_v2",
       "einstellungen": {
-        "stability": 0.45,
+        "stability": 0.32,
         "similarity_boost": 0.8,
-        "style": 0.3,
+        "style": 0.45,
         "use_speaker_boost": true,
-        "speed": 1.0
+        "speed": 1.12
       },
       "aussprache": {},
-      "tempo": 1.06,
-      "tempoHinweis": "Lokale Beschleunigung nach ElevenLabs (kostenlos). 1.0 = Original."
+      "tempo": 1.0,
+      "tempoHinweis": "Lokale Beschleunigung nach ElevenLabs (kostenlos). 1.0 = Original; Grundtempo steckt in einstellungen.speed (0.7–1.2)."
     }
+  },
+  "japanisch": {
+    "hinweis": "Japanische Stimme. quelle 'openjtalk' = HTS-Stimme „Mei“ über pyopenjtalk (CC BY 3.0, Namensnennung in caption.txt; vom Nutzer gewählt am 25.11.2026). 'voicevox' = VOICEVOX-Sprecher aus stimmen.*.sprecher.",
+    "quelle": "openjtalk"
   }
 }

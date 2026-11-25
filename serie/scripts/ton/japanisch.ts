@@ -45,7 +45,7 @@ type Mora = { consonant_length: number | null; vowel_length: number };
 type AQ = { accent_phrases: { moras: Mora[]; pause_mora: Mora | null }[]; speedScale: number; prePhonemeLength: number; postPhonemeLength: number; volumeScale: number; outputSamplingRate: number };
 
 /** Erzeugt WAV + Phrasen-Zeiten. stimme = Eintrag aus stilvorlage.stimmen. */
-export async function japanisch(ja: string, stimme: { sprecher: string; stil: string; tempo: number }, wav: string, vorschau: boolean) {
+export async function japanisch(ja: string, stimme: { sprecher: string; stil: string; tempo: number; openjtalk?: { halbton: number; tempo: number } }, wav: string, vorschau: boolean) {
   const st = await stuecke(ja);
   const gesamtM = st.reduce((a, b) => a + b.m, 0) || 1;
   let moraStarts: number[] = [];
@@ -63,7 +63,7 @@ export async function japanisch(ja: string, stimme: { sprecher: string; stil: st
     }
     moraStarts.push(t);
   } else {
-    sprichJAVorschau(ja, wav + '.roh.wav');
+    sprichJAVorschau(ja, wav + '.roh.wav', stimme.openjtalk?.tempo ?? 1, stimme.openjtalk?.halbton ?? 0);
   }
   ffmpeg(['-i', wav + '.roh.wav', '-ac', '1', '-ar', '48000', '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', wav]);
   fs.rmSync(wav + '.roh.wav');

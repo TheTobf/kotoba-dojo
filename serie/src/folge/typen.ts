@@ -58,6 +58,6 @@ export type Episode = {
 
 export type WortZeit = { w: string; start: number; ende: number; jp?: boolean };
 export type SegmentTiming = { datei?: string; dauer: number; woerter?: WortZeit[]; phrasen?: WortZeit[]; wiederholungAb?: number };
-export type Timing = { quelle: 'aufnahme' | 'elevenlabs' | 'vorschau'; elTier?: string; elStimme?: string; jpQuelle: 'voicevox' | 'vorschau'; segmente: Record<string, SegmentTiming>; sfx?: Record<string, string> };
+export type Timing = { quelle: 'aufnahme' | 'elevenlabs' | 'vorschau'; elTier?: string; elStimme?: string; jpQuelle: 'voicevox' | 'openjtalk' | 'vorschau'; segmente: Record<string, SegmentTiming>; sfx?: Record<string, string> };
 
 export type CurriculumEintrag = { id: string; art: string; ja: string; kana: string; romaji: string; de: string; situation: string; niveau: number; thema: string; pruefen: string | null };

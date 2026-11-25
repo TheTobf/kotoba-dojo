@@ -4,6 +4,12 @@ Stand: 23.11.2026. Alles kostenlos; keine kostenpflichtigen APIs. Keine fremden 
 
 ## Stimmen
 
+### Japanisch – Open JTalk „Mei“ (Standard seit 25.11.2026)
+
+HTS Voice „Mei“ (MMDAgent Project Team, © Nagoya Institute of Technology), **CC BY 3.0**: kommerzielle Nutzung erlaubt,
+Namensnennung Pflicht → steht automatisch in `caption.txt`. Software: pyopenjtalk(-plus) (MIT), Open JTalk (Modified BSD).
+Jede Rolle bekommt eigene Tonhöhe/Tempo (`style/stilvorlage.json` → `stimmen.*.openjtalk`). VOICEVOX bleibt als Option (`japanisch.quelle`).
+
 ### VOICEVOX (Japanisch) – Pflicht-Namensnennung
 
 Software: VOICEVOX (Engine LGPL v3 + Nutzungsbedingungen), lokal auf dem Laptop. Jede Stimme hat **eigene** Bedingungen.
