@@ -13,20 +13,24 @@ irm https://raw.githubusercontent.com/TheTobf/kotoba-dojo/ccr-0b3bf917-4jzi1j/se
 Das Skript installiert Git, Node.js, ffmpeg, VOICEVOX (Installer zum Durchklicken), whisper.cpp + Modell `ggml-small` (≈ 470 MB),
 klont das Projekt nach `Dokumente\Projekte\kotoba-dojo` und macht einen Selbsttest. Erneut ausführen = aktualisieren.
 
+Das Skript fragt außerdem nach dem **ElevenLabs-Schlüssel** (wird nur lokal als Benutzer-Umgebungsvariable gespeichert)
+und ob jede Nacht um 3:10 automatisch bis zu 3 Folgen gerendert werden sollen (geplante Aufgabe, Protokoll `serie/out/automatik.log`).
+
 Danach einmal:
 1. `LICENSES.md` → VOICEVOX-Bedingungen prüfen, dann in `serie/style/stilvorlage.json` `"stimmenBedingungenGeprueft": true`.
 2. Optional: `serie/serie.json` → `"eingangOrdner"` auf einen Ordner setzen, den Handy und Laptop synchronisieren
    (z. B. `"~/OneDrive/Sprachmemos"`). Sprachmemos mit „Folge 3“ im Namen landen dann automatisch bei `ep03`.
 3. Startdatum fürs Posten in `serie/serie.json` (`startdatum`).
 
-## Täglicher Ablauf
+## Ablauf (vollautomatisch mit ElevenLabs)
 
-1. In der Claude-Desktop-App eine Claude-Code-Sitzung im Ordner `kotoba-dojo` öffnen.
-2. `/status` – zeigt Vorlauf und fehlende Aufnahmen. Geht der Vorrat aus: `/staffel`.
-3. `/skripte` – alle offenen Skripte in `serie/recordings/AUFNAHME.md`. Am Handy einsprechen, eine Datei pro Folge.
-4. Datei als `serie/recordings/ep03/voice.m4a` ablegen (oder in den Eingangsordner, Name „Folge 3“).
-5. `/fertig` – verarbeitet, prüft, rendert. Ergebnis in `serie/out/ep03/` (Video, Beschreibung, Cover, learned.json).
-6. Posten nach `serie/out/POSTPLAN.md`.
+1. Einmal pro Woche in der Claude-Desktop-App (Ordner `kotoba-dojo`): `/staffel` → Übersicht absegnen.
+2. Nachts rendert der Laptop automatisch die nächsten Folgen (oder sofort: `/fertig`). Ergebnis in `serie/out/epXX/`.
+3. Posten nach `serie/out/POSTPLAN.md` – beim Posten das KI-Label einschalten (steht in caption.txt).
+4. `/status` zeigt Vorlauf und ElevenLabs-Guthaben.
+
+Eigene Stimme statt KI (z. B. ab 10.000 Followern): in `serie/style/stilvorlage.json` `erzaehler.quelle` auf `"aufnahme"` setzen,
+dann `/skripte` → einsprechen → `serie/recordings/ep03/voice.m4a` (oder Eingangsordner) → `/fertig`. Eine vorhandene Aufnahme hat immer Vorrang.
 
 ## Werkzeuge
 

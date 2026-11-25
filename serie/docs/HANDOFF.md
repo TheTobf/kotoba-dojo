@@ -10,6 +10,13 @@ Stand: 23.11.2026 · Branch `ccr-0b3bf917-4jzi1j` · Ordner `serie/` im Repo `ko
 - **Stil/Maskottchen:** Tusche-Comic + Knö (fest in `style/stilvorlage.json`).
 - **Lehrplan:** 153 Einträge, doppelt geprüft (`npm run lehrplan:pruefen`), 0× [PRÜFEN]. Staffel 1 nutzt 11 neue Sätze.
 
+## Änderung 25.11.2026: Erzählung mit ElevenLabs
+
+- Deutsche Erzählung kommt vollautomatisch von ElevenLabs (`scripts/ton/elevenlabs.ts`, Endpunkt *with-timestamps* → wortgenaue Untertitel).
+- Sätze werden zwischengespeichert (`episodes/epXX/ton/el-*.wav`), Guthaben wird vor jeder Folge geprüft.
+- Konto: Free-Plan (10.000 Zeichen/Monat, nicht kommerziell, nur Standard-Stimmen). Für Monetarisierung: Starter-Plan.
+- Laptop: Schlüssel als Benutzer-Umgebungsvariable `ELEVENLABS_API_KEY`; nächtliche geplante Aufgabe rendert bis zu 3 Folgen.
+
 ## Offen / bitte bestätigen
 
 1. **VOICEVOX-Nutzungsbedingungen** prüfen (`LICENSES.md`, Seiten waren aus der Cloud nicht erreichbar) → `stimmenBedingungenGeprueft: true`. Vorher rendert `/fertig` nichts Finales.
@@ -44,7 +51,7 @@ episode.json ──► scripts/ton.ts ──► timing.json + ton/*.wav ──�
 ## Nächste Schritte
 
 1. Laptop einrichten, Bedingungen bestätigen, `/status`.
-2. Folgen 1–7 einsprechen (`recordings/AUFNAHME.md`) → `/fertig` → posten nach `out/POSTPLAN.md`.
+2. Stimme wählen (George oder Bibliotheksstimme mit Starter-Plan), dann `/fertig` bzw. nächtliche Automatik → posten nach `out/POSTPLAN.md`.
 3. Rechtzeitig `/staffel` für Staffel 2 (Ein Dach über dem Kopf: Krähennest am Schrein, Frau Mori, Mülltrennung). Neue Szenen nötig: Schrein, Frau Moris Haus/Genkan.
 4. Erstes `/appvideo` (z. B. Behind the Scenes: „So entsteht eine Folge“).
 

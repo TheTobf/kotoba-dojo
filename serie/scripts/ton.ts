@@ -8,19 +8,22 @@ import type { Timing } from '../src/folge/typen';
 import { epOrdner, findeAufnahme, ladeEpisode, ladeLehrplan, ladeVorlage, schreib } from './lib/projekt';
 import { dauer, ffmpeg, sprichDE, starteVoicevox, vorschauJapanischMoeglich, vorschauStimmeDE, whisper } from './lib/werkzeuge';
 import { abgleichen, erkenne, saeubern, schneideZeile } from './ton/aufnahme';
+import { elKontingent, elKosten, elSatz, elSchluessel } from './ton/elevenlabs';
 import { japanisch, verdoppeln } from './ton/japanisch';
 import { sfx } from './ton/sfx';
 
-export async function erzeugeTon(id: string, opt: { vorschau?: boolean } = {}) {
+export async function erzeugeTon(id: string, opt: { vorschau?: boolean; ohneEl?: boolean } = {}) {
   const ep = ladeEpisode(id), v = ladeVorlage(), lp = ladeLehrplan();
   const ord = epOrdner(id), ton = path.join(ord, 'ton');
   fs.mkdirSync(ton, { recursive: true });
   const aufnahme = opt.vorschau ? null : findeAufnahme(id);
+  // ElevenLabs auch für Vorschauen (Sätze werden zwischengespeichert und im fertigen Video wiederverwendet → keine Doppelkosten)
+  const el = !aufnahme && !opt.ohneEl && v.erzaehler?.quelle === 'elevenlabs' && elSchluessel() ? v.erzaehler.elevenlabs : null;
   const vv = await starteVoicevox();
-  if (!vv && !opt.vorschau && aufnahme) throw new Error('VOICEVOX läuft nicht. Bitte die VOICEVOX-App öffnen (oder Engine starten) – fürs fertige Video ist VOICEVOX Pflicht.');
+  if (!vv && !opt.vorschau && (aufnahme || el)) throw new Error('VOICEVOX läuft nicht. Bitte die VOICEVOX-App öffnen (oder Engine starten) – fürs fertige Video ist VOICEVOX Pflicht.');
   if (!vv && !vorschauJapanischMoeglich()) throw new Error('Weder VOICEVOX noch die Vorschau-Stimme (pyopenjtalk) verfügbar.');
   const jpVorschau = !vv;
-  const timing: Timing = { quelle: aufnahme ? 'aufnahme' : 'vorschau', jpQuelle: jpVorschau ? 'vorschau' : 'voicevox', segmente: {} };
+  const timing: Timing = { quelle: aufnahme ? 'aufnahme' : el ? 'elevenlabs' : 'vorschau', jpQuelle: jpVorschau ? 'vorschau' : 'voicevox', segmente: {} };
   const meldungen: string[] = [];
 
   // --- Japanisch ---
@@ -58,6 +61,18 @@ export async function erzeugeTon(id: string, opt: { vorschau?: boolean } = {}) {
       const r = schneideZeile(sauber, woerter.slice(t.von, t.bis + 1), path.join(ton, datei), v.ton.stimmeLUFS);
       timing.segmente[s.id] = { datei: 'ton/' + datei, dauer: r.dauer, woerter: r.woerter };
     });
+  } else if (el) {
+    const texte = erz.map((s) => s.text ?? '');
+    const kosten = elKosten(texte, el, ton);
+    const k = await elKontingent();
+    timing.elTier = k.tier; timing.elStimme = el.name;
+    if (kosten > k.rest) throw new Error(`ElevenLabs-Guthaben reicht nicht: Folge braucht ${kosten} Zeichen, übrig sind ${k.rest} von ${k.limit} (Reset ${new Date(k.reset * 1000).toLocaleDateString('de-DE')}).`);
+    for (let i = 0; i < erz.length; i++) {
+      const r = await elSatz(texte[i], el, ton, texte[i - 1], texte[i + 1], v.ton.stimmeLUFS);
+      timing.segmente[erz[i].id] = { datei: 'ton/' + r.datei, dauer: r.dauer, woerter: r.woerter };
+    }
+    meldungen.push(`Erzählung: ElevenLabs „${el.name}“ (${kosten} neue Zeichen, danach ${k.rest - kosten} von ${k.limit} übrig, Plan ${k.tier})`);
+    if (k.tier === 'free') meldungen.push('ElevenLabs Free-Plan: nur nicht-kommerziell und mit Namensnennung (steht in caption.txt) – für Monetarisierung Starter-Plan nötig.');
   } else {
     const art = vorschauStimmeDE();
     for (const s of erz) {
@@ -84,5 +99,5 @@ export async function erzeugeTon(id: string, opt: { vorschau?: boolean } = {}) {
 if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith('ton.ts')) {
   const rest = process.argv.slice(2); const id = rest.find((a) => !a.startsWith('--'));
   if (!id) { console.error('Aufruf: tsx scripts/ton.ts ep01 [--vorschau]'); process.exit(1); }
-  erzeugeTon(id, { vorschau: rest.includes('--vorschau') }).then(({ meldungen }) => { meldungen.forEach((m) => console.log('• ' + m)); console.log(`✓ timing.json für ${id}`); }).catch((e) => { console.error('✗ ' + e.message); process.exit(1); });
+  erzeugeTon(id, { vorschau: rest.includes('--vorschau'), ohneEl: rest.includes('--ohne-elevenlabs') }).then(({ meldungen }) => { meldungen.forEach((m) => console.log('• ' + m)); console.log(`✓ timing.json für ${id}`); }).catch((e) => { console.error('✗ ' + e.message); process.exit(1); });
 }

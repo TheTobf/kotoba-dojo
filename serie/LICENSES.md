@@ -25,7 +25,20 @@ Typische Verbote (für alle prüfen): Rufschädigung der Figur/Sprecher, politis
 Behauptung, die Stimme sei ein echter Mensch. Unsere Nutzung (Lernvideos, freundlich) fällt nach meinem Stand nicht darunter.
 Stimme wechseln: in `style/stilvorlage.json` → `stimmen`, dann diese Tabelle anpassen.
 
-### Deutsche Erzählung
+### Deutsche Erzählung – ElevenLabs (KI-Stimme, kostenpflichtig ab Monetarisierung)
+
+Seit 25.11.2026 spricht standardmäßig eine ElevenLabs-Stimme (`style/stilvorlage.json` → `erzaehler`). Eigene Aufnahmen haben Vorrang.
+
+| Plan | Zeichen/Monat | Kommerzielle Nutzung | Namensnennung | ≈ Folgen/Monat |
+|---|---|---|---|---|
+| Free (aktuell) | 10.000 | **nein** | Pflicht („elevenlabs.io“) | ≈ 11 |
+| Starter (≈ 5 $/Monat) | 30.000 | ja | nicht nötig (wir nennen sie trotzdem) | ≈ 35 |
+
+[PRÜFEN] Stand nach meinem Wissen – aktuelle Bedingungen: https://elevenlabs.io/terms-of-use · https://elevenlabs.io/pricing.
+Free-Plan kann keine Stimmen aus der Bibliothek per API nutzen (nur Standard-Stimmen wie George). Folge ≈ 700–900 Zeichen.
+Die Caption nennt die KI-Stimme und erinnert an das KI-Label der Plattform.
+
+### Eigene Aufnahme (optional)
 
 Deine eigene Stimme. Vorschau-Stimmen (nur `preview.mp4`, nie im fertigen Video): Windows-Sprachausgabe (Laptop),
 espeak-ng (GPL v3, nur Cloud-Test), Japanisch-Ersatz pyopenjtalk + HTS-Stimme (MIT/BSD, nur Cloud-Test).

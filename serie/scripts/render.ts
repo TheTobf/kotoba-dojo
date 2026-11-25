@@ -67,7 +67,8 @@ async function kontrolle(id: string, serveUrl: string, props: FolgeProps, vorsch
     if (!s.curriculum) b.warnungen.push(`${s.id}: freier japanischer Satz „${s.text}“ (${s.romaji}) – nicht aus dem geprüften Lehrplan, bitte gegenlesen`);
   }
   // Ton-Quelle
-  if (props.timing.quelle !== 'aufnahme') (vorschau ? b.warnungen : b.fehler).push('Deutsch: Vorschau-Stimme statt deiner Aufnahme');
+  if (props.timing.quelle === 'vorschau') (vorschau ? b.warnungen : b.fehler).push('Deutsch: Vorschau-Stimme statt Aufnahme/ElevenLabs');
+  else b.ok.push(props.timing.quelle === 'elevenlabs' ? `Deutsch: ElevenLabs (${props.timing.elStimme}), wortgenaue Zeitmarken` : 'Deutsch: deine Aufnahme');
   if (props.timing.jpQuelle !== 'voicevox') (vorschau ? b.warnungen : b.fehler).push('Japanisch: Ersatzstimme statt VOICEVOX');
   // Standbilder
   const frames = new Map<number, string>();
@@ -127,7 +128,7 @@ export async function rendere(id: string, opt: { vorschau: boolean; nurKontrolle
   const t0 = Date.now();
   const v = ladeVorlage();
   if (!opt.vorschau) {
-    if (!findeAufnahme(id)) throw new Error(`Keine Aufnahme in recordings/${id}/ – fürs fertige Video brauche ich deine Stimme.`);
+    if (!findeAufnahme(id) && !(v.erzaehler?.quelle === 'elevenlabs' && process.env.ELEVENLABS_API_KEY)) throw new Error(`Keine Aufnahme in recordings/${id}/ und keine ElevenLabs-Stimme eingerichtet (ELEVENLABS_API_KEY fehlt).`);
     if (!v.stimmenBedingungenGeprueft) throw new Error('Die Nutzungsbedingungen der VOICEVOX-Stimmen sind noch nicht bestätigt (LICENSES.md, stilvorlage.stimmenBedingungenGeprueft).');
   }
   const { ep, props, serveUrl, tonInfo } = await vorbereiten(id, opt.vorschau);

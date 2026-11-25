@@ -79,6 +79,31 @@ if (-not (Test-Path $modell)) {
   Invoke-WebRequest 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin' -OutFile $modell
 } else { Write-Host '✓ Sprachmodell ist schon da' }
 
+# --- ElevenLabs (deutsche KI-Erzählstimme) ---
+if (-not [Environment]::GetEnvironmentVariable('ELEVENLABS_API_KEY', 'User')) {
+  Write-Host ''
+  Write-Host 'ElevenLabs-API-Schlüssel (elevenlabs.io → Profil → API Keys). Leer lassen = später.'
+  $sicher = Read-Host 'Schlüssel' -AsSecureString
+  $klar = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($sicher))
+  if ($klar) { [Environment]::SetEnvironmentVariable('ELEVENLABS_API_KEY', $klar, 'User'); $env:ELEVENLABS_API_KEY = $klar; Write-Host '✓ Schlüssel gespeichert (nur lokal, Benutzer-Umgebungsvariable)' }
+} else { Write-Host '✓ ElevenLabs-Schlüssel ist schon eingerichtet' }
+
+# --- Automatik: jede Nacht neue Folgen fertig rendern (Laptop ist immer an) ---
+$aufgabe = 'Gestrandet in Japan – Folgen rendern'
+if (-not (Get-ScheduledTask -TaskName $aufgabe -ErrorAction SilentlyContinue)) {
+  $ja = Read-Host 'Jede Nacht um 3:10 automatisch die nächsten Folgen rendern? (j/n)'
+  if ($ja -eq 'j') {
+    $serie = Join-Path $repo 'serie'
+    $log = Join-Path $serie 'out\automatik.log'
+    $befehl = "Set-Location '$serie'; git -C '$repo' pull --ff-only; npx tsx scripts/fertig.ts --max=3 *>> '$log'"
+    $aktion = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -WindowStyle Hidden -Command `"$befehl`""
+    $ausloeser = New-ScheduledTaskTrigger -Daily -At '03:10'
+    $einst = New-ScheduledTaskSettingsSet -StartWhenAvailable -WakeToRun -ExecutionTimeLimit (New-TimeSpan -Hours 4)
+    Register-ScheduledTask -TaskName $aufgabe -Action $aktion -Trigger $ausloeser -Settings $einst -Description 'Rendert bis zu 3 geplante Folgen (ElevenLabs + VOICEVOX) nach serie\out' | Out-Null
+    Write-Host "✓ Geplante Aufgabe „$aufgabe“ eingerichtet (Protokoll: $log)"
+  }
+} else { Write-Host '✓ Nächtliche Automatik ist schon eingerichtet' }
+
 # --- Selbsttest ---
 Push-Location (Join-Path $repo 'serie')
 npx tsx --test tests/abgleich.test.ts

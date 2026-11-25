@@ -14,6 +14,14 @@ export function voicevoxCredits(ep: Episode): string[] {
   return [...namen].map((n) => `VOICEVOX:${n}`);
 }
 
+/** Namensnennung der Erzählstimme, wenn ElevenLabs genutzt wurde (im Free-Plan Pflicht, sonst Transparenz). */
+export function erzaehlerCredit(ep: Episode): string {
+  const f = path.join(p('episodes', ep.id), 'timing.json');
+  if (!fs.existsSync(f)) return '';
+  const t = JSON.parse(fs.readFileSync(f, 'utf8'));
+  return t.quelle === 'elevenlabs' ? `, Erzählung: ElevenLabs (elevenlabs.io)` : '';
+}
+
 export function caption(ep: Episode): string {
   const lp = ladeLehrplan(), serie = ladeSerie();
   const neu = ep.neu.map((id) => lp[id]).filter(Boolean);
@@ -32,9 +40,10 @@ export function caption(ep: Episode): string {
     '',
     tags.join(' '),
     '',
-    `Stimmen: ${voicevoxCredits(ep).join(', ')}`,
-    'Deutsche Erzählung: selbst gesprochen. Video mit KI und Code erstellt.',
+    `Stimmen: ${voicevoxCredits(ep).join(', ')}${erzaehlerCredit(ep)}`,
+    erzaehlerCredit(ep) ? 'Erzählstimme ist KI-generiert. Video mit KI und Code erstellt.' : 'Deutsche Erzählung: selbst gesprochen. Video mit KI und Code erstellt.',
     '',
+    ...(erzaehlerCredit(ep) ? ['⚠️ BEIM POSTEN: TikTok → „KI-generierte Inhalte“ einschalten (YouTube: „Veränderte oder synthetische Inhalte“ → Ja).', ''] : []),
     '— Vorschlag für den angepinnten Kommentar —',
     `„Wo kann ich das üben?“ → Alle Sätze aus der Serie kannst du in meiner Lern-App wiederholen – Link in meiner Bio. Welchen Satz hättest du gesagt? 👇`,
     '',
