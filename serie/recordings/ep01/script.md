@@ -25,9 +25,9 @@ Speichern als `recordings/ep01/voice.m4a` (mp3/wav gehen auch).
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 滞在の目的は何ですか*
 
-**10.** *(verwirrt)* Mokuteki? Ist das etwas zu essen?
+**10.** *(verwirrt)* _mokuteki_? Ist das etwas zu essen?
 
-**11.** Mokuteki heißt Zweck. Sie will wissen: Warum bist du hier?
+**11.** _mokuteki_ heißt Zweck. Sie will wissen: Warum bist du hier?
 
 **12.** Knö will Japan anschauen. Als Tourist.
 
@@ -35,7 +35,7 @@ Speichern als `recordings/ep01/voice.m4a` (mp3/wav gehen auch).
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 観光です*
 
-**13.** *(freudig)* Kankō desu. Tourismus. Kurz, höflich, perfekt.
+**13.** *(freudig)* _kankō_ heißt Tourismus. Kurz, höflich, perfekt.
 
 **14.** Die Beamtin nickt. Stempel. Knö darf rein!
 

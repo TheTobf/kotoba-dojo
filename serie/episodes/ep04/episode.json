@@ -16,7 +16,7 @@
   {
    "id": "s01",
    "art": "erzaehler",
-   "text": "Gleis drei. Zwei Züge. Einer fährt nach Shinjuku. Aber welcher?",
+   "text": "Gleis drei. Zwei Züge. Einer fährt nach [[新宿|Shinjuku]]. Aber welcher?",
    "regie": "hektisch"
   },
   {
@@ -29,7 +29,7 @@
   {
    "id": "s03",
    "art": "erzaehler",
-   "text": "Mamonaku heißt: gleich. Gleich fährt ein Zug ein!"
+   "text": "[[まもなく|mamonaku]] heißt: gleich. Gleich fährt ein Zug ein!"
   },
   {
    "id": "s03b",
@@ -50,12 +50,12 @@
   {
    "id": "s06",
    "art": "erzaehler",
-   "text": "Jetzt die Frage: Fährt dieser Zug nach Shinjuku?"
+   "text": "Jetzt die Frage: Fährt dieser Zug nach [[新宿|Shinjuku]]?"
   },
   {
    "id": "s07",
    "art": "erzaehler",
-   "text": "Kono densha heißt dieser Zug. Ni ikimasu ka heißt: fährt er nach …?"
+   "text": "[[この電車|kono densha]] heißt dieser Zug. [[に行きますか|ni ikimasu ka]] heißt: fährt er nach …?"
   },
   {
    "id": "s08",
@@ -71,7 +71,7 @@
   {
    "id": "s10",
    "art": "erzaehler",
-   "text": "Kono densha wa Shinjuku ni ikimasu ka. Ein ganzer Satz!",
+   "text": "Ein ganzer Satz! Und die Frau versteht ihn sofort.",
    "regie": "stolz"
   },
   {
@@ -87,7 +87,7 @@
   {
    "id": "s12",
    "art": "erzaehler",
-   "text": "Hai heißt ja. Knö springt in den Zug.",
+   "text": "[[はい|hai]] heißt ja. Knö springt in den Zug.",
    "regie": "erleichtert"
   },
   {

@@ -56,7 +56,7 @@ export type Episode = {
   naechste?: string;        // Teaser-Zeile am Ende
 };
 
-export type WortZeit = { w: string; start: number; ende: number };
+export type WortZeit = { w: string; start: number; ende: number; jp?: boolean };
 export type SegmentTiming = { datei?: string; dauer: number; woerter?: WortZeit[]; phrasen?: WortZeit[]; wiederholungAb?: number };
 export type Timing = { quelle: 'aufnahme' | 'elevenlabs' | 'vorschau'; elTier?: string; elStimme?: string; jpQuelle: 'voicevox' | 'vorschau'; segmente: Record<string, SegmentTiming>; sfx?: Record<string, string> };
 

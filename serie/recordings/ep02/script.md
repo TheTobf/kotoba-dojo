@@ -21,19 +21,19 @@ Speichern als `recordings/ep02/voice.m4a` (mp3/wav gehen auch).
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): すみません*
 
-**7.** Sumimasen. Das heißt: Entschuldigung, darf ich kurz stören?
+**7.** Das heißt: Entschuldigung, darf ich kurz stören?
 
-**8.** Jetzt die Frage. Toilette heißt toire. Wo ist … heißt wa doko desu ka.
+**8.** Jetzt die Frage. Toilette heißt _toire_. Wo ist … heißt _wa doko desu ka_.
 
 > ⏱ *Quiz-Countdown (3 Sekunden Stille – nichts sprechen)*
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): トイレはどこですか*
 
-**9.** *(erleichtert)* Toire wa doko desu ka. Die Frau lächelt und zeigt nach links.
+**9.** *(erleichtert)* Die Frau lächelt und zeigt nach links.
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): お手洗いはあちらです*
 
-**10.** Otearai heißt auch Toilette. Achira heißt: dort drüben.
+**10.** _otearai_ heißt auch Toilette. _achira_ heißt: dort drüben.
 
 **11.** Knö rennt los. Gerade noch rechtzeitig!
 

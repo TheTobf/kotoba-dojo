@@ -10,6 +10,7 @@ In der Cloud: Befehle mit `NODE_USE_ENV_PROXY=1 ELEVENLABS_API_KEY=proxy-injecte
 - **Befehle:** `/staffel`, `/folge`, `/skripte`, `/fertig`, `/status`, `/appvideo` (in `../.claude/commands/`).
 - **Regeln:** Japanisch nur aus `curriculum/curriculum.json` (nie `[PRÜFEN]`-Einträge); freie Sätze doppelt prüfen und melden. Pro Folge 1–2 neu + 1 Wiederholung.
   Keine Werbung in Folgen; App-Videos klar als Werbung. Keine fremden Bilder/Logos/Marken/Musik. Respektvoll, nie klischeehaft.
+- Japanisch in Erzähltexten immer als `[[ja|romaji]]` (optional `|lesung`) markieren – dann spricht es VOICEVOX statt der deutschen Stimme (`scripts/ton/erzaehlung.ts`); `pruefe-folge` meldet unmarkiertes Romaji als Fehler.
 - Captions: KI-Erzählstimme kennzeichnen (TikTok „KI-generierte Inhalte“); im ElevenLabs-Free-Plan ist kommerzielle Nutzung nicht erlaubt.
 - **Nie** ein Video mit Vorschau-Stimme als fertiges Video ausgeben (`preview.mp4` bleibt in `episodes/`).
 - **Selbstkontrolle ist Pflicht:** `npx tsx scripts/render.ts epXX [--vorschau] --nur-kontrolle`, Bericht lesen **und** Kontaktbogen/Standbilder selbst ansehen, Fehler beheben, erst dann rendern.

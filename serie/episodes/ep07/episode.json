@@ -28,7 +28,7 @@
   {
    "id": "s03",
    "art": "erzaehler",
-   "text": "Check-in heißt einfach chekkuin. Dazu onegai shimasu: bitte."
+   "text": "Check-in heißt einfach [[チェックイン|chekkuin]]. Dazu [[お願いします|onegai shimasu]]: bitte."
   },
   {
    "id": "s04",
@@ -59,7 +59,7 @@
   {
    "id": "s08",
    "art": "erzaehler",
-   "text": "Yoyaku shite iru heißt: Ich habe reserviert. Dann der Name und desu."
+   "text": "[[予約している|yoyaku shite iru]] heißt: Ich habe reserviert. Dann der Name und [[です|desu]]."
   },
   {
    "id": "s09",
@@ -87,7 +87,7 @@
   {
    "id": "s12",
    "art": "erzaehler",
-   "text": "Ippaku. Eine Nacht. Knö hat nur eine einzige Nacht gebucht!",
+   "text": "[[一泊|ippaku|いっぱく]]. Eine Nacht. Knö hat nur eine einzige Nacht gebucht!",
    "regie": "geschockt"
   },
   {

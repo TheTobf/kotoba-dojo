@@ -9,8 +9,43 @@ import { epOrdner, findeAufnahme, ladeEpisode, ladeLehrplan, ladeVorlage, schrei
 import { dauer, ffmpeg, sprichDE, starteVoicevox, vorschauJapanischMoeglich, vorschauStimmeDE, whisper } from './lib/werkzeuge';
 import { abgleichen, erkenne, saeubern, schneideZeile } from './ton/aufnahme';
 import { elKontingent, elKosten, elSatz, elSchluessel } from './ton/elevenlabs';
+import { anzeigeText, teile } from './ton/erzaehlung';
 import { japanisch, verdoppeln } from './ton/japanisch';
 import { sfx } from './ton/sfx';
+
+/** Erzählsatz aus deutschen Teilen (Stimme `sprich`) und japanischen Teilen (VOICEVOX „erklaerer“) zusammensetzen. */
+let jpErklaerer: ((ja: string, ziel: string) => Promise<number>) | null = null;
+async function mischeErzaehlung(text: string, ton: string, sprich: (de: string, davor?: string, danach?: string) => Promise<{ datei: string; woerter: { w: string; start: number; ende: number }[] }>, tempo: number, davor = '', danach = '') {
+  const tl = teile(text), luecke = 0.12;
+  const stuecke: { datei: string; woerter: { w: string; start: number; ende: number; jp?: boolean }[] }[] = [];
+  for (let i = 0; i < tl.length; i++) {
+    const t = tl[i];
+    if (t.art === 'de') {
+      const nachbarDavor = tl.slice(0, i).map((x) => (x.art === 'de' ? x.text : x.romaji)).join(' ') || davor;
+      const nachbarDanach = tl.slice(i + 1).map((x) => (x.art === 'de' ? x.text : x.romaji)).join(' ') || danach;
+      stuecke.push(await sprich(t.text, nachbarDavor, nachbarDanach));
+    } else {
+      const key = crypto.createHash('sha1').update(t.lesung + (jpVorschauAktiv ? 'v' : 'vv')).digest('hex').slice(0, 10);
+      const datei = `jpwort-${key}.wav`, ziel = path.join(ton, datei);
+      if (!fs.existsSync(ziel)) await jpErklaerer!(t.lesung, ziel);
+      stuecke.push({ datei, woerter: [{ w: t.romaji, start: 0.03, ende: Math.max(0.1, dauer(ziel) - 0.05), jp: true }] });
+    }
+  }
+  // zusammenfügen (mit kurzer Lücke), optional beschleunigen; Wortzeiten verschieben
+  const key = crypto.createHash('sha1').update(JSON.stringify([stuecke.map((s) => s.datei), tempo])).digest('hex').slice(0, 12);
+  const ausgabe = `erz-${key}.wav`, ziel = path.join(ton, ausgabe);
+  const woerter: { w: string; start: number; ende: number; jp?: boolean }[] = []; let off = 0;
+  for (const st of stuecke) { const d = dauer(path.join(ton, st.datei)); st.woerter.forEach((w) => woerter.push({ ...w, start: +((off + w.start) / tempo).toFixed(3), ende: +((off + w.ende) / tempo).toFixed(3) })); off += d + luecke; }
+  if (!fs.existsSync(ziel)) {
+    const ein = stuecke.flatMap((s) => ['-i', path.join(ton, s.datei)]);
+    const n = stuecke.length;
+    const kette = stuecke.map((_, i) => `[${i}]aresample=48000,aformat=channel_layouts=mono${i < n - 1 ? `,apad=pad_dur=${luecke}` : ''}[a${i}]`).join(';');
+    const tempoF = Math.abs(tempo - 1) < 0.005 ? '' : `,atempo=${tempo}`;
+    ffmpeg([...ein, '-filter_complex', `${kette};${stuecke.map((_, i) => `[a${i}]`).join('')}concat=n=${n}:v=0:a=1${tempoF}[o]`, '-map', '[o]', '-ar', '48000', '-ac', '1', ziel]);
+  }
+  return { datei: 'ton/' + ausgabe, dauer: dauer(ziel), woerter };
+}
+let jpVorschauAktiv = false;
 
 export async function erzeugeTon(id: string, opt: { vorschau?: boolean; ohneEl?: boolean } = {}) {
   const ep = ladeEpisode(id), v = ladeVorlage(), lp = ladeLehrplan();
@@ -23,6 +58,9 @@ export async function erzeugeTon(id: string, opt: { vorschau?: boolean; ohneEl?:
   if (!vv && !opt.vorschau && (aufnahme || el)) throw new Error('VOICEVOX läuft nicht. Bitte die VOICEVOX-App öffnen (oder Engine starten) – fürs fertige Video ist VOICEVOX Pflicht.');
   if (!vv && !vorschauJapanischMoeglich()) throw new Error('Weder VOICEVOX noch die Vorschau-Stimme (pyopenjtalk) verfügbar.');
   const jpVorschau = !vv;
+  jpVorschauAktiv = jpVorschau;
+  const erkl = v.stimmen.erklaerer ?? v.stimmen.personal;
+  jpErklaerer = async (ja, ziel) => (await japanisch(ja, erkl, ziel, jpVorschau)).dauer;
   const timing: Timing = { quelle: aufnahme ? 'aufnahme' : el ? 'elevenlabs' : 'vorschau', jpQuelle: jpVorschau ? 'vorschau' : 'voicevox', segmente: {} };
   const meldungen: string[] = [];
 
@@ -51,7 +89,7 @@ export async function erzeugeTon(id: string, opt: { vorschau?: boolean; ohneEl?:
     const { w16, sauber } = saeubern(aufnahme, path.join(ord, 'aufnahme'));
     const woerter = erkenne(w.exe, w.modell, w16);
     fs.writeFileSync(path.join(ord, 'aufnahme', 'woerter.json'), JSON.stringify(woerter, null, 1));
-    const treffer = abgleichen(erz.map((s) => s.text ?? ''), woerter);
+    const treffer = abgleichen(erz.map((s) => anzeigeText(s.text ?? '')), woerter);
     treffer.forEach((t, i) => {
       const s = erz[i];
       if (!t) throw new Error(`Zeile ${i + 1} („${s.text}“) wurde in der Aufnahme nicht gefunden.`);
@@ -63,34 +101,35 @@ export async function erzeugeTon(id: string, opt: { vorschau?: boolean; ohneEl?:
     });
   } else if (el) {
     const texte = erz.map((s) => s.text ?? '');
-    const kosten = elKosten(texte, el, ton);
+    const deTexte = texte.flatMap((t) => teile(t).filter((x) => x.art === 'de').map((x) => (x as { text: string }).text));
+    const kosten = elKosten(deTexte, el, ton);
     const k = await elKontingent();
     timing.elTier = k.tier; timing.elStimme = el.name;
     if (kosten > k.rest) throw new Error(`ElevenLabs-Guthaben reicht nicht: Folge braucht ${kosten} Zeichen, übrig sind ${k.rest} von ${k.limit} (Reset ${new Date(k.reset * 1000).toLocaleDateString('de-DE')}).`);
     const tempo = Number(el.tempo ?? 1); // lokale Beschleunigung (kostenlos, ohne neue ElevenLabs-Zeichen)
     for (let i = 0; i < erz.length; i++) {
-      const r = await elSatz(texte[i], el, ton, texte[i - 1], texte[i + 1], v.ton.stimmeLUFS);
-      if (Math.abs(tempo - 1) < 0.005) { timing.segmente[erz[i].id] = { datei: 'ton/' + r.datei, dauer: r.dauer, woerter: r.woerter }; continue; }
-      const schnell = r.datei.replace(/\.wav$/, `-t${Math.round(tempo * 100)}.wav`);
-      if (!fs.existsSync(path.join(ton, schnell))) ffmpeg(['-i', path.join(ton, r.datei), '-af', `atempo=${tempo}`, '-ar', '48000', '-ac', '1', path.join(ton, schnell)]);
-      const sk = (x: number) => +(x / tempo).toFixed(3);
-      timing.segmente[erz[i].id] = { datei: 'ton/' + schnell, dauer: dauer(path.join(ton, schnell)), woerter: r.woerter.map((w: { w: string; start: number; ende: number }) => ({ w: w.w, start: sk(w.start), ende: sk(w.ende) })) };
+      timing.segmente[erz[i].id] = await mischeErzaehlung(texte[i], ton, async (de, davor, danach) => {
+        const r = await elSatz(de, el, ton, davor, danach, v.ton.stimmeLUFS);
+        return { datei: r.datei, woerter: r.woerter };
+      }, tempo, anzeigeText(texte[i - 1] ?? ''), anzeigeText(texte[i + 1] ?? ''));
     }
     meldungen.push(`Erzählung: ElevenLabs „${el.name}“ (${kosten} neue Zeichen, danach ${k.rest - kosten} von ${k.limit} übrig, Plan ${k.tier})`);
     if (k.tier === 'free') meldungen.push('ElevenLabs Free-Plan: nur nicht-kommerziell und mit Namensnennung (steht in caption.txt) – für Monetarisierung Starter-Plan nötig.');
   } else {
     const art = vorschauStimmeDE();
     for (const s of erz) {
-      const datei = `vorschau-de-${s.id}.wav`, ziel = path.join(ton, datei);
-      sprichDE(s.text ?? '', ziel + '.roh.wav', art);
-      ffmpeg(['-i', ziel + '.roh.wav', '-ac', '1', '-ar', '48000', '-af', `silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,loudnorm=I=${v.ton.stimmeLUFS}:TP=-1.5:LRA=11`, ziel]);
-      fs.rmSync(ziel + '.roh.wav');
-      const d = dauer(ziel);
-      const ws = (s.text ?? '').replace(/\([^)]*\)/g, '').trim().split(/\s+/).filter(Boolean);
-      const gesamt = ws.reduce((a, w) => a + w.length + 1, 0);
-      let c = 0;
-      const woerter = ws.map((w) => { const st = (c / gesamt) * d; c += w.length + 1; return { w, start: +st.toFixed(3), ende: +((c / gesamt) * d).toFixed(3) }; });
-      timing.segmente[s.id] = { datei: 'ton/' + datei, dauer: d, woerter };
+      timing.segmente[s.id] = await mischeErzaehlung(s.text ?? '', ton, async (de) => {
+        const key = crypto.createHash('sha1').update(JSON.stringify([de, art])).digest('hex').slice(0, 10);
+        const datei = `vorschau-de-${key}.wav`, ziel = path.join(ton, datei);
+        if (!fs.existsSync(ziel)) {
+          sprichDE(de, ziel + '.roh.wav', art);
+          ffmpeg(['-i', ziel + '.roh.wav', '-ac', '1', '-ar', '48000', '-af', `silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,loudnorm=I=${v.ton.stimmeLUFS}:TP=-1.5:LRA=11`, ziel]);
+          fs.rmSync(ziel + '.roh.wav');
+        }
+        const d = dauer(ziel), ws = de.split(/\s+/).filter(Boolean), gesamt = ws.reduce((a, w) => a + w.length + 1, 0);
+        let c = 0;
+        return { datei, woerter: ws.map((w) => { const st = (c / gesamt) * d; c += w.length + 1; return { w, start: +st.toFixed(3), ende: +((c / gesamt) * d).toFixed(3) }; }) };
+      }, 1);
     }
     meldungen.push(`Vorschau-Stimme (${art}) – keine eigene Aufnahme. Ergebnis nur als preview.mp4.`);
   }

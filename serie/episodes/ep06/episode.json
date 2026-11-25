@@ -34,7 +34,7 @@
   {
    "id": "s03",
    "art": "erzaehler",
-   "text": "Atatamemasu ka. Soll ich das aufwärmen?"
+   "text": "Sie fragt: Soll ich das aufwärmen?"
   },
   {
    "id": "s04",
@@ -44,7 +44,7 @@
   {
    "id": "s05",
    "art": "erzaehler",
-   "text": "Ein Satz hilft fast immer: Daijōbu desu. Alles gut, passt schon."
+   "text": "Ein Satz hilft fast immer: [[大丈夫です|daijōbu desu]]. Alles gut, passt schon."
   },
   {
    "id": "s05b",
@@ -65,7 +65,7 @@
   {
    "id": "s08",
    "art": "erzaehler",
-   "text": "Daijōbu desu. Haru nickt und lächelt.",
+   "text": "Haru nickt und lächelt.",
    "regie": "erleichtert"
   },
   {

@@ -50,13 +50,13 @@ export const Satzkarte: React.FC<{ z: Zone; ja: string; kana: string; romaji: st
 
 /** Deutsche Untertitel zur Erzählung, Wort für Wort hervorgehoben. */
 export const Untertitel: React.FC<{ z: Zone; woerter: WortZeit[]; text: string; t: number; y: number }> = ({ z, woerter, text, t }) => {
-  const ws = woerter.length ? woerter : text.split(/\s+/).map((w) => ({ w, start: 0, ende: 0 }));
+  const ws: WortZeit[] = woerter.length ? woerter : text.replace(/\[\[[^|\]]+\|([^|\]]+)(\|[^\]]+)?\]\]/g, '$1').replace(/\([^)]*\)/g, '').split(/\s+/).filter(Boolean).map((w) => ({ w, start: 0, ende: 0 }));
   const zeichen = ws.reduce((a, w) => a + w.w.length + 1, 0);
   const gr = zeichen > 70 ? 46 : zeichen > 52 ? 50 : 56; // lange Sätze kleiner, damit sie in 2 Zeilen passen
   return (
     <div data-zone="untertitel" style={{ position: 'absolute', bottom: z.unten + 20, left: z.links, width: breite(z), textAlign: 'left', font: `900 ${gr}px/1.25 "Noto Sans JP"` }}>
       {ws.map((w, i) => (
-        <span key={i} style={{ color: t >= w.start - 0.02 ? '#fff' : 'rgba(255,255,255,.55)', WebkitTextStroke: `9px ${TINTE}`, paintOrder: 'stroke fill', marginRight: 14, display: 'inline-block', transform: t >= w.start && t < w.ende ? 'translateY(-4px) scale(1.04)' : 'none' }}>{w.w}</span>
+        <span key={i} style={{ color: w.jp ? (t >= w.start - 0.02 ? GELB : 'rgba(244,211,94,.6)') : t >= w.start - 0.02 ? '#fff' : 'rgba(255,255,255,.55)', fontStyle: w.jp ? 'italic' : 'normal', WebkitTextStroke: `9px ${TINTE}`, paintOrder: 'stroke fill', marginRight: 14, display: 'inline-block', transform: t >= w.start && t < w.ende ? 'translateY(-4px) scale(1.04)' : 'none' }}>{w.w}</span>
       ))}
     </div>
   );

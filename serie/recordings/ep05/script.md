@@ -11,7 +11,7 @@ Speichern als `recordings/ep05/voice.m4a` (mp3/wav gehen auch).
 
 **3.** *(erschrocken)* Knö zuckt zusammen. Ist das ein Angriff?
 
-**4.** Nein! Irasshaimase heißt Willkommen. Antworten muss man nicht. Einfach lächeln.
+**4.** Nein! _irasshaimase_ heißt Willkommen. Antworten muss man nicht. Einfach lächeln.
 
 **5.** *(erleichtert)* Die Verkäufer rufen das jedem zu. Auch Knö.
 
@@ -33,7 +33,7 @@ Speichern als `recordings/ep05/voice.m4a` (mp3/wav gehen auch).
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): これをください*
 
-**11.** *(stolz)* Kore o kudasai. Funktioniert bei allem, worauf du zeigen kannst.
+**11.** *(stolz)* Das hier, bitte. Funktioniert bei allem, worauf du zeigen kannst.
 
 **12.** Haru nickt. Dann fragt sie etwas. Und noch etwas. Und noch etwas.
 

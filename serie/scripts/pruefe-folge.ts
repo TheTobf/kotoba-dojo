@@ -4,8 +4,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Episode } from '../src/folge/typen';
 import { schreibeSkript } from './ausgabe';
+import { teile } from './ton/erzaehlung';
 import { alleEpisoden, epOrdner, ladeEpisode, ladeLehrplan, ladeVorlage, lies, p } from './lib/projekt';
 
+// Romaji-Wörter aus Lehrplan + Ortsnamen; kurze/deutsch klingende Wörter ausgenommen
+const AUSNAHMEN = new Set(['hotel', 'hai', 'kann', 'name', 'ende', 'mit', 'tokio']);
+const ROMAJI = new Set([...Object.values(ladeLehrplan()).flatMap((e) => e.romaji.toLowerCase().replace(/[^a-z ]/g, ' ').split(/\s+/)), 'shinjuku', 'mokuteki', 'kankou', 'kanko', 'toire', 'kippu', 'kenbaiki', 'achira', 'otearai', 'daijobu', 'ippaku', 'chekkuin', 'sumimasen', 'irasshaimase', 'mamonaku'].filter((w) => w.length >= 4 && !AUSNAHMEN.has(w)));
 const SZENEN = ['flughafen', 'bahnsteig', 'konbini', 'strasse', 'hotel', 'studio'];
 const AKTIONEN = ['stehen', 'gehen', 'zeigen', 'verwirrt', 'freuen', 'winken', 'sprechen', 'erschrecken', 'traurig', 'verbeugen', 'rennen'];
 const PRESETS = ['totale', 'halbnah', 'nah', 'gross', 'ueberSchulter', 'frosch', 'vogel', 'seite'];
@@ -35,6 +39,11 @@ export function pruefeFolge(id: string): { fehler: string[]; warnungen: string[]
       if (!s.text) F.push(`${s.id}: Text fehlt`);
       const n = (s.text ?? '').split(/\s+/).length; woerter += n; sek += n / 2.5 + 0.2;
       if (n > 16) W.push(`${s.id}: ${n} Wörter – lieber kürzer (gut sprechbar)`);
+      // Japanisch im deutschen Erzähltext muss markiert sein ([[ja|romaji]]), sonst spricht es die deutsche Stimme falsch aus
+      const deutsch = teile(s.text ?? '').filter((t) => t.art === 'de').map((t) => (t as { text: string }).text).join(' ');
+      const gefunden = deutsch.toLowerCase().replace(/[ōū]/g, (c) => (c === 'ō' ? 'o' : 'u')).match(/[a-zäöüß]+/g)?.filter((w) => ROMAJI.has(w)) ?? [];
+      if (/[\u3040-\u30ff\u4e00-\u9fff]/.test(deutsch)) F.push(`${s.id}: japanische Schrift im deutschen Text – als [[ja|romaji]] markieren`);
+      if (gefunden.length) F.push(`${s.id}: unmarkiertes Japanisch „${[...new Set(gefunden)].join(', ')}“ – als [[ja|romaji]] markieren, damit VOICEVOX es spricht`);
     } else if (s.art === 'japanisch') {
       const l = s.curriculum ? lp[s.curriculum] : null;
       if (s.curriculum && !l) F.push(`${s.id}: ${s.curriculum} unbekannt`);

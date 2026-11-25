@@ -73,12 +73,12 @@
   {
    "id": "s10",
    "art": "erzaehler",
-   "text": "Sumimasen. Das heißt: Entschuldigung, darf ich kurz stören?"
+   "text": "Das heißt: Entschuldigung, darf ich kurz stören?"
   },
   {
    "id": "s11",
    "art": "erzaehler",
-   "text": "Jetzt die Frage. Toilette heißt toire. Wo ist … heißt wa doko desu ka."
+   "text": "Jetzt die Frage. Toilette heißt [[トイレ|toire]]. Wo ist … heißt [[はどこですか|wa doko desu ka|わどこですか]]."
   },
   {
    "id": "s12",
@@ -94,7 +94,7 @@
   {
    "id": "s14",
    "art": "erzaehler",
-   "text": "Toire wa doko desu ka. Die Frau lächelt und zeigt nach links.",
+   "text": "Die Frau lächelt und zeigt nach links.",
    "regie": "erleichtert"
   },
   {
@@ -107,7 +107,7 @@
   {
    "id": "s16",
    "art": "erzaehler",
-   "text": "Otearai heißt auch Toilette. Achira heißt: dort drüben."
+   "text": "[[お手洗い|otearai]] heißt auch Toilette. [[あちら|achira]] heißt: dort drüben."
   },
   {
    "id": "s17",

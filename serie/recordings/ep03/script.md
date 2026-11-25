@@ -13,17 +13,17 @@ Speichern als `recordings/ep03/voice.m4a` (mp3/wav gehen auch).
 
 **4.** Der Mann dreht sich um. Und jetzt?
 
-**5.** Fahrkarte heißt kippu. Wo kann ich kaufen, heißt doko de kaemasu ka.
+**5.** Fahrkarte heißt _kippu_. Wo kann ich kaufen, heißt _doko de kaemasu ka_.
 
 > ⏱ *Quiz-Countdown (3 Sekunden Stille – nichts sprechen)*
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 切符はどこで買えますか*
 
-**6.** *(stolz)* Kippu wa doko de kaemasu ka. Wo kann ich eine Fahrkarte kaufen?
+**6.** *(stolz)* Genau so fragt man: Wo kann ich eine Fahrkarte kaufen?
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): あちらの券売機です*
 
-**7.** Kenbaiki heißt Fahrkartenautomat. Achira kennt Knö schon: dort drüben.
+**7.** _kenbaiki_ heißt Fahrkartenautomat. _achira_ kennt Knö schon: dort drüben.
 
 **8.** Knö steht vor dem Automaten. Hundert Knöpfe. Alles auf Japanisch.
 
@@ -33,4 +33,4 @@ Speichern als `recordings/ep03/voice.m4a` (mp3/wav gehen auch).
 
 **11.** *(geheimnisvoll)* Es ist wieder der Mann mit dem Hut. Eine Fahrkarte fällt heraus.
 
-**12.** *(spannend)* Darauf steht: Shinjuku. Woher weiß er, wohin Knö will?
+**12.** *(spannend)* Darauf steht: _Shinjuku_. Woher weiß er, wohin Knö will?

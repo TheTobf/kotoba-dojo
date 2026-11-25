@@ -40,7 +40,7 @@
   {
    "id": "s05",
    "art": "erzaehler",
-   "text": "Nein! Irasshaimase heißt Willkommen. Antworten muss man nicht. Einfach lächeln."
+   "text": "Nein! [[いらっしゃいませ|irasshaimase]] heißt Willkommen. Antworten muss man nicht. Einfach lächeln."
   },
   {
    "id": "s05b",
@@ -101,7 +101,7 @@
   {
    "id": "s14",
    "art": "erzaehler",
-   "text": "Kore o kudasai. Funktioniert bei allem, worauf du zeigen kannst.",
+   "text": "Das hier, bitte. Funktioniert bei allem, worauf du zeigen kannst.",
    "regie": "stolz"
   },
   {

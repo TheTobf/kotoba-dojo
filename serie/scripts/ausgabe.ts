@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import type { CurriculumEintrag, Episode } from '../src/folge/typen';
+import { anzeigeText } from './ton/erzaehlung';
 import { alleEpisoden, aufnahmeOrdner, ausgabeOrdner, findeAufnahme, ladeEpisode, ladeLehrplan, ladeSerie, ladeVorlage, p } from './lib/projekt';
 
 const require = createRequire(import.meta.url);
@@ -92,7 +93,7 @@ export function skript(ep: Episode): string {
   const lp = ladeLehrplan();
   let n = 0;
   const zeilen = ep.segmente.map((s) => {
-    if (s.art === 'erzaehler') { n++; return `**${n}.** ${s.regie ? `*(${s.regie})* ` : ''}${s.text}`; }
+    if (s.art === 'erzaehler') { n++; return `**${n}.** ${s.regie ? `*(${s.regie})* ` : ''}${(s.text ?? '').replace(/\[\[[^|\]]+\|([^|\]]+)(\|[^\]]+)?\]\]/g, '_$1_')}`; }
     if (s.art === 'japanisch') { const ja = s.curriculum ? lp[s.curriculum].ja : s.text; return `> 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): ${ja}*`; }
     if (s.art === 'quiz') return `> ⏱ *Quiz-Countdown (3 Sekunden Stille – nichts sprechen)*`;
     return `> *(kurze Pause)*`;

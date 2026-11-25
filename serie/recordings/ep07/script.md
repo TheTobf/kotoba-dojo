@@ -7,7 +7,7 @@ Speichern als `recordings/ep07/voice.m4a` (mp3/wav gehen auch).
 
 **2.** Jetzt braucht Knö zwei Sätze. Erstens: einchecken.
 
-**3.** Check-in heißt einfach chekkuin. Dazu onegai shimasu: bitte.
+**3.** Check-in heißt einfach _chekkuin_. Dazu _onegai shimasu_: bitte.
 
 > ⏱ *Quiz-Countdown (3 Sekunden Stille – nichts sprechen)*
 
@@ -17,7 +17,7 @@ Speichern als `recordings/ep07/voice.m4a` (mp3/wav gehen auch).
 
 **4.** Sie will den Namen. Knö hat unter Omas Namen gebucht: Schmidt.
 
-**5.** Yoyaku shite iru heißt: Ich habe reserviert. Dann der Name und desu.
+**5.** _yoyaku shite iru_ heißt: Ich habe reserviert. Dann der Name und _desu_.
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 予約しているシュミットです*
 
@@ -25,7 +25,7 @@ Speichern als `recordings/ep07/voice.m4a` (mp3/wav gehen auch).
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 一泊のご予約ですね*
 
-**7.** *(geschockt)* Ippaku. Eine Nacht. Knö hat nur eine einzige Nacht gebucht!
+**7.** *(geschockt)* _ippaku_. Eine Nacht. Knö hat nur eine einzige Nacht gebucht!
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 大丈夫ですか*
 

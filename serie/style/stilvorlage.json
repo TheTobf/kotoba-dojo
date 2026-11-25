@@ -122,6 +122,12 @@
       "sprecher": "玄野武宏",
       "stil": "ノーマル",
       "tempo": 1.0
+    },
+    "erklaerer": {
+      "sprecher": "冥鳴ひまり",
+      "stil": "ノーマル",
+      "tempo": 0.9,
+      "hinweis": "spricht japanische Wörter mitten in der deutschen Erzählung ([[…|…]]), etwas langsamer"
     }
   },
   "stimmenBedingungenGeprueft": false,

@@ -9,11 +9,11 @@ Speichern als `recordings/ep06/voice.m4a` (mp3/wav gehen auch).
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 温めますか*
 
-**3.** Atatamemasu ka. Soll ich das aufwärmen?
+**3.** Sie fragt: Soll ich das aufwärmen?
 
 **4.** Ein warmer Reisball? Knö will lieber nicht. Aber wie sagt man höflich nein?
 
-**5.** Ein Satz hilft fast immer: Daijōbu desu. Alles gut, passt schon.
+**5.** Ein Satz hilft fast immer: _daijōbu desu_. Alles gut, passt schon.
 
 **6.** Höflich, kurz und ohne Ärger. Perfekt für alle Fragen an der Kasse.
 
@@ -21,7 +21,7 @@ Speichern als `recordings/ep06/voice.m4a` (mp3/wav gehen auch).
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 大丈夫です*
 
-**7.** *(erleichtert)* Daijōbu desu. Haru nickt und lächelt.
+**7.** *(erleichtert)* Haru nickt und lächelt.
 
 > 🔇 *Hier kommt Japanisch (VOICEVOX, nicht einsprechen): 袋はご利用ですか*
 

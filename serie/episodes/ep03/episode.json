@@ -43,7 +43,7 @@
   {
    "id": "s06",
    "art": "erzaehler",
-   "text": "Fahrkarte heißt kippu. Wo kann ich kaufen, heißt doko de kaemasu ka."
+   "text": "Fahrkarte heißt [[切符|kippu]]. Wo kann ich kaufen, heißt [[どこで買えますか|doko de kaemasu ka]]."
   },
   {
    "id": "s07",
@@ -59,7 +59,7 @@
   {
    "id": "s09",
    "art": "erzaehler",
-   "text": "Kippu wa doko de kaemasu ka. Wo kann ich eine Fahrkarte kaufen?",
+   "text": "Genau so fragt man: Wo kann ich eine Fahrkarte kaufen?",
    "regie": "stolz"
   },
   {
@@ -75,7 +75,7 @@
   {
    "id": "s11",
    "art": "erzaehler",
-   "text": "Kenbaiki heißt Fahrkartenautomat. Achira kennt Knö schon: dort drüben."
+   "text": "[[券売機|kenbaiki]] heißt Fahrkartenautomat. [[あちら|achira]] kennt Knö schon: dort drüben."
   },
   {
    "id": "s12",
@@ -102,7 +102,7 @@
   {
    "id": "s16",
    "art": "erzaehler",
-   "text": "Darauf steht: Shinjuku. Woher weiß er, wohin Knö will?",
+   "text": "Darauf steht: [[新宿|Shinjuku]]. Woher weiß er, wohin Knö will?",
    "regie": "spannend"
   }
  ],
