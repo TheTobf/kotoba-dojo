@@ -39,8 +39,10 @@ test('Skript nummeriert nur deutsche Sätze', () => {
 test('Postplan rechnet Vorlauf', () => {
   const r = postplan(new Date('2026-11-25T10:00:00'));
   assert.equal(r.geplant[0].datum, '2026-12-01');
-  assert.equal(r.vorlaufTage, 0); // nichts fertig → kein Vorlauf
-  assert.match(r.md, /unter 7 Tagen/);
+  // Vorlauf = Anzahl fertiger Folgen am Stück ab Serienstart (heute liegt vor dem Start)
+  let erwartet = 0; while (r.geplant[erwartet]?.fertig) erwartet++;
+  assert.equal(r.vorlaufTage, erwartet);
+  if (erwartet < 7) assert.match(r.md, /unter 7 Tagen/);
 });
 
 test('Zeile aus Aufnahme schneiden: lange Pause wird gekürzt, Wortzeiten verschoben', () => {

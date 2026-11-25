@@ -38,7 +38,7 @@ export function caption(ep: Episode): string {
     ...neu.map((e) => `• ${e.ja} (${e.romaji}) – ${e.de}`),
     ...wdh.map((e) => `↺ Wiederholung: ${e.ja} (${e.romaji}) – ${e.de}`),
     '',
-    ep.naechste ? `Nächste Folge: ${ep.naechste.replace(/^(Morgen|Bald):\s*/i, '')} – ${/^bald/i.test(ep.naechste) ? 'bald' : 'morgen'}!` : 'Nächste Folge morgen!',
+    ep.naechste ? `${/^bald/i.test(ep.naechste) ? 'Bald geht’s weiter' : 'Morgen geht’s weiter'}: ${ep.naechste.replace(/^(Morgen|Bald):\s*/i, '')}` : 'Morgen geht’s weiter!',
     '',
     tags.join(' '),
     '',
