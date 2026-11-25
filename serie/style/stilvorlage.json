@@ -143,7 +143,9 @@
         "use_speaker_boost": true,
         "speed": 1.0
       },
-      "aussprache": {}
+      "aussprache": {},
+      "tempo": 1.06,
+      "tempoHinweis": "Lokale Beschleunigung nach ElevenLabs (kostenlos). 1.0 = Original."
     }
   }
 }

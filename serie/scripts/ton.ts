@@ -67,9 +67,14 @@ export async function erzeugeTon(id: string, opt: { vorschau?: boolean; ohneEl?:
     const k = await elKontingent();
     timing.elTier = k.tier; timing.elStimme = el.name;
     if (kosten > k.rest) throw new Error(`ElevenLabs-Guthaben reicht nicht: Folge braucht ${kosten} Zeichen, übrig sind ${k.rest} von ${k.limit} (Reset ${new Date(k.reset * 1000).toLocaleDateString('de-DE')}).`);
+    const tempo = Number(el.tempo ?? 1); // lokale Beschleunigung (kostenlos, ohne neue ElevenLabs-Zeichen)
     for (let i = 0; i < erz.length; i++) {
       const r = await elSatz(texte[i], el, ton, texte[i - 1], texte[i + 1], v.ton.stimmeLUFS);
-      timing.segmente[erz[i].id] = { datei: 'ton/' + r.datei, dauer: r.dauer, woerter: r.woerter };
+      if (Math.abs(tempo - 1) < 0.005) { timing.segmente[erz[i].id] = { datei: 'ton/' + r.datei, dauer: r.dauer, woerter: r.woerter }; continue; }
+      const schnell = r.datei.replace(/\.wav$/, `-t${Math.round(tempo * 100)}.wav`);
+      if (!fs.existsSync(path.join(ton, schnell))) ffmpeg(['-i', path.join(ton, r.datei), '-af', `atempo=${tempo}`, '-ar', '48000', '-ac', '1', path.join(ton, schnell)]);
+      const sk = (x: number) => +(x / tempo).toFixed(3);
+      timing.segmente[erz[i].id] = { datei: 'ton/' + schnell, dauer: dauer(path.join(ton, schnell)), woerter: r.woerter.map((w: { w: string; start: number; ende: number }) => ({ w: w.w, start: sk(w.start), ende: sk(w.ende) })) };
     }
     meldungen.push(`Erzählung: ElevenLabs „${el.name}“ (${kosten} neue Zeichen, danach ${k.rest - kosten} von ${k.limit} übrig, Plan ${k.tier})`);
     if (k.tier === 'free') meldungen.push('ElevenLabs Free-Plan: nur nicht-kommerziell und mit Namensnennung (steht in caption.txt) – für Monetarisierung Starter-Plan nötig.');
