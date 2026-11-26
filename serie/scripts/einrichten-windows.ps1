@@ -3,6 +3,7 @@
 # installiert die Pakete, VOICEVOX (Installer), whisper.cpp + Sprachmodell.
 # Mehrfach ausführen schadet nicht: Vorhandenes wird übersprungen bzw. aktualisiert.
 $ErrorActionPreference = 'Stop'
+# Hinweis: npm/npx werden als npm.cmd/npx.cmd aufgerufen – die .ps1-Varianten blockiert die Windows-Skriptrichtlinie.
 $ProgressPreference = 'SilentlyContinue'   # macht Downloads deutlich schneller
 $branch = 'ccr-0b3bf917-4jzi1j'
 $ziel = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Projekte'
@@ -25,7 +26,8 @@ Installiere ffmpeg 'Gyan.FFmpeg'
 Installiere python 'Python.Python.3.12'
 PfadNeu
 # Japanische Stimme (Open JTalk „Mei“) über pyopenjtalk
-python -m pip install --user --quiet pyopenjtalk-plus numpy
+# „py“-Starter statt „python“ (unter Windows ist „python“ oft nur ein Store-Platzhalter)
+if (Get-Command py -ErrorAction SilentlyContinue) { py -3 -m pip install --user --quiet pyopenjtalk-plus numpy } else { python -m pip install --user --quiet pyopenjtalk-plus numpy }
 if ($LASTEXITCODE -ne 0) { Write-Host '⚠ pyopenjtalk konnte nicht installiert werden – bitte Fehlermeldung an Claude schicken.' -ForegroundColor Yellow }
 
 # --- Projekt holen ---
@@ -40,10 +42,10 @@ if (Test-Path (Join-Path $repo '.git')) {
   git clone -b $branch https://github.com/TheTobf/kotoba-dojo.git $repo
 }
 Push-Location $repo
-npm ci --no-audit --no-fund
+npm.cmd ci --no-audit --no-fund
 Pop-Location
 Push-Location (Join-Path $repo 'serie')
-npm ci --no-audit --no-fund
+npm.cmd ci --no-audit --no-fund
 Pop-Location
 New-Item -ItemType Directory -Force -Path $werkzeuge | Out-Null
 
@@ -99,7 +101,7 @@ if (-not (Get-ScheduledTask -TaskName $aufgabe -ErrorAction SilentlyContinue)) {
   if ($ja -eq 'j') {
     $serie = Join-Path $repo 'serie'
     $log = Join-Path $serie 'out\automatik.log'
-    $befehl = "Set-Location '$serie'; git -C '$repo' pull --ff-only; npx tsx scripts/fertig.ts --max=3 *>> '$log'"
+    $befehl = "Set-Location '$serie'; git -C '$repo' pull --ff-only; npx.cmd tsx scripts/fertig.ts --max=3 *>> '$log'"
     $aktion = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -WindowStyle Hidden -Command `"$befehl`""
     $ausloeser = New-ScheduledTaskTrigger -Daily -At '03:10'
     $einst = New-ScheduledTaskSettingsSet -StartWhenAvailable -WakeToRun -ExecutionTimeLimit (New-TimeSpan -Hours 4)
@@ -110,7 +112,7 @@ if (-not (Get-ScheduledTask -TaskName $aufgabe -ErrorAction SilentlyContinue)) {
 
 # --- Selbsttest ---
 Push-Location (Join-Path $repo 'serie')
-npx tsx --test tests/abgleich.test.ts
+npx.cmd tsx --test tests/abgleich.test.ts
 node scripts/pruefe-curriculum.mjs
 Pop-Location
 
@@ -118,5 +120,5 @@ Write-Host ''
 Write-Host "Fertig. Projekt liegt in: $repo"
 Write-Host 'Nächste Schritte:'
 Write-Host '  1. In der Claude-Desktop-App eine Claude-Code-Sitzung im Ordner kotoba-dojo öffnen.'
-Write-Host '  2. /status eintippen. Vorschau rendern: „Rendere Folge 1 als Vorschau“ (oder: cd serie; npx tsx scripts/render.ts ep01 --vorschau).'
+Write-Host '  2. /status eintippen. Vorschau rendern: „Rendere Folge 1 als Vorschau“ (oder: cd serie; npx.cmd tsx scripts/render.ts ep01 --vorschau).'
 Write-Host '  3. Aufnahme als serie\recordings\ep01\voice.m4a ablegen, dann /fertig.'

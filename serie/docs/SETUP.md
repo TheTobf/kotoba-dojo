@@ -44,11 +44,13 @@ Umgebungsvariablen (nur falls nötig): `VOICEVOX_URL`, `VOICEVOX_ENGINE`, `WHISP
 
 ## Befehle von Hand (ohne Claude)
 
+In PowerShell `npx.cmd` statt `npx` schreiben (die Windows-Skriptrichtlinie blockiert `npx.ps1`).
+
 ```powershell
 cd Dokumente\Projekte\kotoba-dojo\serie
-npx tsx scripts/status.ts                        # Stand
-npx tsx scripts/render.ts ep01 --vorschau        # Vorschau mit Ersatzstimme → episodes/ep01/preview.mp4
-npx tsx scripts/fertig.ts                        # alle Aufnahmen verarbeiten und fertig rendern
-npm run studio                                   # Remotion Studio zum Anschauen/Debuggen
-npm test                                         # Tests
+npx.cmd tsx scripts/status.ts                        # Stand
+npx.cmd tsx scripts/render.ts ep01 --vorschau        # Vorschau mit Ersatzstimme → episodes/ep01/preview.mp4
+npx.cmd tsx scripts/fertig.ts                        # alle Aufnahmen verarbeiten und fertig rendern
+npm.cmd run studio                                   # Remotion Studio zum Anschauen/Debuggen
+npm.cmd test                                       # Tests
 ```
